@@ -103,11 +103,44 @@
         android:layout_height="wrap_content"
         android:background="@drawable/edittext_border"
         android:padding="15dp"
+        android:drawableRight="@drawable/password_visibility"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/tv_password_heading" />
 
+    <LinearLayout
+        android:id="@+id/ll_remember_forgot_password_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/et_input_password"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline1">
 
+        <!-- Remember Me-->
+        <CheckBox
+            android:id="@+id/cb_remember_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins"
+            android:text="Remember me"
+            android:textColor="#637291" />
+
+        <!-- Forgot Password-->
+        <Button
+            android:id="@+id/btn_forgot_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/poppins"
+            android:padding="0dp"
+            android:text="Forgot Password?"
+            android:textAlignment="textEnd"
+            android:textAllCaps="false"
+            android:textColor="#637291" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
@@ -122,5 +155,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.65"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
