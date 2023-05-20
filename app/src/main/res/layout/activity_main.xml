@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FBFAFB"
-    android:layout_marginTop="16dp"
     android:layout_marginLeft="15dp"
+    android:layout_marginTop="16dp"
     android:layout_marginRight="15dp"
+    android:background="#FBFAFB"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -101,8 +101,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edittext_border"
-        android:padding="15dp"
         android:drawableRight="@drawable/password_visibility"
+        android:padding="15dp"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/tv_password_heading" />
@@ -112,9 +112,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/et_input_password"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
-        app:layout_constraintStart_toStartOf="@id/guideline1">
+        app:layout_constraintStart_toStartOf="@id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/et_input_password">
 
         <!-- Remember Me-->
         <CheckBox
@@ -147,11 +147,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/proceed_button_background"
+        android:drawableRight="@drawable/proceed_password"
+        android:fontFamily="@font/poppins_extrabold"
+        android:padding="12dp"
         android:text="SIGN IN"
         android:textColor="#FFFFFF"
-        android:fontFamily="@font/poppins_extrabold"
-        android:padding="15dp"
-        android:drawableRight="@drawable/proceed_password"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/ll_login_social_media_group"
         app:layout_constraintTop_toBottomOf="@+id/ll_remember_forgot_password_group" />
 
     <LinearLayout
@@ -160,6 +162,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/btn_signin">
 
@@ -171,11 +174,11 @@
             android:layout_weight="1"
             android:background="@drawable/edittext_border"
             android:drawableLeft="@drawable/google_logo"
+            android:padding="10dp"
             android:text="Sign in with Google"
             android:textAllCaps="false"
             android:textColor="#4C4B4B"
-            android:textSize="13sp"
-            android:padding="10dp"/>
+            android:textSize="13sp" />
 
         <Space
             android:layout_width="0dp"
@@ -188,28 +191,60 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Sign in with Facebook"
-            android:textSize="13sp"
-            android:textColor="#4C4B4B"
             android:background="@drawable/edittext_border"
             android:drawableLeft="@drawable/facebook_logo"
+            android:padding="10dp"
+            android:text="Sign in with Facebook"
             android:textAllCaps="false"
-            android:padding="10dp"/>
-
+            android:textColor="#4C4B4B"
+            android:textSize="13sp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_register_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/ll_login_social_media_group">
+
+        <!-- Don't have an account text-->
+        <TextView
+            android:id="@+id/tv_no_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="Don't have an account?   "
+            android:textSize="12sp" />
+
+        <!-- Register button-->
+        <Button
+            android:id="@+id/btn_register_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/poppins_bold"
+            android:text="REGISTER"
+            android:textAlignment="textStart"
+            android:textColor="#011947"
+            android:textSize="12sp" />
+    </LinearLayout>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.35"/>
+        app:layout_constraintGuide_percent="0.35" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.65"/>
+        app:layout_constraintGuide_percent="0.65" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
