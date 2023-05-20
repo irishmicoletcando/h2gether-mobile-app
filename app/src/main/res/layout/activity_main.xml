@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#FBFAFB"
     android:layout_marginTop="16dp"
     android:layout_marginLeft="15dp"
     android:layout_marginRight="15dp"
@@ -15,9 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <Space
             android:layout_width="0dp"
@@ -57,8 +57,7 @@
         android:text="LOGIN"
         android:textColor="#011947"
         android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_h2gether_logo_heading_group" />
 
     <!-- Email heading -->
@@ -142,6 +141,62 @@
             android:textColor="#637291" />
     </LinearLayout>
 
+    <!-- Sign In button-->
+    <Button
+        android:id="@+id/btn_signin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/proceed_button_background"
+        android:text="SIGN IN"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/poppins_extrabold"
+        android:padding="15dp"
+        android:drawableRight="@drawable/proceed_password"
+        app:layout_constraintTop_toBottomOf="@+id/ll_remember_forgot_password_group" />
+
+    <LinearLayout
+        android:id="@+id/ll_login_social_media_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/btn_signin">
+
+        <!-- Connect Google account button-->
+        <Button
+            android:id="@+id/btn_google"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/edittext_border"
+            android:drawableLeft="@drawable/google_logo"
+            android:text="Sign in with Google"
+            android:textAllCaps="false"
+            android:textColor="#4C4B4B"
+            android:textSize="13sp"
+            android:padding="10dp"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.5" />
+
+        <!-- Connect Facebook account button-->
+        <Button
+            android:id="@+id/btn_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sign in with Facebook"
+            android:textSize="13sp"
+            android:textColor="#4C4B4B"
+            android:background="@drawable/edittext_border"
+            android:drawableLeft="@drawable/facebook_logo"
+            android:textAllCaps="false"
+            android:padding="10dp"/>
+
+    </LinearLayout>
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
         android:layout_width="wrap_content"
