@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "244469548716",
+    "project_id": "h2gether-b4b58",
+    "storage_bucket": "h2gether-b4b58.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:244469548716:android:ce2966c3656fe08b1c0109",
+        "android_client_info": {
+          "package_name": "com.example.h2gether"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "244469548716-invs53ke9hgp7m28huel78pvr7a1e1dj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXCHLudXEHaRTgTUo2VR2WCjUT04cncTc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "244469548716-invs53ke9hgp7m28huel78pvr7a1e1dj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
