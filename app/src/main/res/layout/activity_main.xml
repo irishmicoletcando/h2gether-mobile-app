@@ -85,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_email_heading">
 
         <!-- Input email area -->
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,16 +113,16 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/tv_password_heading">
+        app:layout_constraintTop_toBottomOf="@+id/tv_password_heading"
+        app:passwordToggleEnabled="true">
 
         <!-- Input password area -->
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/edittext_border"
-            android:drawableRight="@drawable/password_visibility"
             android:padding="15dp" />
     </com.google.android.material.textfield.TextInputLayout>
 

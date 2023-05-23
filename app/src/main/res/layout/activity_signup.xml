@@ -76,17 +76,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_signup_heading" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_input_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/tv_email_heading">
+
     <!-- Input email area -->
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/et_input_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/edittext_border"
-        android:padding="15dp"
-        app:layout_constraintEnd_toEndOf="@id/guideline2"
-        app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/tv_email_heading" />
+        android:padding="15dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Password heading -->
     <TextView
@@ -99,20 +105,26 @@
         android:textColor="#637291"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_input_email" />
+        app:layout_constraintTop_toBottomOf="@+id/til_input_email" />
 
     <!-- Input password area -->
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_input_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/tv_password_heading"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/et_input_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/edittext_border"
-        android:drawableRight="@drawable/password_visibility"
-        android:padding="15dp"
-        app:layout_constraintEnd_toEndOf="@id/guideline2"
-        app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/tv_password_heading" />
+        android:padding="15dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Confirm Password heading -->
     <TextView
@@ -125,27 +137,37 @@
         android:textColor="#637291"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_input_password" />
+        app:layout_constraintTop_toBottomOf="@+id/til_input_password" />
 
     <!-- Input password area -->
-    <EditText
-        android:id="@+id/et_confirm_password"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_confirm_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/edittext_border"
-        android:drawableRight="@drawable/password_visibility"
-        android:padding="15dp"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/tv_confirm_password_heading" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_confirm_password_heading"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_border"
+            android:padding="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="420dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Sign up button-->
+
     <Button
         android:id="@+id/btn_signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/proceed_button_background"
         android:drawableRight="@drawable/proceed_password"
         android:fontFamily="@font/poppins_extrabold"
@@ -153,7 +175,7 @@
         android:text="SIGN UP"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/et_input_password"
+        app:layout_constraintTop_toBottomOf="@+id/til_confirm_password"
         tools:layout_editor_absoluteX="0dp" />
 
     <LinearLayout
@@ -246,6 +268,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.65" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
