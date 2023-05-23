@@ -140,7 +140,7 @@
         app:layout_constraintStart_toStartOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/tv_confirm_password_heading" />
 
-    <!-- Sign In button-->
+    <!-- Sign up button-->
     <Button
         android:id="@+id/btn_signup"
         android:layout_width="match_parent"
