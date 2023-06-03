@@ -4,9 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="15dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginRight="15dp"
     android:background="#FBFAFB"
     tools:context=".MainActivity">
 
@@ -17,7 +14,7 @@
         android:layout_marginTop="88dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -198,10 +195,10 @@
             android:id="@+id/btn_google"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.75"
             android:background="@drawable/edittext_border"
             android:drawableLeft="@drawable/google_logo"
-            android:padding="10dp"
+            android:padding="15dp"
             android:text="Sign in with Google"
             android:textAllCaps="false"
             android:textColor="#4C4B4B"
@@ -245,7 +242,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:text="Don't have an account? "
-            android:textSize="12sp" />
+            android:textSize="13sp" />
 
         <!-- Register button-->
         <TextView
@@ -257,7 +254,7 @@
             android:text="REGISTER"
             android:textAlignment="textStart"
             android:textColor="#011947"
-            android:textSize="12sp" />
+            android:textSize="13sp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
