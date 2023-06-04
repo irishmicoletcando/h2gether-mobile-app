@@ -8,67 +8,29 @@
     android:background="#FBFAFB"
     tools:context=".PrefaceActivity">
 
-    <!-- Skip button -->
-    <Button
-        android:id="@+id/btn_skip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="Skip"
-        android:textAlignment="textEnd"
-        android:textAllCaps="false"
-        android:textColor="#BDBDBD"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerTwo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_track_water_consumption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/track_water_consumption"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.30" />
+        app:layout_constraintHeight_percent="0.0"/>
 
-    <TextView
-        android:id="@+id/tv_track_water_consumption_heading"
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+        android:id="@+id/dots_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="Track Water Consumption"
-        android:textColor="#000000"
+        app:dotsColor="@color/lightGray"
+        app:dotsCornerRadius="8dp"
+        app:dotsSize="13dp"
+        app:dotsSpacing="4dp"
+        app:dotsWidthFactor="2.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_track_water_consumption" />
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:context=".PrefaceActivity">
-
-        <me.relex.circleindicator.CircleIndicator3
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:background="#1E88E5"/>
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/indicator"
-            android:layout_centerInParent="true" />
-
-    </RelativeLayout>
-
+        app:progressMode="true"
+        app:selectedDotColor="@color/azure"
+        tools:layout_editor_absoluteY="651dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
