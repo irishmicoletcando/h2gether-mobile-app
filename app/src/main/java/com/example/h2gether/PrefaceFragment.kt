@@ -35,8 +35,8 @@ class PrefaceFragment : Fragment() {
         )
 
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPagerTwo)
-
         viewPager.adapter = adapter
+
         val indicator = view.findViewById<DotsIndicator>(R.id.dots_indicator)
         indicator.attachTo(viewPager)
 

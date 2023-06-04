@@ -50,19 +50,18 @@ class LoginActivity : AppCompatActivity() {
 
 
             if (email.isNotEmpty() && pass.isNotEmpty()) {
-
-                firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        val intent = Intent(this, PrefaceFragment ::class.java)
-                        startActivity(intent)
+                firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        supportFragmentManager.beginTransaction().apply {
+                            replace(android.R.id.content, PrefaceFragment())
+                            commit()
+                        }
                     } else {
-                        Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
-
+                        Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
                 Toast.makeText(this, "Empty Fields Are not Allowed !!", Toast.LENGTH_SHORT).show()
-
             }
         }
 
