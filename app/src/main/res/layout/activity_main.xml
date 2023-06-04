@@ -43,7 +43,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/poppins_extrabold"
             android:text="H2GETHER"
-            android:textColor="#011947"
+            android:textColor="@color/darkBlue"
             android:textSize="40sp" />
     </LinearLayout>
 
@@ -55,7 +55,7 @@
         android:layout_marginTop="34dp"
         android:fontFamily="@font/poppins_extrabold"
         android:text="LOGIN"
-        android:textColor="#011947"
+        android:textColor="@color/darkBlue"
         android:textSize="25sp"
         style="@style/MarginStyle"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +69,7 @@
         android:layout_marginTop="13dp"
         android:fontFamily="@font/poppins_black"
         android:text="EMAIL"
-        android:textColor="#637291"
+        android:textColor="@color/gray"
         android:textSize="12sp"
         style="@style/MarginStyle"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +102,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_black"
         android:text="PASSWORD"
-        android:textColor="#637291"
+        android:textColor="@color/gray"
         android:textSize="12sp"
         style="@style/MarginStyle"
         app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +146,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/poppins"
             android:text="Remember me"
-            android:textColor="#637291" />
+            android:textColor="@color/gray" />
 
         <!-- Forgot Password-->
         <Button
@@ -160,7 +160,7 @@
             android:text="Forgot Password?"
             android:textAlignment="textEnd"
             android:textAllCaps="false"
-            android:textColor="#637291" />
+            android:textColor="@color/gray" />
     </LinearLayout>
 
     <!-- Sign In button-->
@@ -173,7 +173,7 @@
         android:fontFamily="@font/poppins_extrabold"
         android:padding="12dp"
         android:text="SIGN IN"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/white"
         android:textSize="18sp"
         style="@style/MarginStyle"
         app:layout_constraintTop_toBottomOf="@+id/ll_remember_forgot_password_group"
@@ -201,7 +201,7 @@
             android:padding="15dp"
             android:text="Sign in with Google"
             android:textAllCaps="false"
-            android:textColor="#4C4B4B"
+            android:textColor="@color/darkGray"
             android:textSize="13sp" />
 
         <Space
@@ -220,7 +220,7 @@
             android:padding="10dp"
             android:text="Sign in with Facebook"
             android:textAllCaps="false"
-            android:textColor="#4C4B4B"
+            android:textColor="@color/darkGray"
             android:textSize="13sp" />
     </LinearLayout>
 
@@ -253,7 +253,7 @@
             android:fontFamily="@font/poppins_bold"
             android:text="REGISTER"
             android:textAlignment="textStart"
-            android:textColor="#011947"
+            android:textColor="@color/darkBlue"
             android:textSize="13sp" />
     </LinearLayout>
 
