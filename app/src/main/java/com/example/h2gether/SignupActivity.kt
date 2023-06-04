@@ -7,7 +7,7 @@ import android.widget.Toast
 import com.example.h2gether.databinding.ActivitySignupBinding
 import com.google.firebase.auth.FirebaseAuth
 
-class Signup : AppCompatActivity() {
+class SignupActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivitySignupBinding
     private lateinit var firebaseAuth: FirebaseAuth
@@ -19,7 +19,7 @@ class Signup : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
         binding.btnSigninAccount.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
 
@@ -33,7 +33,7 @@ class Signup : AppCompatActivity() {
 
                     firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
                         if (it.isSuccessful) {
-                            val intent = Intent(this, MainActivity::class.java)
+                            val intent = Intent(this, LoginActivity::class.java)
                             startActivity(intent)
                         } else {
                             Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()

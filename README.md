@@ -55,6 +55,8 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 
 - [@irishmicoletcando](https://github.com/irishmicoletcando)
 - [@JohnRicMerque](https://github.com/JohnRicMerque)
+- [@jelisharbb](https://github.com/jelisharbb)
+- [@jendlrs](https://github.com/jendlrs)
 
 
 ## Support
