@@ -1,7 +1,6 @@
 package com.example.h2gether
 
 import android.app.Activity
-import android.content.ContentProviderClient
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 
 class LoginActivity : AppCompatActivity() {
@@ -98,7 +98,18 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUI(account: GoogleSignInAccount) {
+        val credential = GoogleAuthProvider.getCredential(account.idToken , null)
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
+            if (it.isSuccessful){
+                val intent : Intent = Intent(this , PrefaceActivity::class.java)
+                intent.putExtra("email" , account.email)
+                intent.putExtra("name" , account.displayName)
+                startActivity(intent)
+            }else{
+                Toast.makeText(this, it.exception.toString() , Toast.LENGTH_SHORT).show()
 
+            }
+        }
     }
 
 
