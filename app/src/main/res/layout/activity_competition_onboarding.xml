@@ -4,23 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="16dp"
-    android:background="#FBFAFB"
-    tools:context=".fragments.CompetitionPrefacePageFragment">
-
-    <!-- Skip button -->
-    <Button
-        android:id="@+id/btn_skip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="Skip"
-        android:textAlignment="textEnd"
-        android:textAllCaps="false"
-        android:textColor="@color/veryLightGray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".CompetitionOnboarding">
 
     <ImageView
         android:id="@+id/iv_competition"
@@ -41,6 +25,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Competition"
+        android:textSize="18sp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,23 +33,27 @@
 
     <TextView
         android:id="@+id/tv_competition_description"
-        android:layout_width="280dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Compete with your family members and earn badges"
         android:textAlignment="center"
+        android:textSize="16sp"
         android:textColor="@color/slightDarkGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_competition_heading" />
 
+    <!-- Get Started Button-->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_get_started"
         style="@style/MarginStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
         android:background="@drawable/user_config_button"
         android:fontFamily="@font/poppins_bold"
         android:padding="8dp"

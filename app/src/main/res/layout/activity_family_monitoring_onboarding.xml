@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="16dp"
     android:background="#FBFAFB"
-    tools:context=".fragments.HydrationTipsPrefacePageFragment">
+    tools:context=".FamilyMonitoringOnboarding">
 
     <!-- Skip button -->
     <Button
@@ -14,50 +14,74 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        android:layout_marginEnd="20dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Skip"
         android:textAlignment="textEnd"
         android:textAllCaps="false"
+        android:textSize="16sp"
         android:textColor="@color/veryLightGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/iv_hydration_tips"
+        android:id="@+id/iv_family_monitoring"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/hydration_tips"
+        android:src="@drawable/family_monitoring"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.30" />
+        app:layout_constraintVertical_bias="0.397" />
 
     <TextView
-        android:id="@+id/tv_hydration_tips_heading"
+        android:id="@+id/tv_family_monitoring_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Hydration Tips"
+        android:text="Family Monitoring"
         android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_hydration_tips" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_family_monitoring" />
 
     <TextView
-        android:id="@+id/tv_hydration_tips_description"
+        android:id="@+id/tv_family_monitoring_description"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Provide helpful information and reminders to keep you hydrated throughout the day"
+        android:text="Send reminders to your loved ones to drink water for them to stay hydrated"
         android:textAlignment="center"
+        android:textSize="16sp"
         android:textColor="@color/slightDarkGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_hydration_tips_heading" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_family_monitoring_heading" />
+
+    <!-- Next Button-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_next"
+        style="@style/MarginStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/user_config_button"
+        android:fontFamily="@font/poppins_bold"
+        android:padding="8dp"
+        android:text="Next"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_family_monitoring_description"
+        app:layout_constraintVertical_bias="0.738"
+        tools:layout_editor_absoluteX="16dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
