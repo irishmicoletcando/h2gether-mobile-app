@@ -8,6 +8,17 @@
     android:background="#FBFAFB"
     tools:context=".FamilyMonitoringOnboarding">
 
+    <!-- Back Button-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_back"
+        android:layout_width="17dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="20dp"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/ic_action_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <!-- Skip button -->
     <Button
         android:id="@+id/btn_skip"

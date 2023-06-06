@@ -4,7 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
+    android:background="#FBFAFB"
     tools:context=".CompetitionOnboarding">
+
+    <!-- Back Button-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_back"
+        android:layout_width="17dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="20dp"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/ic_action_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/iv_competition"
