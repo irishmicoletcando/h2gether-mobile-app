@@ -58,6 +58,9 @@ class LoginActivity : AppCompatActivity() {
 
                 firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
                     if (it.isSuccessful) {
+                        val user = firebaseAuth.currentUser
+                        // Call the function to handle "Remember Me" preference
+                        handleRememberMe(user?.uid)
                         val intent = Intent(this, SexSelectionActivity ::class.java)
                         startActivity(intent)
                     } else {
@@ -69,6 +72,8 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Empty fields are not allowed!", Toast.LENGTH_SHORT).show()
 
             }
+
+
         }
 
         loadRememberMeStatus()
@@ -76,6 +81,29 @@ class LoginActivity : AppCompatActivity() {
         binding.btnGoogle.setOnClickListener{
             signInGoogle()
         }
+
+    }
+
+    private fun handleRememberMe(userId: String?) {
+        val rememberMe = binding.cbRememberAccount.isChecked
+        saveRememberMeStatus(rememberMe)
+
+        if (rememberMe && userId != null) {
+            // Remember Me is checked and user is logged in
+
+            // Save user ID to Firebase Database
+            val databaseReference = firebaseDatabase.getReference("users")
+            databaseReference.child(userId).setValue(true)
+
+            // Perform necessary actions like saving login credentials or other relevant tasks
+        } else {
+            // Remember Me is unchecked or user is not logged in
+
+            // Perform necessary actions like clearing login credentials or other relevant tasks
+        }
+    }
+
+    private fun saveRememberMeStatus(rememberMe: Boolean) {
 
     }
 
