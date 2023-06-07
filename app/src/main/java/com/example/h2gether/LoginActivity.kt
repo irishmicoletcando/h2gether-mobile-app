@@ -44,7 +44,6 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this , gso)
 
-
         binding.tvRegisterAccount.setOnClickListener{
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
@@ -72,12 +71,18 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        loadRememberMeStatus()
+
         binding.btnGoogle.setOnClickListener{
             signInGoogle()
         }
 
     }
 
+    private fun loadRememberMeStatus() {
+        val rememberMe = sharedPreferences.getBoolean(KEY_REMEMBER_ME, false)
+        binding.cbRememberAccount.isChecked = rememberMe
+    }
     private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)
