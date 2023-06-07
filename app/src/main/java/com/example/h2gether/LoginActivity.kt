@@ -72,8 +72,6 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Empty fields are not allowed!", Toast.LENGTH_SHORT).show()
 
             }
-
-
         }
 
         loadRememberMeStatus()
@@ -99,12 +97,27 @@ class LoginActivity : AppCompatActivity() {
         } else {
             // Remember Me is unchecked or user is not logged in
 
-            // Perform necessary actions like clearing login credentials or other relevant tasks
+            // Clear login credentials or perform necessary actions
+
+            // Clear the email and password fields
+            binding.etInputEmail.setText("")
+            binding.etInputPassword.setText("")
+
+            // Sign out the user from Firebase Authentication
+            firebaseAuth.signOut()
+
+            // Delete the user ID from Firebase Database
+            if (userId != null) {
+                val databaseReference = firebaseDatabase.getReference("users")
+                databaseReference.child(userId).removeValue()
+            }
         }
     }
 
     private fun saveRememberMeStatus(rememberMe: Boolean) {
-
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(KEY_REMEMBER_ME, rememberMe)
+        editor.apply()
     }
 
     private fun loadRememberMeStatus() {
