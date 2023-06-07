@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnSignin.setOnClickListener{
-            val email = binding.etInputEmail .text.toString()
+            val email = binding.etInputEmail.text.toString()
             val pass = binding.etInputPassword.text.toString()
 
 
@@ -91,7 +91,12 @@ class LoginActivity : AppCompatActivity() {
 
             // Save user ID to Firebase Database
             val databaseReference = firebaseDatabase.getReference("users")
-            databaseReference.child(userId).setValue(true)
+            data class User(val email: String, val password: String)
+            val email = binding.etInputEmail.text.toString()
+            val pass = binding.etInputPassword.text.toString()
+            val newUser = User(email,pass)
+            databaseReference.child(userId).setValue(newUser)
+            println("user stored")
 
             // Perform necessary actions like saving login credentials or other relevant tasks
         } else {
