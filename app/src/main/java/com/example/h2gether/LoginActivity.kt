@@ -2,6 +2,7 @@ package com.example.h2gether
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -15,6 +16,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
+import android.content.Context
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,6 +24,9 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var sharedPreferences: SharedPreferences
+    private val PREF_NAME = "RememberMePrefs"
+    private val KEY_REMEMBER_ME = "rememberMe"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDatabase = FirebaseDatabase.getInstance()
+        sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -38,14 +44,13 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this , gso)
 
-
         binding.tvRegisterAccount.setOnClickListener{
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
         }
 
         binding.btnSignin.setOnClickListener{
-            val email = binding.etInputEmail .text.toString()
+            val email = binding.etInputEmail.text.toString()
             val pass = binding.etInputPassword.text.toString()
 
 
@@ -53,6 +58,9 @@ class LoginActivity : AppCompatActivity() {
 
                 firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
                     if (it.isSuccessful) {
+                        val user = firebaseAuth.currentUser
+                        // Call the function to handle "Remember Me" preference
+                        handleRememberMe(user?.uid)
                         val intent = Intent(this, SexSelectionActivity ::class.java)
                         startActivity(intent)
                     } else {
@@ -66,12 +74,61 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        loadRememberMeStatus()
+
         binding.btnGoogle.setOnClickListener{
             signInGoogle()
         }
 
     }
 
+    private fun handleRememberMe(userId: String?) {
+        val rememberMe = binding.cbRememberAccount.isChecked
+        saveRememberMeStatus(rememberMe)
+
+        if (rememberMe && userId != null) {
+            // Remember Me is checked and user is logged in
+
+            // Save user ID to Firebase Database
+            val databaseReference = firebaseDatabase.getReference("users")
+            data class User(val email: String, val password: String)
+            val email = binding.etInputEmail.text.toString()
+            val pass = binding.etInputPassword.text.toString()
+            val newUser = User(email,pass)
+            databaseReference.child(userId).setValue(newUser)
+            println("user stored")
+
+            // Perform necessary actions like saving login credentials or other relevant tasks
+        } else {
+            // Remember Me is unchecked or user is not logged in
+
+            // Clear login credentials or perform necessary actions
+
+            // Clear the email and password fields
+            binding.etInputEmail.setText("")
+            binding.etInputPassword.setText("")
+
+            // Sign out the user from Firebase Authentication
+            firebaseAuth.signOut()
+
+            // Delete the user ID from Firebase Database
+            if (userId != null) {
+                val databaseReference = firebaseDatabase.getReference("users")
+                databaseReference.child(userId).removeValue()
+            }
+        }
+    }
+
+    private fun saveRememberMeStatus(rememberMe: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(KEY_REMEMBER_ME, rememberMe)
+        editor.apply()
+    }
+
+    private fun loadRememberMeStatus() {
+        val rememberMe = sharedPreferences.getBoolean(KEY_REMEMBER_ME, false)
+        binding.cbRememberAccount.isChecked = rememberMe
+    }
     private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)
