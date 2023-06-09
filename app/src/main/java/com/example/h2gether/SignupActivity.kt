@@ -3,6 +3,7 @@ package com.example.h2gether
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import com.example.h2gether.databinding.ActivitySignupBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -47,6 +48,17 @@ class SignupActivity : AppCompatActivity() {
 
             }
 
+        }
+        // Function to validate email using regex pattern
+        fun isEmailValid(email: String): Boolean {
+            val pattern = Patterns.EMAIL_ADDRESS
+            return pattern.matcher(email).matches()
+        }
+
+        // Function to validate password
+        fun isPasswordValid(password: String): Boolean {
+            val passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"
+            return password.matches(passwordRegex.toRegex())
         }
     }
 }
