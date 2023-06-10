@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityLevelSelection">
+
+    <!-- Back Button-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_back"
+        android:layout_width="17dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/ic_action_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_select_your_activity_level_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="105dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Select your activity level"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_activity_level_description"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="To give you a personalized experience, we need to know your activity level."
+        android:textAlignment="center"
+        android:textColor="@color/slightDarkGray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_select_your_activity_level_heading" />
+
+    <LinearLayout
+        android:id="@+id/ll_activity_level_selection"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_activity_level_description">
+
+        <!-- Sedentary Button-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_sedentary"
+            android:layout_width="0dp"
+            android:layout_height="125dp"
+            android:layout_weight="1"
+            android:background="@drawable/config_buttons"
+            android:drawableTop="@drawable/sedentary_icon"
+            android:padding="20dp" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.25" />
+
+        <!-- Lightly Active Button-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_lightly_active"
+            android:layout_width="0dp"
+            android:layout_height="125dp"
+            android:layout_weight="1"
+            android:background="@drawable/config_buttons"
+            android:drawableTop="@drawable/lightly_active_icon"
+            android:padding="22dp" />
+
+    </LinearLayout>
+
+    <!-- Sedentary Label -->
+    <TextView
+        android:id="@+id/tv_sedentary_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Sedentary"
+        android:textAlignment="center"
+        android:textColor="@color/slightDarkGray"
+        app:layout_constraintEnd_toStartOf="@+id/tv_lightly_active_label"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_activity_level_selection" />
+
+    <!-- Lightly Active Label -->
+    <TextView
+        android:id="@+id/tv_lightly_active_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="68dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Lightly Active"
+        android:textAlignment="center"
+        android:textColor="@color/slightDarkGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_activity_level_selection" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_activity_level_row_two_selection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_activity_level_selection">
+
+        <!-- Moderately Active Button-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_moderately_active"
+            android:layout_width="1dp"
+            android:layout_height="125dp"
+            android:layout_weight="1"
+            android:background="@drawable/config_buttons"
+            android:drawableTop="@drawable/moderately_active_icon"
+            android:padding="22dp" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.25" />
+
+        <!-- Very Active Button-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_very_active"
+            android:layout_width="1dp"
+            android:layout_height="125dp"
+            android:layout_weight="1"
+            android:background="@drawable/config_buttons"
+            android:drawableTop="@drawable/very_active_icon"
+            android:padding="20dp" />
+
+    </LinearLayout>
+
+    <!-- Moderately Active Label -->
+    <TextView
+        android:id="@+id/tv_moderately_active_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Moderately Active"
+        android:textAlignment="center"
+        android:textColor="@color/slightDarkGray"
+        app:layout_constraintEnd_toStartOf="@+id/tv_very_active_label"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_activity_level_row_two_selection" />
+
+    <!-- Very Active Label -->
+
+    <!-- Next Button -->
+    <TextView
+        android:id="@+id/tv_very_active_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="80dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Very Active"
+        android:textAlignment="center"
+        android:textColor="@color/slightDarkGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_activity_level_row_two_selection" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_next"
+        style="@style/MarginStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/user_config_button"
+        android:fontFamily="@font/poppins_bold"
+        android:padding="8dp"
+        android:text="Next"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_activity_level_row_two_selection"
+        app:layout_constraintVertical_bias="0.877"
+        tools:layout_editor_absoluteX="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.65" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

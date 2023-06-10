@@ -14,4 +14,5 @@
     <color name="veryLightGray">#BDBDBD</color>
     <color name="lightGray">#D9D9D9</color>
     <color name="slightDarkGray">#696969</color>
+    <color name="btnSelected">#A8E1FF</color>
 </resources>

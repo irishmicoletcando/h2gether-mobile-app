@@ -50,14 +50,15 @@
     <!--Login Account heading-->
     <TextView
         android:id="@+id/tv_login_heading"
+        style="@style/MarginStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="34dp"
-        android:fontFamily="@font/poppins_extrabold"
-        android:text="LOGIN"
-        android:textColor="@color/darkBlue"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Welcome!"
+        android:textColor="@color/gray"
         android:textSize="25sp"
-        style="@style/MarginStyle"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_h2gether_logo_heading_group" />
 
@@ -202,7 +203,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="10dp"
             android:gravity="start|center_vertical"
-            android:text="or sign in with"
+            android:text="or"
             android:textColor="@color/darkGray" />
 
         <View
@@ -220,7 +221,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:background="@drawable/google_button"
+        android:background="@drawable/buttons"
         android:drawableStart="@drawable/google_logo"
         android:padding="15dp"
         android:text="Sign in with Google"
