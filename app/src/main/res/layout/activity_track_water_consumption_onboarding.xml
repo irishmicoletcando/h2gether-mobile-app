@@ -44,7 +44,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="Track Water Consumption"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_track_water_consumption" />
@@ -58,7 +58,7 @@
         android:text="Track your daily water consumption based on the weather in your location"
         android:textAlignment="center"
         android:textColor="@color/slightDarkGray"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_track_water_consumption_heading" />

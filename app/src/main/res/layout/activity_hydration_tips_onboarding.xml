@@ -55,7 +55,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="Hydration Tips"
         android:textColor="@color/black"
-        android:textSize="18dp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_hydration_tips" />
@@ -68,7 +68,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="Provide helpful information and reminders to keep you hydrated throughout the day"
         android:textAlignment="center"
-        android:textSize="16dp"
+        android:textSize="18sp"
         android:textColor="@color/slightDarkGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
