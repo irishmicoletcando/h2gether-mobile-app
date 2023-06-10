@@ -166,63 +166,70 @@
     <!-- Sign In button-->
     <Button
         android:id="@+id/btn_signin"
-        android:layout_width="match_parent"
+        style="@style/MarginStyle"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:background="@drawable/proceed_button_background"
-        android:drawableRight="@drawable/proceed_password"
         android:fontFamily="@font/poppins_extrabold"
         android:padding="12dp"
         android:text="SIGN IN"
         android:textColor="@color/white"
         android:textSize="18sp"
-        style="@style/MarginStyle"
-        app:layout_constraintTop_toBottomOf="@+id/ll_remember_forgot_password_group"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_remember_forgot_password_group" />
 
+    <!--Or sign in with-->
     <LinearLayout
-        android:id="@+id/ll_login_social_media_group"
+        android:id="@+id/linearLayout"
+        style="@style/MarginStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/btn_signin"
+        tools:layout_editor_absoluteX="16dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@color/lightGray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:gravity="start|center_vertical"
+            android:text="or sign in with"
+            android:textColor="@color/darkGray" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@color/lightGray" />
+    </LinearLayout>
+
+
+    <!-- Connect Google account button-->
+    <Button
+        android:id="@+id/btn_google"
         style="@style/MarginStyle"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/google_button"
+        android:drawableStart="@drawable/google_logo"
+        android:padding="15dp"
+        android:text="Sign in with Google"
+        android:textAllCaps="false"
+        android:textColor="@color/darkGray"
+        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/btn_signin">
-
-        <!-- Connect Google account button-->
-        <Button
-            android:id="@+id/btn_google"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.75"
-            android:background="@drawable/edittext_border"
-            android:drawableLeft="@drawable/google_logo"
-            android:padding="15dp"
-            android:text="Sign in with Google"
-            android:textAllCaps="false"
-            android:textColor="@color/darkGray"
-            android:textSize="13sp" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0.5" />
-
-        <!-- Connect Facebook account button-->
-        <Button
-            android:id="@+id/btn_facebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/edittext_border"
-            android:drawableLeft="@drawable/facebook_logo"
-            android:padding="10dp"
-            android:text="Sign in with Facebook"
-            android:textAllCaps="false"
-            android:textColor="@color/darkGray"
-            android:textSize="13sp" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <LinearLayout
         android:id="@+id/ll_register_account"
@@ -232,7 +239,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/ll_login_social_media_group"
+        app:layout_constraintTop_toBottomOf="@+id/btn_google"
         app:layout_constraintVertical_bias="0.15">
 
         <!-- Don't have an account text-->
