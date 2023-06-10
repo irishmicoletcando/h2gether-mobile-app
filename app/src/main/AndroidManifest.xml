@@ -12,13 +12,35 @@
         android:theme="@style/Theme.H2gether"
         tools:targetApi="31">
         <activity
-            android:name=".CompetitionOnboarding"
+            android:name=".ActivityLevelSelection"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".HeightSelection"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".WeightSelection"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AgeSelection"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"/>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+        <activity
+            android:name=".CompetitionOnboarding"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HydrationTipsOnboarding"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".FamilyMonitoringOnboarding"
             android:exported="false"
@@ -26,7 +48,11 @@
         <activity
             android:name=".TrackWaterConsumptionOnboarding"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <activity
             android:name=".SexSelectionActivity"
             android:exported="false"
@@ -34,16 +60,16 @@
         <activity
             android:name=".SignupActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+            android:theme="@style/AppTheme.NoActionBar" >
+             <intent-filter>
                  <action android:name="android.intent.action.MAIN" />
                  <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
-        </activity>
+         </activity>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
