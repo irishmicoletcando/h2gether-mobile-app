@@ -12,7 +12,7 @@
         android:id="@+id/ll_h2gether_logo_heading_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="70dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -169,65 +169,71 @@
     <!-- Sign up button-->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_signup"
-        android:layout_width="match_parent"
+        style="@style/MarginStyle"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/proceed_button_background"
-        android:drawableRight="@drawable/proceed_password"
         android:fontFamily="@font/poppins_extrabold"
         android:padding="12dp"
         android:text="SIGN UP"
         android:textColor="@color/white"
         android:textSize="18sp"
-        style="@style/MarginStyle"
-        app:layout_constraintTop_toBottomOf="@+id/til_confirm_password"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_confirm_password" />
 
+    <!--Or sign up with-->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout"-->
+<!--        style="@style/MarginStyle"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="12dp"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/btn_signup"-->
+<!--        tools:layout_editor_absoluteX="16dp">-->
 
-    <LinearLayout
-        android:id="@+id/ll_login_social_media_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal"
-        style="@style/MarginStyle"
-        app:layout_constraintEnd_toEndOf="@id/guideline2"
-        app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/btn_signup">
+<!--        <View-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@color/lightGray" />-->
 
-        <!-- Sign up - Connect Google account button-->
-        <Button
-            android:id="@+id/btn_signup_google"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.75"
-            android:background="@drawable/edittext_border"
-            android:drawableLeft="@drawable/google_logo"
-            android:padding="10dp"
-            android:text="Sign up with Google"
-            android:textAllCaps="false"
-            android:textColor="@color/darkGray"
-            android:textSize="13sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:paddingHorizontal="10dp"-->
+<!--            android:gravity="start|center_vertical"-->
+<!--            android:text="or sign up with"-->
+<!--            android:textColor="@color/darkGray" />-->
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0.5" />
+<!--        <View-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@color/lightGray" />-->
+<!--    </LinearLayout>-->
 
-        <!-- Sign up - Connect Facebook account button-->
-        <Button
-            android:id="@+id/btn_signup_facebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/edittext_border"
-            android:drawableLeft="@drawable/facebook_logo"
-            android:padding="10dp"
-            android:text="Sign up with Facebook"
-            android:textAllCaps="false"
-            android:textColor="@color/darkGray"
-            android:textSize="13sp" />
-    </LinearLayout>
+    <!-- Sign up - Connect Google account button-->
+<!--    <Button-->
+<!--        android:id="@+id/btn_signup_google"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1.75"-->
+<!--        android:layout_marginTop="12dp"-->
+<!--        android:background="@drawable/google_button"-->
+<!--        android:drawableLeft="@drawable/google_logo"-->
+<!--        android:padding="12dp"-->
+<!--        android:fontFamily="@font/poppins_semibold"-->
+<!--        android:text="Sign up with Google"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/darkGray"-->
+<!--        android:textSize="13sp"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guideline2"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guideline1"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>-->
 
     <LinearLayout
         android:id="@+id/ll_login_account"
@@ -237,7 +243,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/ll_login_social_media_group"
+        app:layout_constraintTop_toBottomOf="@+id/btn_signup"
         app:layout_constraintVertical_bias="0.105">
 
         <!-- Already have an account text-->
