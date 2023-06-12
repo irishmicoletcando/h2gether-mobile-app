@@ -24,7 +24,7 @@ class SexSelectionActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDatabase = FirebaseDatabase.getInstance()
 
-        val databaseReference = firebaseDatabase.getReference("users")
+        val databaseReference = firebaseDatabase.getReference("users/user-profile")
         val uid = firebaseAuth.currentUser?.uid
 
         var userSexSelection: String? = null
@@ -79,7 +79,7 @@ class SexSelectionActivity : AppCompatActivity() {
             if (userSexSelection != null) {
                 if (uid != null){
                     val newData: Map<String, Any> = mapOf(
-                        "age" to (userSexSelection ?: defaultValue)
+                        "sex" to (userSexSelection ?: defaultValue)
                     )
 
                     val updates: MutableMap<String, Any> = HashMap()
