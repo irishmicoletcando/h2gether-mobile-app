@@ -42,7 +42,7 @@ class AgeSelection : AppCompatActivity() {
 
                         // Create a new map that includes the existing data and the new field
                         val newData = existingData?.toMutableMap() ?: mutableMapOf()
-                        newData["age"] = ageValue
+                        newData["age (yrs)"] = ageValue
 
                         databaseReference.updateChildren(newData)
                             .addOnSuccessListener {
