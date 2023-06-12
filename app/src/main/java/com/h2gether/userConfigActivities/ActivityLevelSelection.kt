@@ -3,7 +3,9 @@ package com.h2gether.userConfigActivities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
+import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityLevelSelectionBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -27,20 +29,30 @@ class ActivityLevelSelection : AppCompatActivity() {
 
         var activityLevelUserSelection: String? = null
 
+        var selectedButton: Button? = null
+
         binding.btnLightlyActive.setOnClickListener{
             activityLevelUserSelection = "lightly active"
+            selectedButton = binding.btnLightlyActive
+            updateButtonState(selectedButton)
         }
 
         binding.btnModeratelyActive.setOnClickListener{
             activityLevelUserSelection = "Moderately active"
+            selectedButton = binding.btnModeratelyActive
+            updateButtonState(selectedButton)
         }
 
         binding.btnVeryActive.setOnClickListener{
             activityLevelUserSelection = "Very active"
+            selectedButton = binding.btnVeryActive
+            updateButtonState(selectedButton)
         }
 
         binding.btnSedentary.setOnClickListener{
             activityLevelUserSelection = "Sedentary"
+            selectedButton = binding.btnSedentary
+            updateButtonState(selectedButton)
         }
 
         binding.btnNext.setOnClickListener {
@@ -84,4 +96,15 @@ class ActivityLevelSelection : AppCompatActivity() {
             startActivity(intent)
         }
     }
+    private fun updateButtonState(button: Button?) {
+        // Reset the background color and any other visual states for both buttons
+        binding.btnLightlyActive.setBackgroundResource(R.drawable.config_buttons)
+        binding.btnModeratelyActive.setBackgroundResource(R.drawable.config_buttons)
+        binding.btnVeryActive.setBackgroundResource(R.drawable.config_buttons)
+        binding.btnSedentary.setBackgroundResource(R.drawable.config_buttons)
+
+        // Check if a button is selected and update its UI state accordingly
+        button?.setBackgroundResource(R.drawable.user_config_button_pressed)
+    }
 }
+
