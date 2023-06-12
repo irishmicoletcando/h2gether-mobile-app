@@ -63,5 +63,10 @@ class WeightSelection : AppCompatActivity() {
             }
             else Toast.makeText(this, "Failed to set weight", Toast.LENGTH_SHORT).show()
         }
+
+        binding.btnBack.setOnClickListener {
+            val intent = Intent(this, AgeSelection::class.java)
+            startActivity(intent)
+        }
     }
 }

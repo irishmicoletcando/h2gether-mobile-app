@@ -63,5 +63,9 @@ class HeightSelection : AppCompatActivity() {
             }
             else Toast.makeText(this, "Failed to set height", Toast.LENGTH_SHORT).show()
         }
+        binding.btnBack.setOnClickListener {
+            val intent = Intent(this, WeightSelection::class.java)
+            startActivity(intent)
+        }
     }
 }
