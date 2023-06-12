@@ -83,6 +83,7 @@ class SexSelectionActivity : AppCompatActivity() {
 
                     databaseReference.updateChildren(newData).addOnCompleteListener{
                         if (it.isSuccessful){
+                            Toast.makeText(this,"Sex has been set.", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, AgeSelection::class.java)
                             startActivity(intent)
                         } else {

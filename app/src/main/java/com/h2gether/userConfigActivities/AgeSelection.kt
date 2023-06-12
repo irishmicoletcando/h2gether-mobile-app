@@ -58,6 +58,7 @@ class AgeSelection : AppCompatActivity() {
                     }
                 })
 
+                Toast.makeText(this,"Age has been set.", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, WeightSelection::class.java)
                 startActivity(intent)
 

@@ -57,6 +57,7 @@ class WeightSelection : AppCompatActivity() {
                     }
                 })
 
+                Toast.makeText(this,"Weight has been set.", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, HeightSelection::class.java)
                 startActivity(intent)
 

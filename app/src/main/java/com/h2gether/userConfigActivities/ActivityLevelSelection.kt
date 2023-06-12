@@ -80,6 +80,7 @@ class ActivityLevelSelection : AppCompatActivity() {
                         }
                     })
 
+                    Toast.makeText(this,"Activity level has been set.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, AgeSelection::class.java)
                     startActivity(intent)
 
