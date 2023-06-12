@@ -70,7 +70,7 @@ class SignupActivity : AppCompatActivity() {
         }
 
         if (!isPasswordValid(password)) {
-            showToastAlert("Invalid password. Password should be at least 8 characters long and contain at least one letter and one number.")
+            showToastAlert("Password must be at least 8 characters long and includes 1 letter and 1 number.")
             return
         }
 
