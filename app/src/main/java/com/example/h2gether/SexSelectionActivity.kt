@@ -25,9 +25,13 @@ class SexSelectionActivity : AppCompatActivity() {
         databaseReference = FirebaseDatabase.getInstance().getReference("users")
 
         binding.btnMale.setOnClickListener {
-            val sex = "male"
+            data class Sex(val gender: String)
+            val male = Sex("Male")
+            val newChildReference = databaseReference.push()
+            val childKey = newChildReference.key
+
             if (uid != null){
-                databaseReference.child(uid).setValue(sex).addOnCompleteListener{
+                newChildReference.setValue(male).addOnCompleteListener{
                     if (it.isSuccessful){
                         val intent = Intent(this, AgeSelection::class.java)
                         startActivity(intent)
