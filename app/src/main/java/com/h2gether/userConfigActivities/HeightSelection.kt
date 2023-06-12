@@ -67,5 +67,9 @@ class HeightSelection : AppCompatActivity() {
             val intent = Intent(this, WeightSelection::class.java)
             startActivity(intent)
         }
+        binding.npHeight.setOnValueChangedListener { picker, oldVal, newVal ->
+            heightValue = binding.npHeight.value
+
+        }
     }
 }

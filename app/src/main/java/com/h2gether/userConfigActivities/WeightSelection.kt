@@ -68,5 +68,10 @@ class WeightSelection : AppCompatActivity() {
             val intent = Intent(this, AgeSelection::class.java)
             startActivity(intent)
         }
+
+        binding.npWeight.setOnValueChangedListener { picker, oldVal, newVal ->
+            weightValue = binding.npWeight.value
+
+        }
     }
 }
