@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="16dp"
     android:background="#FBFAFB"
-    tools:context=".SignupActivity">
+    tools:context="com.h2gether.userAuthActivites.SignupActivity">
 
     <LinearLayout
         android:id="@+id/ll_h2gether_logo_heading_group"

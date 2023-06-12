@@ -1,12 +1,9 @@
-package com.example.h2gether
+package com.h2gether.userConfigActivities
 
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.example.h2gether.databinding.ActivitySexSelectionBinding

@@ -12,19 +12,19 @@
         android:theme="@style/Theme.H2gether"
         tools:targetApi="31">
         <activity
-            android:name=".ActivityLevelSelection"
+            android:name="com.h2gether.userConfigActivities.ActivityLevelSelection"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".HeightSelection"
+            android:name="com.h2gether.userConfigActivities.HeightSelection"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".WeightSelection"
+            android:name="com.h2gether.userConfigActivities.WeightSelection"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AgeSelection"
+            android:name="com.h2gether.userConfigActivities.AgeSelection"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"/>
 <!--            <intent-filter>-->
@@ -34,19 +34,19 @@
 <!--            </intent-filter>-->
 <!--        </activity>-->
         <activity
-            android:name=".CompetitionOnboarding"
+            android:name="com.h2gether.prefacePagesOnboarding.CompetitionOnboarding"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".HydrationTipsOnboarding"
+            android:name="com.h2gether.prefacePagesOnboarding.HydrationTipsOnboarding"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".FamilyMonitoringOnboarding"
+            android:name="com.h2gether.prefacePagesOnboarding.FamilyMonitoringOnboarding"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".TrackWaterConsumptionOnboarding"
+            android:name="com.h2gether.prefacePagesOnboarding.TrackWaterConsumptionOnboarding"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <intent-filter> -->
         <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -54,15 +54,15 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity
-            android:name=".SexSelectionActivity"
+            android:name="com.h2gether.userConfigActivities.SexSelectionActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SignupActivity"
+            android:name="com.h2gether.userAuthActivites.SignupActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.h2gether.userAuthActivites.LoginActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" >
              <intent-filter>

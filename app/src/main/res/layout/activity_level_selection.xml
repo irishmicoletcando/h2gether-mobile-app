@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityLevelSelection">
+    tools:context="com.h2gether.userConfigActivities.ActivityLevelSelection">
 
     <!-- Back Button-->
     <androidx.appcompat.widget.AppCompatButton

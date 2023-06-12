@@ -1,32 +1,32 @@
-package com.example.h2gether
+package com.h2gether.userConfigActivities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.example.h2gether.databinding.ActivityAgeSelectionBinding
+import com.example.h2gether.R
+import com.example.h2gether.databinding.ActivityWeightSelectionBinding
 
-class AgeSelection : AppCompatActivity() {
-
-    private lateinit var binding: ActivityAgeSelectionBinding
+class WeightSelection : AppCompatActivity() {
+    private lateinit var binding: ActivityWeightSelectionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAgeSelectionBinding.inflate(layoutInflater)
+        binding = ActivityWeightSelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.npAge.minValue = 1
-        binding.npAge.maxValue = 100
+        binding.npWeight.minValue = 1
+        binding.npWeight.maxValue = 300
 
         val btnNext = findViewById<Button>(R.id.btn_next)
         btnNext.setOnClickListener {
-            val intent = Intent(this, WeightSelection::class.java)
+            val intent = Intent(this, HeightSelection::class.java)
             startActivity(intent)
         }
 
         val btnBack = findViewById<Button>(R.id.btn_back)
         btnBack.setOnClickListener {
-            val intent = Intent(this, SexSelectionActivity::class.java)
+            val intent = Intent(this, AgeSelection::class.java)
             startActivity(intent)
         }
     }

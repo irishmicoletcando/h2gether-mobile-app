@@ -1,9 +1,11 @@
-package com.example.h2gether
+package com.h2gether.prefacePagesOnboarding
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.example.h2gether.R
+import com.h2gether.userConfigActivities.SexSelectionActivity
 
 class HydrationTipsOnboarding : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

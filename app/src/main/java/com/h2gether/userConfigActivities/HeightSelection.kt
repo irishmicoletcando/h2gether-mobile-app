@@ -1,9 +1,10 @@
-package com.example.h2gether
+package com.h2gether.userConfigActivities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityHeightSelectionBinding
 
 class HeightSelection : AppCompatActivity() {
