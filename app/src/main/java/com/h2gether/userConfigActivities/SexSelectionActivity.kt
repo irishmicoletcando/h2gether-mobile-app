@@ -18,47 +18,23 @@ class SexSelectionActivity : AppCompatActivity() {
         binding = ActivitySexSelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
         firebaseAuth = FirebaseAuth.getInstance()
+
+        val database = FirebaseDatabase.getInstance()
+        val databaseReference = database.getReference("users")
         val uid = firebaseAuth.currentUser?.uid
-        databaseReference = FirebaseDatabase.getInstance().getReference("users")
+
+        var userSexSelection: String? = null
+        data class Sex(val gender: String)
+        var sex:Sex? = null
 
         binding.btnMale.setOnClickListener {
-            data class Sex(val gender: String)
-            val male = Sex("Male")
-            val newChildReference = databaseReference.push()
-            val childKey = newChildReference.key
-
-            if (uid != null){
-                newChildReference.setValue(male).addOnCompleteListener{
-                    if (it.isSuccessful){
-                        val intent = Intent(this, AgeSelection::class.java)
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(this,"Failed to set gender", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } else {
-                Toast.makeText(this,"No user id", Toast.LENGTH_SHORT).show()
-            }
+            userSexSelection = "Male"
+            sex = Sex(userSexSelection!!)
         }
 
         binding.btnFemale.setOnClickListener {
-            data class Sex(val gender: String)
-            val female = Sex("Female")
-            val newChildReference = databaseReference.push()
-            val childKey = newChildReference.key
-
-            if (uid != null){
-                newChildReference.setValue(female).addOnCompleteListener{
-                    if (it.isSuccessful){
-                        val intent = Intent(this, AgeSelection::class.java)
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(this,"Failed to set gender", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } else {
-                Toast.makeText(this,"No user id", Toast.LENGTH_SHORT).show()
-            }
+            userSexSelection = "Female"
+            sex = Sex(userSexSelection!!)
         }
 
 
@@ -92,8 +68,20 @@ class SexSelectionActivity : AppCompatActivity() {
 //        }
 
         binding.btnNext.setOnClickListener {
-            val intent = Intent(this, AgeSelection::class.java)
-            startActivity(intent)
+            if (userSexSelection != null) {
+                if (uid != null){
+                    databaseReference.child(uid).push().setValue(sex).addOnCompleteListener{
+                        if (it.isSuccessful){
+                            val intent = Intent(this, AgeSelection::class.java)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this,"Failed to set gender", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            } else {
+                Toast.makeText(this,"Please set gender", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
