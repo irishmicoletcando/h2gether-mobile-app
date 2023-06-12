@@ -23,9 +23,8 @@ class SexSelectionActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDatabase = FirebaseDatabase.getInstance()
-
-        val databaseReference = firebaseDatabase.getReference("users/user-profile")
         val uid = firebaseAuth.currentUser?.uid
+        val databaseReference = firebaseDatabase.getReference("users/$uid/user-profile")
 
         var userSexSelection: String? = null
         val defaultValue = ""
@@ -82,19 +81,16 @@ class SexSelectionActivity : AppCompatActivity() {
                         "sex" to (userSexSelection ?: defaultValue)
                     )
 
-                    val updates: MutableMap<String, Any> = HashMap()
-                    updates["user$uid"] = newData
-
-                    databaseReference.updateChildren(updates).addOnCompleteListener{
+                    databaseReference.updateChildren(newData).addOnCompleteListener{
                         if (it.isSuccessful){
                             val intent = Intent(this, AgeSelection::class.java)
                             startActivity(intent)
                         } else {
-                            Toast.makeText(this,"Failed to set gender", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this,"Failed to set sex", Toast.LENGTH_SHORT).show()
                         }
                 }
             } else {
-                Toast.makeText(this,"Please set gender", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Please set sex", Toast.LENGTH_SHORT).show()
             }
         }
 

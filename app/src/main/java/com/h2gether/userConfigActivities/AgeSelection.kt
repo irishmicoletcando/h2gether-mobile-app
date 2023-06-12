@@ -8,8 +8,11 @@ import android.widget.Toast
 import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityAgeSelectionBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class AgeSelection : AppCompatActivity() {
 
@@ -24,35 +27,42 @@ class AgeSelection : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
-        var ageValue = 0
+        var ageValue = 1
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("users/user-profile")
+        databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/user-profile")
 
         binding.npAge.minValue = 1
         binding.npAge.maxValue = 100
 
         binding.btnNext.setOnClickListener {
             if (uid != null) {
-                val newData: Map<String, Any> = mapOf(
-                    "age" to (ageValue)
-                )
+                databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val existingData: Map<String, Any>? = snapshot.value as? Map<String, Any>
 
-                val updates: MutableMap<String, Any> = HashMap()
-                updates["user$uid"] = newData
+                        // Create a new map that includes the existing data and the new field
+                        val newData = existingData?.toMutableMap() ?: mutableMapOf()
+                        newData["age"] = ageValue
 
-                databaseReference.updateChildren(updates).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        val intent = Intent(this, AgeSelection::class.java)
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(this, "Failed to set age", Toast.LENGTH_SHORT).show()
+                        databaseReference.updateChildren(newData)
+                            .addOnSuccessListener {
+
+                            }
+                            .addOnFailureListener { error ->
+                                // Handle the failure
+                            }
                     }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                })
+
+                val intent = Intent(this, WeightSelection::class.java)
+                startActivity(intent)
+
                 }
-
-            }
-
-            val intent = Intent(this, WeightSelection::class.java)
-            startActivity(intent)
+            else Toast.makeText(this, "Failed to set age", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnBack.setOnClickListener {
