@@ -12,29 +12,27 @@ import com.google.firebase.database.FirebaseDatabase
 class SexSelectionActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySexSelectionBinding
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var databaseReference: DatabaseReference
+    private lateinit var firebaseDatabase: FirebaseDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySexSelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        firebaseAuth = FirebaseAuth.getInstance()
 
-        val database = FirebaseDatabase.getInstance()
-        val databaseReference = database.getReference("users")
+        firebaseAuth = FirebaseAuth.getInstance()
+        firebaseDatabase = FirebaseDatabase.getInstance()
+
+        val databaseReference = firebaseDatabase.getReference("users")
         val uid = firebaseAuth.currentUser?.uid
 
         var userSexSelection: String? = null
-        data class Sex(val gender: String)
-        var sex:Sex? = null
+        val defaultValue = ""
 
         binding.btnMale.setOnClickListener {
             userSexSelection = "Male"
-            sex = Sex(userSexSelection!!)
         }
 
         binding.btnFemale.setOnClickListener {
             userSexSelection = "Female"
-            sex = Sex(userSexSelection!!)
         }
 
 
@@ -70,14 +68,20 @@ class SexSelectionActivity : AppCompatActivity() {
         binding.btnNext.setOnClickListener {
             if (userSexSelection != null) {
                 if (uid != null){
-                    databaseReference.child(uid).push().setValue(sex).addOnCompleteListener{
+                    val newData: Map<String, Any> = mapOf(
+                        "age" to (userSexSelection ?: defaultValue)
+                    )
+
+                    val updates: MutableMap<String, Any> = HashMap()
+                    updates["user$uid"] = newData
+
+                    databaseReference.updateChildren(updates).addOnCompleteListener{
                         if (it.isSuccessful){
                             val intent = Intent(this, AgeSelection::class.java)
                             startActivity(intent)
                         } else {
                             Toast.makeText(this,"Failed to set gender", Toast.LENGTH_SHORT).show()
                         }
-                    }
                 }
             } else {
                 Toast.makeText(this,"Please set gender", Toast.LENGTH_SHORT).show()
@@ -93,4 +97,4 @@ class SexSelectionActivity : AppCompatActivity() {
 //    }
 
 
-}
+}}
