@@ -1,4 +1,4 @@
-package com.example.h2gether
+package com.h2gether.userAuthActivites
 
 import android.app.Activity
 import android.content.Intent
@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import android.content.Context
+import com.example.h2gether.R
+import com.h2gether.userConfigActivities.SexSelectionActivity
 
 class LoginActivity : AppCompatActivity() {
 

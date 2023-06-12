@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="16dp"
     android:background="#FBFAFB"
-    tools:context=".TrackWaterConsumptionOnboarding">
+    tools:context="com.h2gether.prefacePagesOnboarding.TrackWaterConsumptionOnboarding">
 
     <!-- Skip button -->
     <androidx.appcompat.widget.AppCompatButton

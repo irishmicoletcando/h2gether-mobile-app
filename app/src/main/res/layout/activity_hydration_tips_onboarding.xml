@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="16dp"
     android:background="#FBFAFB"
-    tools:context=".HydrationTipsOnboarding">
+    tools:context="com.h2gether.prefacePagesOnboarding.HydrationTipsOnboarding">
 
     <!-- Back Button-->
     <androidx.appcompat.widget.AppCompatButton
