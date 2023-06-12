@@ -5,12 +5,56 @@ import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.example.h2gether.databinding.ActivitySexSelectionBinding
+import com.google.firebase.database.FirebaseDatabase
 
 class SexSelectionActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySexSelectionBinding
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var databaseReference: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sex_selection)
+        binding = ActivitySexSelectionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        firebaseAuth = FirebaseAuth.getInstance()
+        val uid = firebaseAuth.currentUser?.uid
+        databaseReference = FirebaseDatabase.getInstance().getReference("users")
+
+        binding.btnMale.setOnClickListener {
+            val sex = "male"
+            if (uid != null){
+                databaseReference.child(uid).setValue(sex).addOnCompleteListener{
+                    if (it.isSuccessful){
+                        val intent = Intent(this, AgeSelection::class.java)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this,"Failed to set gender", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                Toast.makeText(this,"No user id", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.btnFemale.setOnClickListener {
+            val sex = "female"
+            if (uid != null){
+                databaseReference.setValue(sex).addOnCompleteListener{
+                    if (it.isSuccessful){
+                        val intent = Intent(this, AgeSelection::class.java)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this,"Failed to set gender", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+
 
 //        val btnMale = findViewById<Button>(R.id.btn_male)
 //        val btnFemale = findViewById<Button>(R.id.btn_female)
@@ -40,11 +84,11 @@ class SexSelectionActivity : AppCompatActivity() {
 //            return@setOnClickListener
 //        }
 
-        val btnNext = findViewById<Button>(R.id.btn_next)
-        btnNext.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             val intent = Intent(this, AgeSelection::class.java)
             startActivity(intent)
         }
+
     }
 
 //    // Extension function to convert dp to pixels
