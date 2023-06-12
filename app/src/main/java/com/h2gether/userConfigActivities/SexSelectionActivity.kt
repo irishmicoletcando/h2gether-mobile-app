@@ -8,6 +8,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.example.h2gether.databinding.ActivitySexSelectionBinding
 import com.google.firebase.database.FirebaseDatabase
+import android.widget.Button
+import com.example.h2gether.R
+
 
 class SexSelectionActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySexSelectionBinding
@@ -27,12 +30,19 @@ class SexSelectionActivity : AppCompatActivity() {
         var userSexSelection: String? = null
         val defaultValue = ""
 
+        var selectedButton: Button? = null
+
         binding.btnMale.setOnClickListener {
             userSexSelection = "Male"
+            selectedButton = binding.btnMale
+            updateButtonState(selectedButton)
+
         }
 
         binding.btnFemale.setOnClickListener {
             userSexSelection = "Female"
+            selectedButton = binding.btnFemale
+            updateButtonState(selectedButton)
         }
 
 
@@ -97,4 +107,16 @@ class SexSelectionActivity : AppCompatActivity() {
 //    }
 
 
-}}
+}
+
+    private fun updateButtonState(button: Button?) {
+        // Reset the background color and any other visual states for both buttons
+        binding.btnMale.setBackgroundResource(R.drawable.config_buttons)
+        binding.btnFemale.setBackgroundResource(R.drawable.config_buttons)
+
+        // Check if a button is selected and update its UI state accordingly
+        button?.setBackgroundResource(R.drawable.user_config_button_pressed)
+    }
+
+
+}
