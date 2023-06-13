@@ -15,4 +15,5 @@
     <color name="lightGray">#D9D9D9</color>
     <color name="slightDarkGray">#696969</color>
     <color name="btnSelected">#A8E1FF</color>
+    <color name="navbarTextColor">#1D435A</color>
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Water"
+        android:id="@+id/water_page"
+        android:icon="@drawable/baseline_water_drop_24"/>
+
+    <item android:title="Statistics"
+        android:id="@+id/statistics_page"
+        android:icon="@drawable/baseline_bar_chart_24"/>
+
+    <item android:title="Reminder"
+        android:id="@+id/reminder_page"
+        android:icon="@drawable/baseline_alarm_on_24"/>
+
+    <item android:title="Tips"
+        android:id="@+id/tips_page"
+        android:icon="@drawable/baseline_lightbulb_24"/>
+
+</menu>
