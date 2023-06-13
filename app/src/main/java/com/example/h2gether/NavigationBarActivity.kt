@@ -35,7 +35,7 @@ class NavigationBarActivity : AppCompatActivity() {
     private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_layout, fragment)
+        fragmentTransaction.replace(R.id.constraint_layout, fragment)
         fragmentTransaction.commit()
     }
 }
