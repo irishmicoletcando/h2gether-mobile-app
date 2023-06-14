@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import com.example.h2gether.NavigationBarActivity
 import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityLevelSelectionBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -81,7 +82,7 @@ class ActivityLevelSelection : AppCompatActivity() {
                     })
 
                     Toast.makeText(this,"Activity level has been set.", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, AgeSelection::class.java)
+                    val intent = Intent(this, NavigationBarActivity::class.java)
                     startActivity(intent)
 
                 }

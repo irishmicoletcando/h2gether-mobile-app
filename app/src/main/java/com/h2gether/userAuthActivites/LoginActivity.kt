@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import android.content.Context
+import com.example.h2gether.NavigationBarActivity
 import com.example.h2gether.R
 import com.h2gether.userConfigActivities.SexSelectionActivity
 
@@ -63,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
                         val user = firebaseAuth.currentUser
                         // Call the function to handle "Remember Me" preference
                         handleRememberMe(user?.uid)
-                        val intent = Intent(this, SexSelectionActivity ::class.java)
+                        val intent = Intent(this, NavigationBarActivity ::class.java)
                         startActivity(intent)
                     } else {
                         Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
