@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
+import android.animation.AnimatorSet
 
 
 class CreatingPlanActivity : AppCompatActivity() {
@@ -18,11 +19,19 @@ class CreatingPlanActivity : AppCompatActivity() {
         // Set initial alpha to 0
         creatingPlan.alpha = 0f
 
-        val fadeAnimation = ObjectAnimator.ofFloat(creatingPlan, "alpha", 0f, 1f)
-        fadeAnimation.duration = 1000 // Animation duration in milliseconds
-        fadeAnimation.interpolator = AccelerateDecelerateInterpolator()
-        fadeAnimation.startDelay = 500 // Delay before animation starts in milliseconds
-        fadeAnimation.start()
+        val fadeInAnimation = ObjectAnimator.ofFloat(creatingPlan, "alpha", 0f, 1f)
+        fadeInAnimation.duration = 1000 // Animation duration in milliseconds
+        fadeInAnimation.interpolator = AccelerateDecelerateInterpolator()
+        fadeInAnimation.startDelay = 500 // Delay before fade-in animation starts
+
+        val fadeOutAnimation = ObjectAnimator.ofFloat(creatingPlan, "alpha", 1f, 0f)
+        fadeOutAnimation.duration = 1000 // Animation duration in milliseconds
+        fadeOutAnimation.interpolator = AccelerateDecelerateInterpolator()
+        fadeOutAnimation.startDelay = 2000 // Delay before fade-out animation starts
+
+        val animatorSet = AnimatorSet()
+        animatorSet.playSequentially(fadeInAnimation, fadeOutAnimation)
+        animatorSet.start()
 
         val thread = Thread {
             try {
