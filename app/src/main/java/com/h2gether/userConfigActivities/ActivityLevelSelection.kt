@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import com.example.h2gether.CreatingPlanActivity
 import com.example.h2gether.NavigationBarActivity
 import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityLevelSelectionBinding
@@ -82,7 +83,7 @@ class ActivityLevelSelection : AppCompatActivity() {
                     })
 
                     Toast.makeText(this,"Activity level has been set.", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, NavigationBarActivity::class.java)
+                    val intent = Intent(this, CreatingPlanActivity::class.java)
                     startActivity(intent)
 
                 }
