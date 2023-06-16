@@ -141,7 +141,15 @@
                         android:textColor="@color/navbarTextColor" />
                 </LinearLayout>
 
+                <View
+                    style="@style/DividerVertical"
+                    app:layout_constraintStart_toEndOf="@id/op50ml"
+                    app:layout_constraintTop_toBottomOf="parent" />
 
+                <View
+                    style="@style/DividerVertical"
+                    app:layout_constraintStart_toEndOf="@id/op100ml"
+                    app:layout_constraintTop_toBottomOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
