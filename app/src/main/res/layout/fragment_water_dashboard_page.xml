@@ -60,7 +60,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="end"
-            android:background="@drawable/settings_icon_3" />
+            android:background="@drawable/settings_icon_1" />
 
     </LinearLayout>
 
