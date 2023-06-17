@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/lightBlue"
     tools:context=".WaterDashboardPage">
-    <!--    android:background="@color/lightBlue"-->
-
-    <!-- TODO: Update blank fragment layout -->
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:text="WATER DASHBOARD PAGE"-->
-<!--        android:textSize="30sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -64,17 +51,59 @@
 
     </LinearLayout>
 
-    <!--    Water Intake Progress-->
+    <!--    <androidx.cardview.widget.CardView-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:cardCornerRadius="8dp"-->
+<!--        app:cardElevation="8dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView8" app:layout_constraintStart_toStartOf="parent"-->
+<!--        android:layout_marginStart="24dp" app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:layout_marginEnd="24dp" android:id="@+id/cardView2" android:layout_marginBottom="8dp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/textView14">-->
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--        <me.itangqi.waveloadingview.WaveLoadingView-->
+<!--            android:id="@+id/waterLevelView"-->
+<!--            android:layout_width="250dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            app:wlv_borderColor="@color/colorSecondaryLighter"-->
+<!--            app:wlv_borderWidth="8dp"-->
+<!--            app:wlv_progressValue="70"-->
+<!--            app:wlv_shapeType="circle"-->
+<!--            app:wlv_round_rectangle="true"-->
+<!--            app:wlv_triangle_direction="north"-->
+<!--            app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"-->
+<!--            app:wlv_titleCenterStrokeWidth="3dp"-->
+<!--            app:wlv_titleCenter="40%"-->
+<!--            app:wlv_titleCenterColor="@color/colorWhite"-->
+<!--            app:wlv_titleCenterSize="45sp"-->
+<!--            app:wlv_waveAmplitude="60"-->
+<!--            app:wlv_waveColor="@color/colorSecondaryDark"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            android:layout_marginBottom="24dp" app:layout_constraintBottom_toTopOf="@+id/linearLayout7"-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--    </androidx.cardview.widget.CardView>-->
+
+    <!--    Water Intake Progress   -->
+
+
+    <!--    Water Volume Board  -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="56dp"
         android:progress="65"
         android:progressDrawable="@drawable/progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
@@ -319,6 +348,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+    <!--    Add watter button   -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_add_water"
         android:layout_width="wrap_content"
@@ -350,5 +380,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.65" />
+
+
+    <TextView
+        android:id="@+id/temperatureTextView"
+        android:layout_width="101dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/weather_background"
+        android:text="25°C"
+        android:textColor="@color/slightDarkBlue"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
