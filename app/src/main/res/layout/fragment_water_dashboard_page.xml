@@ -85,7 +85,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="110dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -138,7 +138,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="50 ml"
-                        android:textColor="@color/navbarTextColor" />
+                        android:textColor="@color/navbarTextColor"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <View
@@ -174,7 +176,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="100 ml"
-                        android:textColor="@color/navbarTextColor" />
+                        android:textColor="@color/navbarTextColor"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -200,7 +204,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="150 ml"
-                        android:textColor="@color/navbarTextColor" />
+                        android:textColor="@color/navbarTextColor"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -247,7 +253,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="200 ml"
-                        android:textColor="@color/navbarTextColor" />
+                        android:textColor="@color/navbarTextColor"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -273,7 +281,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="250 ml"
-                        android:textColor="@color/navbarTextColor" />
+                        android:textColor="@color/navbarTextColor"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -300,7 +310,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Custom"
-                        android:textColor="@color/navbarTextColor" />
+                        android:textColor="@color/navbarTextColor"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
