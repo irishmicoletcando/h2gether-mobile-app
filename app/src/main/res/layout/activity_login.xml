@@ -53,8 +53,8 @@
         style="@style/MarginStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:fontFamily="@font/poppins_semibold"
+        android:layout_marginTop="120dp"
+        android:fontFamily="@font/poppins_extrabold"
         android:text="Welcome!"
         android:textColor="@color/gray"
         android:textSize="25sp"
@@ -71,7 +71,7 @@
         android:fontFamily="@font/poppins_black"
         android:text="EMAIL"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="18sp"
         style="@style/MarginStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_login_heading" />
@@ -100,11 +100,11 @@
         android:id="@+id/tv_password_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins_black"
         android:text="PASSWORD"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="18sp"
         style="@style/MarginStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_input_email" />
@@ -147,6 +147,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/poppins"
             android:text="Remember me"
+            android:textSize="15sp"
             android:textColor="@color/gray" />
 
         <!-- Forgot Password-->
@@ -160,6 +161,7 @@
             android:padding="0dp"
             android:text="Forgot Password?"
             android:textAlignment="textEnd"
+            android:textSize="15sp"
             android:textAllCaps="false"
             android:textColor="@color/gray" />
     </LinearLayout>
@@ -203,6 +205,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="10dp"
             android:gravity="start|center_vertical"
+            android:fontFamily="@font/poppins"
             android:text="or"
             android:textColor="@color/darkGray" />
 
@@ -227,7 +230,7 @@
         android:text="Sign in with Google"
         android:textAllCaps="false"
         android:textColor="@color/darkGray"
-        android:textSize="13sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
@@ -250,7 +253,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:text="Don't have an account? "
-            android:textSize="13sp" />
+            android:textSize="15sp" />
 
         <!-- Register button-->
         <TextView
@@ -262,7 +265,7 @@
             android:text="REGISTER"
             android:textAlignment="textStart"
             android:textColor="@color/darkBlue"
-            android:textSize="13sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline

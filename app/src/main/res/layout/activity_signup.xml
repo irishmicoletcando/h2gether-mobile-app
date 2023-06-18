@@ -50,14 +50,15 @@
     <!--Create Account heading-->
     <TextView
         android:id="@+id/tv_signup_heading"
+        style="@style/MarginStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:fontFamily="@font/poppins_semibold"
+        android:layout_marginTop="120dp"
+        android:fontFamily="@font/poppins_extrabold"
         android:text="Create an account"
         android:textColor="@color/gray"
         android:textSize="25sp"
-        style="@style/MarginStyle"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_h2gether_logo_heading_group" />
 
@@ -70,7 +71,7 @@
         android:fontFamily="@font/poppins_black"
         android:text="EMAIL"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="18sp"
         style="@style/MarginStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_signup_heading" />
@@ -88,6 +89,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_input_email"
             android:layout_width="match_parent"
+            android:fontFamily="@font/poppins"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_border"
             android:padding="15dp" />
@@ -102,11 +104,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins_black"
         android:text="PASSWORD"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_input_email" />
 
@@ -125,6 +127,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins"
         android:background="@drawable/edittext_border"
         android:padding="15dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -134,11 +137,11 @@
         android:id="@+id/tv_confirm_password_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins_black"
         android:text="CONFIRM PASSWORD"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="18sp"
         style="@style/MarginStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_input_password" />
@@ -159,6 +162,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_border"
+            android:fontFamily="@font/poppins"
             android:padding="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -171,7 +175,7 @@
         style="@style/MarginStyle"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/proceed_button_background"
         android:fontFamily="@font/poppins_extrabold"
         android:padding="12dp"
@@ -240,8 +244,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideline2"
-        app:layout_constraintStart_toStartOf="@id/guideline1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_signup"
         app:layout_constraintVertical_bias="0.105">
 
@@ -252,19 +256,19 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:text="Already have an account? "
-            android:textSize="13sp" />
+            android:textSize="15sp" />
 
         <!-- Sign in button-->
         <Button
             android:id="@+id/btn_signin_account"
-            android:layout_width="48dp"
+            android:layout_width="56dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:fontFamily="@font/poppins_bold"
             android:text="SIGN IN"
             android:textAlignment="textStart"
             android:textColor="@color/darkBlue"
-            android:textSize="13sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
