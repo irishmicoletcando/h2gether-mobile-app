@@ -20,4 +20,5 @@
     <color name="skyBlue">#A9DAF9</color>
     <color name="slightDarkBlue">#416883</color>
     <color name ="progressBar">#407AFF</color>
+    <color name="authBgColor">#1B5AB8</color>
 </resources>
