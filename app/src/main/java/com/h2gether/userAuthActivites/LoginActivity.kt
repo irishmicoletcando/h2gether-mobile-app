@@ -48,6 +48,9 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this , gso)
 
+//        binding.etInputEmail.setText(email)
+//        binding.etInputPassword.setText(pass)
+
         binding.tvRegisterAccount.setOnClickListener{
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
@@ -107,18 +110,21 @@ class LoginActivity : AppCompatActivity() {
     private fun handleRememberMe(userId: String?) {
         val rememberMe = binding.cbRememberAccount.isChecked
         saveRememberMeStatus(rememberMe)
+        val uid = firebaseAuth.currentUser?.uid
 
         if (rememberMe && userId != null) {
             // Remember Me is checked and user is logged in
 
             // Save user ID to Firebase Database
-            val databaseReference = firebaseDatabase.getReference("users")
+            val databaseReference = firebaseDatabase.getReference("users/$uid/log-in-credentials")
             data class User(val email: String, val password: String)
             val email = binding.etInputEmail.text.toString()
             val pass = binding.etInputPassword.text.toString()
             val newUser = User(email,pass)
-            databaseReference.child(userId).setValue(newUser)
-            println("user stored")
+            databaseReference.setValue(newUser)
+            println("user remembered")
+
+
 
             // Perform necessary actions like saving login credentials or other relevant tasks
         } else {
@@ -131,13 +137,13 @@ class LoginActivity : AppCompatActivity() {
             binding.etInputPassword.setText("")
 
             // Sign out the user from Firebase Authentication
-            firebaseAuth.signOut()
-
-            // Delete the user ID from Firebase Database
-            if (userId != null) {
-                val databaseReference = firebaseDatabase.getReference("users")
-                databaseReference.child(userId).removeValue()
-            }
+//            firebaseAuth.signOut()
+//
+//            // Delete the user ID from Firebase Database
+//            if (userId != null) {
+//                val databaseReference = firebaseDatabase.getReference("users")
+//                databaseReference.child(userId).removeValue()
+//            }
         }
     }
 
