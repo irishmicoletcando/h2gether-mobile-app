@@ -1,8 +1,9 @@
-package com.example.h2gether
+package com.h2gether.homePage
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityNavigationBarBinding
 
 class NavigationBarActivity : AppCompatActivity() {

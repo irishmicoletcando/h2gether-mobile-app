@@ -8,13 +8,14 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/white"
-    tools:context=".CreatingPlanActivity">
+    tools:context="com.h2gether.homePage.CreatingPlanActivity">
 
     <TextView
+        android:id="@+id/creatingPlan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Creating Plan..."
-        android:fontFamily="@font/poppins_semibold"
+        android:fontFamily="@font/poppins_bold"
         android:textColor="@color/darkBlue"
         android:textAlignment="textStart"
         android:paddingStart="40dp"
@@ -39,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:indeterminateTint="@color/azure"
+        android:indeterminateTint="@color/progressBar"
         />
 
 </LinearLayout>

@@ -13,12 +13,12 @@
         android:theme="@style/Theme.H2gether"
         tools:targetApi="31">
         <activity
-            android:name=".CreatingPlanActivity"
+            android:name="com.h2gether.homePage.CreatingPlanActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".NavigationBarActivity"
+            android:name="com.h2gether.homePage.NavigationBarActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <intent-filter> -->
         <!-- <action android:name="android.intent.action.MAIN" /> -->

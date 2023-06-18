@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="16dp"
-    android:background="#FBFAFB"
+    android:background="@drawable/auth_bg"
     tools:context="com.h2gether.userAuthActivites.SignupActivity">
 
     <LinearLayout
         android:id="@+id/ll_h2gether_logo_heading_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="70dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -44,8 +43,8 @@
             android:layout_weight="1"
             android:fontFamily="@font/poppins_extrabold"
             android:text="H2GETHER"
-            android:textColor="@color/darkBlue"
-            android:textSize="40sp" />
+            android:textColor="@color/white"
+            android:textSize="45sp" />
     </LinearLayout>
 
     <!--Create Account heading-->
@@ -53,10 +52,10 @@
         android:id="@+id/tv_signup_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:fontFamily="@font/poppins_extrabold"
-        android:text="CREATE AN ACCOUNT"
-        android:textColor="@color/darkBlue"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Create an account"
+        android:textColor="@color/gray"
         android:textSize="25sp"
         style="@style/MarginStyle"
         app:layout_constraintStart_toStartOf="parent"
