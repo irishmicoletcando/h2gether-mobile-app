@@ -202,20 +202,20 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-private fun loadRememberMe() {
+    private fun loadRememberMe() {
     val uid = firebaseAuth.currentUser?.uid
     // Reference to the Firebase Realtime Database
-    val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
-// Read data from a specific location in the database
-    val dataRef: DatabaseReference = database.child("users/$uid/log-in-credentials")
+    // Read data from a specific location in the database
+        val dataRef: DatabaseReference = database.child("users/$uid/log-in-credentials")
 
-// Add a ValueEventListener to retrieve the data
-    dataRef.addValueEventListener(object : ValueEventListener {
+    // Add a ValueEventListener to retrieve the data
+        dataRef.addValueEventListener(object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
-
+            val rememberMe = sharedPreferences.getBoolean(KEY_REMEMBER_ME, false)
             // Handle data change
-            if (dataSnapshot.exists()) {
+            if (dataSnapshot.exists() && rememberMe) {
                 val loginCredentials: YourDataModel? = dataSnapshot.getValue(YourDataModel::class.java)
                 if (loginCredentials != null) {
                     Log.i(TAG, loginCredentials.toString())
