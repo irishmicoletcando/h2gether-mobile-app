@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.h2gether.prefacePagesOnboarding.TrackWaterConsumptionOnboarding
 import com.example.h2gether.databinding.ActivitySignupBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 
 class SignupActivity : AppCompatActivity() {
 
@@ -36,8 +37,13 @@ class SignupActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this, "Password is not matching", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Toast.makeText(this, "Empty Fields Are not Allowed !!", Toast.LENGTH_SHORT).show()
+            } else if(email.isNotEmpty() && pass.isNotEmpty()) {
+                if (confirmPass.isEmpty()) {
+                    Toast.makeText(this, "Please confirm password", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else {
+                Toast.makeText(this, "Please enter email or password", Toast.LENGTH_SHORT).show()
 
             }
 
@@ -87,9 +93,36 @@ class SignupActivity : AppCompatActivity() {
                 val intent = Intent(this, TrackWaterConsumptionOnboarding::class.java)
                 startActivity(intent)
             } else {
-                Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                // An error occurred during sign-in
+                try {
+                    throw it.exception!!
+                } catch (e: FirebaseAuthException) {
+                    val errorCode = e.errorCode
+                    val errorMessage = getAlertMessage(errorCode)
+                    showToast(errorMessage)
+                } catch (e: Exception) {
+                    showToast("Authentication failed")
+                }
             }
         }
+    }
+
+    fun getAlertMessage(errorCode: String): String {
+        return when (errorCode) {
+            "ERROR_INVALID_EMAIL" -> "Please enter a valid email address"
+            "ERROR_WRONG_PASSWORD" -> "Incorrect password. Please enter the correct password"
+            "ERROR_EMAIL_ALREADY_IN_USE" -> "An account with this email already exists"
+            // Add more error codes and messages as needed
+            else -> {
+                val prefix = "Firebase: "
+                val errorMessage = errorCode.removePrefix(prefix)
+                "Authentication failed: $errorMessage"
+            }
+        }
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
 
