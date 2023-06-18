@@ -109,9 +109,9 @@ class SignupActivity : AppCompatActivity() {
 
     fun getAlertMessage(errorCode: String): String {
         return when (errorCode) {
-            "ERROR_INVALID_EMAIL" -> "Invalid email address"
-            "ERROR_WRONG_PASSWORD" -> "Wrong password"
-            "ERROR_EMAIL_ALREADY_IN_USE" -> "Email already in use"
+            "ERROR_INVALID_EMAIL" -> "Please enter a valid email address"
+            "ERROR_WRONG_PASSWORD" -> "Incorrect password. Please enter the correct password"
+            "ERROR_EMAIL_ALREADY_IN_USE" -> "An account with this email already exists"
             // Add more error codes and messages as needed
             else -> {
                 val prefix = "Firebase: "

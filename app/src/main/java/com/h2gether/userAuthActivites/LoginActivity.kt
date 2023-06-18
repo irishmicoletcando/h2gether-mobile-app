@@ -74,8 +74,8 @@ class LoginActivity : AppCompatActivity() {
                                 val errorCode = e.errorCode
                                 val errorMessage = when (errorCode) {
                                     "ERROR_INVALID_EMAIL" -> "Invalid email address"
-                                    "ERROR_WRONG_PASSWORD" -> "Invalid password"
-                                    "ERROR_USER_NOT_FOUND" -> "User not registered yet"
+                                    "ERROR_WRONG_PASSWORD" -> "Incorrect password. Please enter the correct password"
+                                    "ERROR_USER_NOT_FOUND" -> "Account not found. Please check the email entered or create a new account."
                                     // Add more error codes and messages as needed
                                     else -> "Authentication failed: $errorCode"
                                 }
