@@ -71,10 +71,11 @@ class LoginActivity : AppCompatActivity() {
                 firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
                     if (it.isSuccessful) {
                         val user = firebaseAuth.currentUser
-                        // Call the function to handle "Remember Me" preference
-                        handleRememberMe(user?.uid)
                         val intent = Intent(this, NavigationBarActivity ::class.java)
                         startActivity(intent)
+                        // Call the function to handle "Remember Me" preference
+                        handleRememberMe(user?.uid)
+
                     } else {
                             try {
                                 throw it.exception!!
