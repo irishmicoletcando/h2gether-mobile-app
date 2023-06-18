@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!--    &lt;!&ndash; Background Circle &ndash;&gt;-->
+<!--    <item>-->
+<!--        <shape android:shape="oval">-->
+<!--            <solid android:color="@color/lightBlue" /> &lt;!&ndash; White color for the background circle &ndash;&gt;-->
+<!--        </shape>-->
+<!--    </item>-->
+
+    <!-- Inner Arc -->
+    <item>
+        <shape
+            android:innerRadiusRatio="2.5"
+            android:shape="ring"
+            android:thicknessRatio="10"
+            android:useLevel="false">
+
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+
+    <!-- Progress Arc -->
+    <item android:id="@android:id/progress">
+        <shape
+            android:innerRadiusRatio="2.5"
+            android:shape="ring"
+            android:thicknessRatio="10"
+            android:useLevel="true">
+            <corners android:radius="20dp" />
+
+            <solid android:color="@color/azure" />
+        </shape>
+    </item>
+
+</layer-list>
