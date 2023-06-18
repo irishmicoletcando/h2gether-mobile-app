@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/auth_bg"
+    android:background="@color/authBgColor"
     tools:context="com.h2gether.userAuthActivites.SignupActivity">
 
     <LinearLayout
@@ -14,7 +14,6 @@
         android:layout_marginTop="70dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -44,7 +43,20 @@
             android:fontFamily="@font/poppins_extrabold"
             android:text="H2GETHER"
             android:textColor="@color/white"
-            android:textSize="45sp" />
+            android:textSize="42sp" />
+    </LinearLayout>
+
+    <!--For shape division-->
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="190dp"
+        android:background="@drawable/division_background"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
     </LinearLayout>
 
     <!--Create Account heading-->
@@ -53,34 +65,33 @@
         style="@style/MarginStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:fontFamily="@font/poppins_extrabold"
+        android:fontFamily="@font/poppins_semibold"
         android:text="Create an account"
         android:textColor="@color/gray"
         android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_h2gether_logo_heading_group" />
+        app:layout_constraintTop_toTopOf="@+id/linearLayout3" />
 
     <!-- Email heading -->
     <TextView
         android:id="@+id/tv_email_heading"
+        style="@style/MarginStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="13dp"
         android:fontFamily="@font/poppins_black"
         android:text="EMAIL"
         android:textColor="@color/gray"
-        android:textSize="18sp"
-        style="@style/MarginStyle"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_signup_heading" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_input_email"
+        style="@style/MarginStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/MarginStyle"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/tv_email_heading">
@@ -89,7 +100,6 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_input_email"
             android:layout_width="match_parent"
-            android:fontFamily="@font/poppins"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_border"
             android:padding="15dp" />
@@ -104,54 +114,53 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_black"
         android:text="PASSWORD"
         android:textColor="@color/gray"
-        android:textSize="18sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_input_email" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_input_password"
+        style="@style/MarginStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline1"
-        style="@style/MarginStyle"
         app:layout_constraintTop_toBottomOf="@+id/tv_password_heading"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/et_input_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/poppins"
-        android:background="@drawable/edittext_border"
-        android:padding="15dp" />
+            android:id="@+id/et_input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/edittext_border"
+            android:padding="15dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Confirm Password heading -->
     <TextView
         android:id="@+id/tv_confirm_password_heading"
+        style="@style/MarginStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_black"
         android:text="CONFIRM PASSWORD"
         android:textColor="@color/gray"
-        android:textSize="18sp"
-        style="@style/MarginStyle"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_input_password" />
 
     <!-- Confirm password area -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_confirm_password"
+        style="@style/MarginStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/MarginStyle"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/tv_confirm_password_heading"
@@ -162,7 +171,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_border"
-            android:fontFamily="@font/poppins"
             android:padding="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -175,7 +183,7 @@
         style="@style/MarginStyle"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/proceed_button_background"
         android:fontFamily="@font/poppins_extrabold"
         android:padding="12dp"
@@ -187,56 +195,56 @@
         app:layout_constraintTop_toBottomOf="@+id/til_confirm_password" />
 
     <!--Or sign up with-->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/linearLayout"-->
-<!--        style="@style/MarginStyle"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="12dp"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:orientation="horizontal"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/btn_signup"-->
-<!--        tools:layout_editor_absoluteX="16dp">-->
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/linearLayout"-->
+    <!--        style="@style/MarginStyle"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="12dp"-->
+    <!--        android:gravity="center_vertical"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/btn_signup"-->
+    <!--        tools:layout_editor_absoluteX="16dp">-->
 
-<!--        <View-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:background="@color/lightGray" />-->
+    <!--        <View-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="1dp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:background="@color/lightGray" />-->
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:paddingHorizontal="10dp"-->
-<!--            android:gravity="start|center_vertical"-->
-<!--            android:text="or sign up with"-->
-<!--            android:textColor="@color/darkGray" />-->
+    <!--        <TextView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:paddingHorizontal="10dp"-->
+    <!--            android:gravity="start|center_vertical"-->
+    <!--            android:text="or sign up with"-->
+    <!--            android:textColor="@color/darkGray" />-->
 
-<!--        <View-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:background="@color/lightGray" />-->
-<!--    </LinearLayout>-->
+    <!--        <View-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="1dp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:background="@color/lightGray" />-->
+    <!--    </LinearLayout>-->
 
     <!-- Sign up - Connect Google account button-->
-<!--    <Button-->
-<!--        android:id="@+id/btn_signup_google"-->
-<!--        android:layout_width="200dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_weight="1.75"-->
-<!--        android:layout_marginTop="12dp"-->
-<!--        android:background="@drawable/google_button"-->
-<!--        android:drawableLeft="@drawable/google_logo"-->
-<!--        android:padding="12dp"-->
-<!--        android:fontFamily="@font/poppins_semibold"-->
-<!--        android:text="Sign up with Google"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="@color/darkGray"-->
-<!--        android:textSize="13sp"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/guideline2"-->
-<!--        app:layout_constraintStart_toStartOf="@id/guideline1"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>-->
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_signup_google"-->
+    <!--        android:layout_width="200dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_weight="1.75"-->
+    <!--        android:layout_marginTop="12dp"-->
+    <!--        android:background="@drawable/google_button"-->
+    <!--        android:drawableLeft="@drawable/google_logo"-->
+    <!--        android:padding="12dp"-->
+    <!--        android:fontFamily="@font/poppins_semibold"-->
+    <!--        android:text="Sign up with Google"-->
+    <!--        android:textAllCaps="false"-->
+    <!--        android:textColor="@color/darkGray"-->
+    <!--        android:textSize="13sp"-->
+    <!--        app:layout_constraintEnd_toEndOf="@id/guideline2"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/guideline1"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>-->
 
     <LinearLayout
         android:id="@+id/ll_login_account"
@@ -244,8 +252,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintStart_toStartOf="@id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/btn_signup"
         app:layout_constraintVertical_bias="0.105">
 
@@ -256,19 +264,19 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
             android:text="Already have an account? "
-            android:textSize="15sp" />
+            android:textSize="13sp" />
 
         <!-- Sign in button-->
         <Button
             android:id="@+id/btn_signin_account"
-            android:layout_width="56dp"
+            android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:fontFamily="@font/poppins_bold"
             android:text="SIGN IN"
             android:textAlignment="textStart"
             android:textColor="@color/darkBlue"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -284,8 +292,5 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.65" />
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
