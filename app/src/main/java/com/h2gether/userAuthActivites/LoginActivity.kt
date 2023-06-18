@@ -20,6 +20,10 @@ import android.content.Context
 import com.h2gether.homePage.NavigationBarActivity
 import com.example.h2gether.R
 import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.h2gether.userConfigActivities.SexSelectionActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -48,8 +52,7 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this , gso)
 
-//        binding.etInputEmail.setText(email)
-//        binding.etInputPassword.setText(pass)
+        loadRememberMe()
 
         binding.tvRegisterAccount.setOnClickListener{
             val intent = Intent(this, SignupActivity::class.java)
@@ -197,6 +200,50 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+private fun loadRememberMe() {
+    val uid = firebaseAuth.currentUser?.uid
+    // Reference to the Firebase Realtime Database
+    val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+
+// Read data from a specific location in the database
+    val dataRef: DatabaseReference = database.child("users/$uid/log-in-credentials")
+
+// Add a ValueEventListener to retrieve the data
+    dataRef.addValueEventListener(object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+            // Handle data change
+            if (dataSnapshot.exists()) {
+                val loginCredentials: YourDataModel? = dataSnapshot.getValue(YourDataModel::class.java)
+                if (loginCredentials != null) {
+                    binding.etInputEmail.setText(loginCredentials.getEmail().toString())
+                }
+                if (loginCredentials != null) {
+                    binding.etInputPassword.setText(loginCredentials.getPass().toString())
+                }
+            } else {
+                // Data does not exist at the specified location
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            // Handle error
+        }
+    })
+}
+
+    class YourDataModel {
+        private var password: String? = null
+        private var email: String? = null
+
+        fun getEmail(): String? {
+            return email
+        }
+
+        fun getPass(): String? {
+            return password
+        }
+    }
 
 //    override fun onStart() {
 //        super.onStart()
