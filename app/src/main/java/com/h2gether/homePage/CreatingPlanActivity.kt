@@ -1,4 +1,4 @@
-package com.example.h2gether
+package com.h2gether.homePage
 
 import android.animation.ObjectAnimator
 import android.content.Intent
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import android.animation.AnimatorSet
+import com.example.h2gether.R
 
 
 class CreatingPlanActivity : AppCompatActivity() {

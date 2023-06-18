@@ -5,8 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
-import com.example.h2gether.CreatingPlanActivity
-import com.example.h2gether.NavigationBarActivity
+import com.h2gether.homePage.CreatingPlanActivity
 import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityLevelSelectionBinding
 import com.google.firebase.auth.FirebaseAuth

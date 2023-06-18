@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/white"
-    tools:context=".CreatingPlanActivity">
+    tools:context="com.h2gether.homePage.CreatingPlanActivity">
 
     <TextView
         android:id="@+id/creatingPlan"

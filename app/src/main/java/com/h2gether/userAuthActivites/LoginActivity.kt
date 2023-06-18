@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import android.content.Context
-import com.example.h2gether.NavigationBarActivity
+import com.h2gether.homePage.NavigationBarActivity
 import com.example.h2gether.R
 import com.h2gether.userConfigActivities.SexSelectionActivity
 
