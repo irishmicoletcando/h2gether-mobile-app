@@ -1,6 +1,7 @@
 package com.h2gether.userAuthActivites
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import android.content.Context
+import android.util.Log
 import com.h2gether.homePage.NavigationBarActivity
 import com.example.h2gether.R
 import com.google.firebase.auth.FirebaseAuthException
@@ -216,13 +218,16 @@ private fun loadRememberMe() {
             if (dataSnapshot.exists()) {
                 val loginCredentials: YourDataModel? = dataSnapshot.getValue(YourDataModel::class.java)
                 if (loginCredentials != null) {
-                    binding.etInputEmail.setText(loginCredentials.getEmail().toString())
+                    Log.i(TAG, loginCredentials.toString())
                 }
                 if (loginCredentials != null) {
-                    binding.etInputPassword.setText(loginCredentials.getPass().toString())
+                    binding.etInputEmail.setText(loginCredentials?.email.toString())
+                    binding.etInputPassword.setText(loginCredentials?.password.toString())
+
                 }
             } else {
-                // Data does not exist at the specified location
+                binding.etInputEmail.setText("")
+                binding.etInputPassword.setText("")
             }
         }
 
@@ -233,17 +238,10 @@ private fun loadRememberMe() {
 }
 
     class YourDataModel {
-        private var password: String? = null
-        private var email: String? = null
-
-        fun getEmail(): String? {
-            return email
+        var email: String? = null
+        var password: String? = null
         }
-
-        fun getPass(): String? {
-            return password
-        }
-    }
+}
 
 //    override fun onStart() {
 //        super.onStart()
@@ -253,4 +251,3 @@ private fun loadRememberMe() {
 //            startActivity(intent)
 //        }
 //    }
-}
