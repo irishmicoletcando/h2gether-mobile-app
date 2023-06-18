@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 import android.content.Context
 import com.h2gether.homePage.NavigationBarActivity
 import com.example.h2gether.R
+import com.google.firebase.auth.FirebaseAuthException
 import com.h2gether.userConfigActivities.SexSelectionActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -67,13 +68,27 @@ class LoginActivity : AppCompatActivity() {
                         val intent = Intent(this, NavigationBarActivity ::class.java)
                         startActivity(intent)
                     } else {
-                        Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
-
+                            try {
+                                throw it.exception!!
+                            } catch (e: FirebaseAuthException) {
+                                val errorCode = e.errorCode
+                                val errorMessage = when (errorCode) {
+                                    "ERROR_INVALID_EMAIL" -> "Invalid email address"
+                                    "ERROR_WRONG_PASSWORD" -> "Invalid password"
+                                    "ERROR_USER_NOT_FOUND" -> "User not registered yet"
+                                    // Add more error codes and messages as needed
+                                    else -> "Authentication failed: $errorCode"
+                                }
+                                showToast(errorMessage)
+                            } catch (e: Exception) {
+                                showToast("Authentication failed")
+                            }
+                        }
                     }
                 }
-            } else {
-                Toast.makeText(this, "Empty fields are not allowed!", Toast.LENGTH_SHORT).show()
+             else {
 
+            showToast("Please enter email or password.")
             }
         }
 
@@ -83,6 +98,10 @@ class LoginActivity : AppCompatActivity() {
             signInGoogle()
         }
 
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun handleRememberMe(userId: String?) {
