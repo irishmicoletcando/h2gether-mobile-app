@@ -21,8 +21,8 @@
         <!-- Profile Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_profile"
-            android:layout_width="53dp"
-            android:layout_height="match_parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/baseline_account_circle_24" />
 
         <!-- Hello, user Text -->
