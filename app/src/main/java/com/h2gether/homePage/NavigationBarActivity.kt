@@ -23,6 +23,7 @@ class NavigationBarActivity : AppCompatActivity() {
                 R.id.statistics_page -> replaceFragment(StatisticsPage())
                 R.id.reminder_page -> replaceFragment(ReminderPage())
                 R.id.tips_page -> replaceFragment(TipsPage())
+                R.id.profile_page -> replaceFragment(ProfilePage())
 
                 else -> {
 
