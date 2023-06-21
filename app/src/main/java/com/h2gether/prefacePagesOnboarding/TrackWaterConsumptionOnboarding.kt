@@ -21,7 +21,7 @@ class TrackWaterConsumptionOnboarding : AppCompatActivity() {
         val btnSkip = findViewById<Button>(R.id.btn_skip)
         btnSkip.setOnClickListener {
             val intent = Intent(this, SexSelectionActivity::class.java)
-            startActivity(intent)
+            startActivityWithSlideAnimation(intent)
         }
     }
 
