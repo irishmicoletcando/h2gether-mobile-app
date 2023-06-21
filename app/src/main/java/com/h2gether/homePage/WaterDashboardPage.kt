@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -54,28 +55,52 @@ class WaterDashboardPage : Fragment() {
 
         binding.op50ml.setOnClickListener{
             selectedOption = 50
-//            binding.op50ml.background = getDrawable(outValue.resourceId)
-//            binding.op100ml.background = getDrawable(R.drawable.option_select_bg)
-//            binding.op150ml.background = getDrawable(outValue.resourceId)
-//            binding.op200ml.background = getDrawable(outValue.resourceId)
-//            binding.op250ml.background = getDrawable(outValue.resourceId)
-//            binding.opCustom.background = getDrawable(outValue.resourceId)
+            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
+            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
         }
 
         binding.op100ml.setOnClickListener{
             selectedOption = 100
+            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
+            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
         }
 
         binding.op150ml.setOnClickListener{
             selectedOption = 150
+            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
+            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
         }
 
         binding.op200ml.setOnClickListener{
             selectedOption = 200
+            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
+            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
         }
 
         binding.op250ml.setOnClickListener{
             selectedOption = 250
+            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
+            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
         }
 
 
