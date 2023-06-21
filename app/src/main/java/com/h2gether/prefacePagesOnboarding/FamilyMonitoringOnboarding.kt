@@ -21,7 +21,7 @@ class FamilyMonitoringOnboarding : AppCompatActivity() {
         val btnNext = findViewById<Button>(R.id.btn_next)
         btnNext.setOnClickListener {
             val intent = Intent(this, HydrationTipsOnboarding::class.java)
-            startActivity(intent)
+            startActivityWithSlideAnimation(intent)
         }
 
         val btnSkip = findViewById<Button>(R.id.btn_skip)
@@ -29,5 +29,10 @@ class FamilyMonitoringOnboarding : AppCompatActivity() {
             val intent = Intent(this, SexSelectionActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun startActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 }
