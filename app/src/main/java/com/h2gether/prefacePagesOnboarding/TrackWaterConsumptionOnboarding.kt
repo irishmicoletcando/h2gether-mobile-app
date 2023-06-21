@@ -14,15 +14,24 @@ class TrackWaterConsumptionOnboarding : AppCompatActivity() {
 
         val btnNext = findViewById<Button>(R.id.btn_next)
         btnNext.setOnClickListener {
-            val intent = Intent(this, FamilyMonitoringOnboarding::class.java)
-            startActivity(intent)
+            val intent = Intent(this@TrackWaterConsumptionOnboarding, FamilyMonitoringOnboarding::class.java)
+            startActivityWithSlideAnimation(intent)
         }
 
         val btnSkip = findViewById<Button>(R.id.btn_skip)
         btnSkip.setOnClickListener {
             val intent = Intent(this, SexSelectionActivity::class.java)
-            startActivity(intent)
+            startActivityWithSlideAnimation(intent)
         }
+    }
 
+    private fun startActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
 }
