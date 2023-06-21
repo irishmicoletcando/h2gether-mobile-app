@@ -21,7 +21,12 @@ class CompetitionOnboarding : AppCompatActivity() {
         val btnGetStarted = findViewById<Button>(R.id.btn_get_started)
         btnGetStarted.setOnClickListener {
             val intent = Intent(this, SexSelectionActivity::class.java)
-            startActivity(intent)
+            startActivityWithSlideAnimation(intent)
         }
+    }
+
+    private fun startActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 }
