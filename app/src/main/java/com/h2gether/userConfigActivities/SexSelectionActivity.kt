@@ -84,7 +84,7 @@ class SexSelectionActivity : AppCompatActivity() {
                         if (it.isSuccessful){
                             Toast.makeText(this,"Sex has been set.", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, AgeSelection::class.java)
-                            startActivity(intent)
+                            startActivityWithSlideAnimation(intent)
                         } else {
                             Toast.makeText(this,"Failed to set sex", Toast.LENGTH_SHORT).show()
                         }
@@ -112,6 +112,16 @@ class SexSelectionActivity : AppCompatActivity() {
 
         // Check if a button is selected and update its UI state accordingly
         button?.setBackgroundResource(R.drawable.user_config_button_pressed)
+    }
+
+    private fun startActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
 
 

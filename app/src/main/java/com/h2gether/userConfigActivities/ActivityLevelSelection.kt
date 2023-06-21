@@ -83,7 +83,7 @@ class ActivityLevelSelection : AppCompatActivity() {
 
                     Toast.makeText(this,"Activity level has been set.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, CreatingPlanActivity::class.java)
-                    startActivity(intent)
+                    startActivityWithSlideAnimation(intent)
 
                 }
                 else Toast.makeText(this, "Failed to set Activity Level", Toast.LENGTH_SHORT).show()
@@ -95,7 +95,7 @@ class ActivityLevelSelection : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener {
             val intent = Intent(this, HeightSelection::class.java)
-            startActivity(intent)
+            backActivityWithSlideAnimation(intent)
         }
     }
     private fun updateButtonState(button: Button?) {
@@ -107,6 +107,21 @@ class ActivityLevelSelection : AppCompatActivity() {
 
         // Check if a button is selected and update its UI state accordingly
         button?.setBackgroundResource(R.drawable.user_config_button_pressed)
+    }
+
+    private fun startActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    private fun backActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
 }
 
