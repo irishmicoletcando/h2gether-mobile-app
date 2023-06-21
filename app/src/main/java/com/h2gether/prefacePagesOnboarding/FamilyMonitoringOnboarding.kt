@@ -15,13 +15,14 @@ class FamilyMonitoringOnboarding : AppCompatActivity() {
         val btnBack = findViewById<Button>(R.id.btn_back)
         btnBack.setOnClickListener {
             val intent = Intent(this, TrackWaterConsumptionOnboarding::class.java)
-            startActivity(intent)
+            backActivityWithSlideAnimation(intent)
         }
 
         val btnNext = findViewById<Button>(R.id.btn_next)
         btnNext.setOnClickListener {
             val intent = Intent(this, HydrationTipsOnboarding::class.java)
-            startActivityWithSlideAnimation(intent)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
         }
 
         val btnSkip = findViewById<Button>(R.id.btn_skip)
@@ -34,5 +35,15 @@ class FamilyMonitoringOnboarding : AppCompatActivity() {
     private fun startActivityWithSlideAnimation(intent: Intent) {
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    private fun backActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
 }
