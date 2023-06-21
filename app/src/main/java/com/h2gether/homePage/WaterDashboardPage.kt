@@ -120,7 +120,7 @@ class WaterDashboardPage : Fragment() {
 
         percent = ((waterConsumed.toFloat() / targetWater?.toFloat()!!) * 100).toInt()
         binding.progressBar.progress = percent!!
-        binding.tvPercent.text = percent.toString()
+        binding.tvPercent.text = percent.toString() + "%"
     }
 
 
