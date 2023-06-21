@@ -25,6 +25,9 @@ class WaterDashboardPage : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var selectedOption: Int? = null
+    private var targetWater: Int? = 2200
+    private var waterConsumed: Int? = 0
+    private var percent: Int? = 0
 
     private lateinit var binding: FragmentWaterDashboardPageBinding
 
@@ -34,13 +37,12 @@ class WaterDashboardPage : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentWaterDashboardPageBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         return binding.root
@@ -49,8 +51,12 @@ class WaterDashboardPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.progressBar.max = 100
+
         binding.btnAddWater.setOnClickListener {
-            Toast.makeText(context, "added $selectedOption ml", Toast.LENGTH_SHORT).show()
+            waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
+            waterConsumed?.let { it1 -> setWaterLevel(it1) }
+            Toast.makeText(context, "added $selectedOption ml, waterConsumed: $waterConsumed, percent: $percent", Toast.LENGTH_SHORT).show()
         }
 
         binding.op50ml.setOnClickListener{
@@ -105,6 +111,19 @@ class WaterDashboardPage : Fragment() {
 
 
     }
+
+
+
+    private fun setWaterLevel(waterConsumed: Int){
+        binding.tvRecommendedAmount.text = targetWater.toString()
+        binding.tvAmountConsumed.text = waterConsumed.toString()
+
+        percent = ((waterConsumed.toFloat() / targetWater?.toFloat()!!) * 100).toInt()
+        binding.progressBar.progress = percent!!
+        binding.tvPercent.text = percent.toString()
+    }
+
+
 
 
     companion object {
