@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityWeightSelectionBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -57,7 +58,7 @@ class WeightSelection : AppCompatActivity() {
 
                 Toast.makeText(this,"Weight has been set.", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, HeightSelection::class.java)
-                startActivity(intent)
+                startActivityWithSlideAnimation(intent)
 
             }
             else Toast.makeText(this, "Failed to set weight", Toast.LENGTH_SHORT).show()
@@ -65,12 +66,27 @@ class WeightSelection : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener {
             val intent = Intent(this, AgeSelection::class.java)
-            startActivity(intent)
+            backActivityWithSlideAnimation(intent)
         }
 
         binding.npWeight.setOnValueChangedListener { picker, oldVal, newVal ->
             weightValue = binding.npWeight.value
 
         }
+    }
+
+    private fun startActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    private fun backActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
 }

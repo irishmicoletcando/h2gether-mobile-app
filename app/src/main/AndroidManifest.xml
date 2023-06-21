@@ -40,11 +40,12 @@
         <activity
             android:name="com.h2gether.userConfigActivities.AgeSelection"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" /> <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
+            android:theme="@style/AppTheme.NoActionBar" />
+<!--             <intent-filter>-->
+<!--             <action android:name="android.intent.action.MAIN" />-->
+<!--             <category android:name="android.intent.category.LAUNCHER" />-->
+<!--             </intent-filter>-->
+<!--         </activity>-->
         <activity
             android:name="com.h2gether.prefacePagesOnboarding.CompetitionOnboarding"
             android:exported="false"
@@ -59,13 +60,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.h2gether.prefacePagesOnboarding.TrackWaterConsumptionOnboarding"
-            android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar">
-             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
-         </activity>
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"/>
+<!--             <intent-filter>-->
+<!--                 <action android:name="android.intent.action.MAIN" />-->
+<!--                 <category android:name="android.intent.category.LAUNCHER" />-->
+<!--             </intent-filter>-->
+<!--         </activity>-->
         <activity
             android:name="com.h2gether.userConfigActivities.SexSelectionActivity"
             android:exported="false"

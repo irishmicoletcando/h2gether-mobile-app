@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityHeightSelectionBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -57,18 +58,33 @@ class HeightSelection : AppCompatActivity() {
 
                 Toast.makeText(this,"Height has been set.", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, ActivityLevelSelection::class.java)
-                startActivity(intent)
+                startActivityWithSlideAnimation(intent)
 
             }
             else Toast.makeText(this, "Failed to set height", Toast.LENGTH_SHORT).show()
         }
         binding.btnBack.setOnClickListener {
             val intent = Intent(this, WeightSelection::class.java)
-            startActivity(intent)
+            backActivityWithSlideAnimation(intent)
         }
         binding.npHeight.setOnValueChangedListener { picker, oldVal, newVal ->
             heightValue = binding.npHeight.value
 
         }
+    }
+
+    private fun startActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
+
+    private fun backActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
 }
