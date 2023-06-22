@@ -42,7 +42,7 @@
         android:fontFamily="@font/poppins_bold"
         android:text="jendlrs"
         android:textColor="@color/darkBlue"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_image_view" />
@@ -51,6 +51,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="90dp"
+        android:id="@+id/user_config_group"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:layout_margin="15dp"
@@ -178,6 +179,45 @@
                 android:layout_marginBottom="10dp"/>
 
         </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/user_config_group">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity Level"
+            android:id="@+id/physical_act"
+            android:textColor="@color/darkBlue"
+            android:textSize="18sp"
+            android:fontFamily="@font/poppins_semibold"/>
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/config_buttons"
+            android:src="@drawable/moderately_active_icon"
+            android:id="@+id/user_level_img"
+            android:layout_gravity="center"
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Moderately Active"
+            android:layout_marginTop="5dp"
+            android:id="@+id/user_level"
+            android:textSize="14sp"
+            android:textColor="@color/gray"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_gravity="center"/>
+
     </LinearLayout>
 
     <!-- TODO: User Badges -->
