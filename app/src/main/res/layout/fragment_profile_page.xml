@@ -66,6 +66,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/user_sex"
                 android:text="F"
                 android:textSize="25sp"
                 android:textColor="@color/darkBlue"
@@ -96,6 +97,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/user_age"
                 android:text="20"
                 android:textSize="25sp"
                 android:textColor="@color/darkBlue"
@@ -126,6 +128,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/user_weight"
                 android:text="62"
                 android:textSize="25sp"
                 android:textColor="@color/darkBlue"
@@ -155,6 +158,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/user_height"
                 android:text="162"
                 android:textSize="25sp"
                 android:textColor="@color/darkBlue"
@@ -174,8 +178,8 @@
                 android:layout_marginBottom="10dp"/>
 
         </FrameLayout>
-
     </LinearLayout>
+
     <!-- TODO: User Badges -->
     <!-- TODO: Sign out -->
 
