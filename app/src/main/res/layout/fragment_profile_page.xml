@@ -6,17 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.h2gether.homePage.ProfilePage">
 
+    <include
+        android:id="@+id/toolbarLayout"
+        layout="@layout/activity_tool_bar" />
+
     <!--Profile Picture-->
     <ImageView
         android:id="@+id/profile_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:background="@drawable/profile_default"
         android:scaleType="centerCrop"
-        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
 
     <!--username-->
     <TextView
