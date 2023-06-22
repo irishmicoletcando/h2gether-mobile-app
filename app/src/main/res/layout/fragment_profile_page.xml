@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.h2gether.homePage.ProfilePage">
 
+    <!--Profile Picture-->
     <ImageView
-        android:id="@+id/profileImageView"
+        android:id="@+id/profile_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/profile_default"
@@ -16,6 +17,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!--username-->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_extrabold"
+        android:text="jendlrs"
+        android:textColor="@color/darkBlue"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image_view" />
 
     <!-- TODO: User Config info -->
     <!-- TODO: User Badges -->
