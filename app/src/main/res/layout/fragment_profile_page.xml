@@ -184,6 +184,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="160dp"
+        android:id="@+id/user_config_act_level"
         android:orientation="vertical"
         android:layout_margin="15dp"
         app:layout_constraintTop_toBottomOf="@+id/user_config_group">
@@ -192,7 +193,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Activity Level"
-            android:id="@+id/physical_act"
             android:textColor="@color/darkBlue"
             android:textSize="18sp"
             android:fontFamily="@font/poppins_semibold"/>
@@ -221,6 +221,23 @@
     </LinearLayout>
 
     <!-- TODO: User Badges -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/badges"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/user_config_act_level">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Earned Badges"
+            android:textColor="@color/darkBlue"
+            android:textSize="18sp"
+            android:fontFamily="@font/poppins_semibold"/>
+        
+    </LinearLayout>
     <!-- TODO: Sign out -->
 
     <androidx.constraintlayout.widget.Guideline
