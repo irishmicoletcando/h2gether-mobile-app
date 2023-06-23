@@ -11,9 +11,7 @@ The H2gether project is an Android app that promotes healthy water consumption h
 - Create/Log-in user account
 - Add and track daily water consumption
 - Personalized daily water intake goal based on the user's personal information and weather in user's location
-- Monitor other family members to drink water by sending them reminders
 - Provide helpful information and reminders to keep user hydrated throughout the day
-- View leaderboard of user's friends and family members
 - Receive badges for reaching hydration goals
 - Set customized reminders for drinking water
 
