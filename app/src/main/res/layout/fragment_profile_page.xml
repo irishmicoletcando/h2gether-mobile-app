@@ -226,6 +226,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:id="@+id/badges_heading"
+        android:background="@drawable/rectangle_top_bottom_border"
         android:orientation="vertical"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
