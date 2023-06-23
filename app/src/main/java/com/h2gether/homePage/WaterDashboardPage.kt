@@ -1,7 +1,9 @@
 package com.h2gether.homePage
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.h2gether.userAuthActivites.LoginActivity
 import com.h2gether.userConfigActivities.WeightSelection
 
 // TODO: Rename parameter arguments, choose names that match
@@ -41,6 +44,7 @@ class WaterDashboardPage : Fragment() {
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -61,11 +65,14 @@ class WaterDashboardPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fetchWaterDetails()
+
         binding.progressBar.max = 100
 
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
         databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
+
 
         binding.btnAddWater.setOnClickListener {
             waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
@@ -131,8 +138,6 @@ class WaterDashboardPage : Fragment() {
 
     }
 
-
-
     private fun setWaterLevel(waterConsumed: Int){
         binding.tvRecommendedAmount.text = targetWater.toString()
         binding.tvAmountConsumed.text = waterConsumed.toString()
@@ -159,8 +164,37 @@ class WaterDashboardPage : Fragment() {
             })
     }
 
+    private fun fetchWaterDetails(){
+        firebaseAuth = FirebaseAuth.getInstance()
+        val uid = firebaseAuth.currentUser?.uid
+        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+        val dataRef: DatabaseReference = database.child("users/$uid/log-in-credentials")
 
+        dataRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Handle the retrieved data here
+                if (dataSnapshot.exists()) {
+                    val waterConsumption = dataSnapshot.getValue(YourDataModel::class.java)
+                    // Process the retrieved value as needed
 
+                    if (waterConsumption != null) {
+                        waterConsumed = waterConsumption.waterConsumption
+                    }
+                } else {
+                    // Data does not exist at the specified location
+                    waterConsumed = 0
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occur during retrieval
+            }
+        })
+    }
+
+    class YourDataModel {
+        var waterConsumption: Int? = null
+    }
 
     companion object {
         /**
