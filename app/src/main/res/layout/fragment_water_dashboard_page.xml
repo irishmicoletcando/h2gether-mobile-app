@@ -23,8 +23,6 @@
             android:id="@+id/tv_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
             android:fontFamily="@font/poppins_bold"
             android:text="Hello, user!"
             android:textColor="@color/navbarTextColor"
@@ -39,10 +37,10 @@
         <!-- Settings Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_settings"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_gravity="center"
-            android:background="@drawable/settings_icon_1" />
+            android:background="@drawable/settings_icon_6" />
 
     </LinearLayout>
 
