@@ -3,12 +3,17 @@
     <!-- Shadow Layer -->
     <item>
         <shape>
-            <solid android:color="@color/darkGray" /> <!-- Shadow color -->
+            <solid android:color="@color/blackLowTransparency" /> <!-- Shadow color -->
             <corners
                 android:topLeftRadius="30dp"
                 android:topRightRadius="30dp"
                 android:bottomLeftRadius="0dp"
                 android:bottomRightRadius="0dp" />
+            <padding
+                android:left="0dp"
+                android:top="2dp"
+                android:right="0dp"
+                android:bottom="0dp" />
         </shape>
     </item>
 
