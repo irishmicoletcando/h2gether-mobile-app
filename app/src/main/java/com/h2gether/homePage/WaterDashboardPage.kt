@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
 import com.h2gether.userAuthActivites.LoginActivity
 import com.h2gether.userConfigActivities.WeightSelection
@@ -64,11 +65,9 @@ class WaterDashboardPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        fetchWaterDetails()
-
         binding.progressBar.max = 100
-
+        fetchWaterDetails()
+        
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
         databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
@@ -153,7 +152,7 @@ class WaterDashboardPage : Fragment() {
 
                     // Create a new map that includes the existing data and the new field
                     val newData = existingData?.toMutableMap() ?: mutableMapOf()
-                    newData["water-consumed (ml)"] = waterConsumed
+                    newData["waterConsumption"] = waterConsumed
 
                     databaseReference.updateChildren(newData)
                 }
@@ -168,7 +167,7 @@ class WaterDashboardPage : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-        val dataRef: DatabaseReference = database.child("users/$uid/log-in-credentials")
+        val dataRef: DatabaseReference = database.child("users/$uid/water-consumption")
 
         dataRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -184,16 +183,20 @@ class WaterDashboardPage : Fragment() {
                     // Data does not exist at the specified location
                     waterConsumed = 0
                 }
+                Log.i(ContentValues.TAG, waterConsumed.toString())
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Handle any errors that occur during retrieval
             }
         })
+
+        waterConsumed?.let { setWaterLevel(it) }
     }
 
     class YourDataModel {
-        var waterConsumption: Int? = null
+        @PropertyName("waterConsumption")
+        var waterConsumption: Int? = 0
     }
 
     companion object {
