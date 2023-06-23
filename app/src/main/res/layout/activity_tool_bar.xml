@@ -24,4 +24,13 @@
         android:textSize="18sp"
         android:textStyle="bold"/>
 
+    <ImageButton
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:paddingEnd="10dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/baseline_logout_24"/>
+
 </androidx.appcompat.widget.Toolbar>

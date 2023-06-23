@@ -279,22 +279,22 @@
     </LinearLayout>
 
     <!-- TODO: Sign out -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signout_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:background="@drawable/user_config_button"
-        android:fontFamily="@font/poppins_bold"
-        android:padding="8dp"
-        android:text="Log out"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintTop_toBottomOf="@+id/badges_heading"
-        tools:layout_editor_absoluteX="20dp" />
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/signout_btn"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_marginStart="15dp"-->
+<!--        android:layout_marginEnd="15dp"-->
+<!--        android:background="@drawable/user_config_button"-->
+<!--        android:fontFamily="@font/poppins_bold"-->
+<!--        android:padding="8dp"-->
+<!--        android:text="Log out"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="15sp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/badges_heading"-->
+<!--        tools:layout_editor_absoluteX="20dp" />-->
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
