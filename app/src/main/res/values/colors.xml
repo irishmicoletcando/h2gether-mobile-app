@@ -21,4 +21,5 @@
     <color name="slightDarkBlue">#416883</color>
     <color name ="progressBar">#407AFF</color>
     <color name="authBgColor">#1B5AB8</color>
+    <color name="blackLowTransparency">#10000000</color> <!-- 99 is for alpha and others pairs zero's are for R G B -->
 </resources>
