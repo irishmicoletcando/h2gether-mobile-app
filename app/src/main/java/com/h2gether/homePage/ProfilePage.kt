@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.h2gether.R
+import androidx.appcompat.widget.Toolbar
+import android.widget.ImageButton
+import android.widget.TextView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,8 +37,18 @@ class ProfilePage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_page, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_profile_page, container, false)
+
+        val toolbar = rootView.findViewById<Toolbar>(R.id.tool_bar)
+        val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
+        val pageTitle = rootView.findViewById<TextView>(R.id.toolbar_title)
+
+        // Customize the toolbar as needed
+        pageTitle.text = "Profile"
+        backButton.setOnClickListener {
+            //TODO: Handle back button click
+        }
+        return rootView
     }
 
     companion object {
