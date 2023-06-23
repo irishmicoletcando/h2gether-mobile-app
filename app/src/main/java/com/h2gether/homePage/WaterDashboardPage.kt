@@ -1,5 +1,6 @@
 package com.h2gether.homePage
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,13 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.h2gether.userConfigActivities.WeightSelection
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,6 +38,8 @@ class WaterDashboardPage : Fragment() {
     private var percent: Int? = 0
 
     private lateinit var binding: FragmentWaterDashboardPageBinding
+    private lateinit var databaseReference: DatabaseReference
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +63,18 @@ class WaterDashboardPage : Fragment() {
 
         binding.progressBar.max = 100
 
+        firebaseAuth = FirebaseAuth.getInstance()
+        val uid = firebaseAuth.currentUser?.uid
+        databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
+
         binding.btnAddWater.setOnClickListener {
             waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
             waterConsumed?.let { it1 -> setWaterLevel(it1) }
+            waterConsumed?.let { it1 ->
+                if (uid != null) {
+                    saveWaterConsumption(it1)
+                }
+            }
             Toast.makeText(context, "added $selectedOption ml, waterConsumed: $waterConsumed, percent: $percent", Toast.LENGTH_SHORT).show()
         }
 
@@ -117,10 +136,27 @@ class WaterDashboardPage : Fragment() {
     private fun setWaterLevel(waterConsumed: Int){
         binding.tvRecommendedAmount.text = targetWater.toString()
         binding.tvAmountConsumed.text = waterConsumed.toString()
-
         percent = ((waterConsumed.toFloat() / targetWater?.toFloat()!!) * 100).toInt()
         binding.progressBar.progress = percent!!
         binding.tvPercent.text = percent.toString() + "%"
+    }
+
+    private fun saveWaterConsumption(waterConsumed: Int){
+            databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val existingData: Map<String, Any>? = snapshot.value as? Map<String, Any>
+
+                    // Create a new map that includes the existing data and the new field
+                    val newData = existingData?.toMutableMap() ?: mutableMapOf()
+                    newData["water-consumed (ml)"] = waterConsumed
+
+                    databaseReference.updateChildren(newData)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
     }
 
 
