@@ -26,6 +26,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.h2gether.homePage.WaterDashboardPage
 import com.h2gether.userConfigActivities.SexSelectionActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -192,10 +193,29 @@ class LoginActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(account.idToken , null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful){
-                val intent : Intent = Intent(this , SexSelectionActivity::class.java)
-                intent.putExtra("email" , account.email)
-                intent.putExtra("name" , account.displayName)
-                startActivity(intent)
+                val sharedPref = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+                val isFirstSignIn = sharedPref.getBoolean("isFirstSignIn", true)
+
+                if (isFirstSignIn) {
+                    // It's the first sign-in
+                    val intent : Intent = Intent(this , SexSelectionActivity::class.java)
+                    intent.putExtra("email" , account.email)
+                    intent.putExtra("name" , account.displayName)
+                    startActivity(intent)
+
+                    val editor = sharedPref.edit()
+                    editor.putBoolean("isFirstSignIn", false)
+                    editor.apply()
+                } else {
+                    val intent : Intent = Intent(this , NavigationBarActivity::class.java)
+                    intent.putExtra("email" , account.email)
+                    intent.putExtra("name" , account.displayName)
+                    startActivity(intent)
+                    // It's not the first sign-in
+                }
+
+
+
             }else{
                 Toast.makeText(this, it.exception.toString() , Toast.LENGTH_SHORT).show()
 
