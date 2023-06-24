@@ -71,8 +71,16 @@ class WaterDashboardPage : Fragment() {
                     }
                 }
             } else {
-                Toast.makeText(context, "Target Water already achieved", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+                waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
+                waterConsumed?.let { it1 -> setExcessWaterDetails() }
+                waterConsumed?.let { it1 ->
+                    if (uid != null) {
+                        saveWaterConsumption(it1)
+                    }
+                }
             }
+
         }
 
         binding.op50ml.setOnClickListener{
@@ -159,6 +167,14 @@ class WaterDashboardPage : Fragment() {
         binding.tvRecommendedAmount.text = targetWater.toString()
         binding.tvAmountConsumed.text = waterConsumed.toString()
         percent = (((waterConsumed?.toFloat()!!) / targetWater?.toFloat()!!) * 100).toInt()
+        binding.progressBar.progress = percent!!
+        binding.tvPercent.text = percent.toString() + "%"
+    }
+
+    private fun setExcessWaterDetails(){
+        binding.tvRecommendedAmount.text = targetWater.toString()
+        binding.tvAmountConsumed.text = waterConsumed.toString()
+        percent = 100
         binding.progressBar.progress = percent!!
         binding.tvPercent.text = percent.toString() + "%"
     }
