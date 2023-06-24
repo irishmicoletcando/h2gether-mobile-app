@@ -70,6 +70,8 @@ class WaterDashboardPage : Fragment() {
                         saveWaterConsumption(it1)
                     }
                 }
+            } else {
+                Toast.makeText(context, "Target Water already achieved", Toast.LENGTH_SHORT).show()
             }
         }
 
