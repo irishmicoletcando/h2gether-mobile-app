@@ -49,17 +49,21 @@ class WaterDashboardPage : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.progressBar.max = 100
+
+        // fetch water details and other initializations
         fetchWaterDetails()
+
+        binding.progressBar.max = 100
 
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
+
         databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
 
-
+        // button handlers
         binding.btnAddWater.setOnClickListener {
             waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
-            waterConsumed?.let { it1 -> setWaterLevel() }
+            waterConsumed?.let { it1 -> setWaterDetails() }
             waterConsumed?.let { it1 ->
                 if (uid != null) {
                     saveWaterConsumption(it1)
@@ -148,7 +152,7 @@ class WaterDashboardPage : Fragment() {
         }
     }
 
-    private fun setWaterLevel(){
+    private fun setWaterDetails(){
         binding.tvRecommendedAmount.text = targetWater.toString()
         binding.tvAmountConsumed.text = waterConsumed.toString()
         percent = (((waterConsumed?.toFloat()!!) / targetWater?.toFloat()!!) * 100).toInt()
@@ -195,7 +199,7 @@ class WaterDashboardPage : Fragment() {
                     waterConsumed = 0
                 }
                 Log.i(ContentValues.TAG, waterConsumed.toString())
-                waterConsumed?.let { setWaterLevel() }
+                waterConsumed?.let { setWaterDetails() }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
