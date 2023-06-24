@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
@@ -133,6 +134,19 @@ class WaterDashboardPage : Fragment() {
             binding.op250ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
             binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
         }
+
+        binding.opCustom.setOnClickListener {
+            val promptsView = LayoutInflater.from(requireContext()).inflate(R.layout.custom_water_input_dialog, null)
+
+            val alertDialogBuilder = AlertDialog.Builder(requireContext())
+            alertDialogBuilder.setView(promptsView)
+
+            // Add any additional customization or functionality to the dialog
+            val alertDialog = alertDialogBuilder.create()
+            alertDialog.show()
+        }
+
+
 
 
     }
