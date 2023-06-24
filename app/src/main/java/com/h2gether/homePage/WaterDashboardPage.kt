@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
@@ -137,18 +136,32 @@ class WaterDashboardPage : Fragment() {
 
         binding.opCustom.setOnClickListener {
             val promptsView = LayoutInflater.from(requireContext()).inflate(R.layout.custom_water_input_dialog, null)
+            val userInput = promptsView.findViewById(R.id.etCustomInput) as TextInputLayout
 
             val alertDialogBuilder = AlertDialog.Builder(requireContext())
             alertDialogBuilder.setView(promptsView)
 
+            alertDialogBuilder.setPositiveButton("OK") { dialog, id ->
+                val inputText = userInput.editText!!.text.toString()
+                if (!TextUtils.isEmpty(inputText)) {
+                    binding.tvCustom.text = "$inputText ml"
+                    selectedOption = inputText.toInt()
+                }
+            }.setNegativeButton("Cancel") { dialog, id ->
+                dialog.cancel()
+            }
+
             // Add any additional customization or functionality to the dialog
             val alertDialog = alertDialogBuilder.create()
             alertDialog.show()
+
+            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
+            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg_pressed)
         }
-
-
-
-
     }
 
     private fun setWaterLevel(){
