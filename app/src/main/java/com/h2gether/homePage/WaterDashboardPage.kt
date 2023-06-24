@@ -62,11 +62,13 @@ class WaterDashboardPage : Fragment() {
 
         // button handlers
         binding.btnAddWater.setOnClickListener {
-            waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
-            waterConsumed?.let { it1 -> setWaterDetails() }
-            waterConsumed?.let { it1 ->
-                if (uid != null) {
-                    saveWaterConsumption(it1)
+            if (waterConsumed!! < targetWater!!) {
+                waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
+                waterConsumed?.let { it1 -> setWaterDetails() }
+                waterConsumed?.let { it1 ->
+                    if (uid != null) {
+                        saveWaterConsumption(it1)
+                    }
                 }
             }
         }
