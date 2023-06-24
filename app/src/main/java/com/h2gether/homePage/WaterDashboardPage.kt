@@ -69,7 +69,6 @@ class WaterDashboardPage : Fragment() {
                     saveWaterConsumption(it1)
                 }
             }
-            Toast.makeText(context, "added $selectedOption ml, waterConsumed: $waterConsumed, percent: $percent", Toast.LENGTH_SHORT).show()
         }
 
         binding.op50ml.setOnClickListener{
@@ -188,7 +187,7 @@ class WaterDashboardPage : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Handle the retrieved data here
                 if (dataSnapshot.exists()) {
-                    val waterConsumption = dataSnapshot.getValue(YourDataModel::class.java)
+                    val waterConsumption = dataSnapshot.getValue(WaterConsumptionDataModel::class.java)
                     // Process the retrieved value as needed
 
                     if (waterConsumption != null) {
@@ -212,7 +211,7 @@ class WaterDashboardPage : Fragment() {
 
     }
 
-    class YourDataModel {
+    class WaterConsumptionDataModel {
         @PropertyName("waterConsumption")
         var waterConsumption: Int? = 0
     }
