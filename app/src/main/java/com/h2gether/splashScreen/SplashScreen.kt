@@ -29,10 +29,14 @@ class SplashScreen : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this,LoginActivity::class.java)
-            startActivity(intent)
+            startActivityWithSlideAnimation(intent)
             finish()
         },splashDuration)
 
     }
 
+    private fun startActivityWithSlideAnimation(intent: Intent) {
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+    }
 }
