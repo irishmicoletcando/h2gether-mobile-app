@@ -1,6 +1,7 @@
 package com.h2gether.userAuthActivites
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.SharedPreferences
@@ -195,33 +196,57 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken , null)
+
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful){
-                val sharedPref = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
-                val isFirstSignIn = sharedPref.getBoolean("isFirstSignIn", true)
 
-                if (isFirstSignIn) {
-                    // It's the first sign-in
-                    val intent : Intent = Intent(this , SexSelectionActivity::class.java)
-                    intent.putExtra("email" , account.email)
-                    intent.putExtra("name" , account.displayName)
-                    startActivity(intent)
+                var isFirstSignIn = true
+                firebaseAuth = FirebaseAuth.getInstance()
+                val uid = firebaseAuth.currentUser?.uid
+                val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/user-profile")
 
-                    val editor = sharedPref.edit()
-                    editor.putBoolean("isFirstSignIn", false)
-                    editor.apply()
-                } else {
-                    val intent : Intent = Intent(this , NavigationBarActivity::class.java)
-                    intent.putExtra("email" , account.email)
-                    intent.putExtra("name" , account.displayName)
-                    startActivity(intent)
-
-                    // For testing only ------------
-//                    val editor = sharedPref.edit()
-//                    editor.putBoolean("isFirstSignIn", false)
-//                    editor.apply()
-                    // It's not the first sign-in
+                if (uid != null) {
+                    hasDataInDatabase(uid, databaseReference) { hasData ->
+                        if (hasData) {
+                            val intent : Intent = Intent(this , NavigationBarActivity::class.java)
+                            intent.putExtra("email" , account.email)
+                            intent.putExtra("name" , account.displayName)
+                            startActivity(intent)
+                        } else {
+                            // No data exists for the UID
+                            // It's the first sign-in
+                            val intent : Intent = Intent(this , SexSelectionActivity::class.java)
+                            intent.putExtra("email" , account.email)
+                            intent.putExtra("name" , account.displayName)
+                            startActivity(intent)
+                        }
+                    }
                 }
+
+                Log.i(ContentValues.TAG, isFirstSignIn.toString())
+                println(isFirstSignIn)
+
+
+//                if (isFirstSignIn) {
+//                    // It's the first sign-in
+//                    val intent : Intent = Intent(this , SexSelectionActivity::class.java)
+//                    intent.putExtra("email" , account.email)
+//                    intent.putExtra("name" , account.displayName)
+//                    startActivity(intent)
+//
+//
+//                } else {
+//                    val intent : Intent = Intent(this , NavigationBarActivity::class.java)
+//                    intent.putExtra("email" , account.email)
+//                    intent.putExtra("name" , account.displayName)
+//                    startActivity(intent)
+//
+//                    // For testing only ------------
+////                    val editor = sharedPref.edit()
+////                    editor.putBoolean("isFirstSignIn", false)
+////                    editor.apply()
+//                    // It's not the first sign-in
+//                }
 
 
 
@@ -271,6 +296,21 @@ class LoginActivity : AppCompatActivity() {
         var email: String? = null
         var password: String? = null
         }
+
+    fun hasDataInDatabase(uid: String, databaseReference: DatabaseReference, onDataExists: (Boolean) -> Unit) {
+        val userRef = FirebaseDatabase.getInstance().getReference("users/$uid/user-profile")
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val hasData = dataSnapshot.exists() && dataSnapshot.hasChildren()
+                onDataExists(hasData)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any error that occurs during the database operation
+                onDataExists(false)
+            }
+        })
+    }
 }
 
 //    override fun onStart() {
