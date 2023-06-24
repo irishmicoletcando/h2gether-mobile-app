@@ -81,7 +81,7 @@ class WaterDashboardPage : Fragment() {
                     saveWaterConsumption(it1)
                 }
             }
-            Toast.makeText(context, "added $selectedOption ml, waterConsumed: $waterConsumed, percent: $percent", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "consumed $selectedOption ml", Toast.LENGTH_SHORT).show()
         }
 
         binding.op50ml.setOnClickListener{
@@ -183,7 +183,7 @@ class WaterDashboardPage : Fragment() {
                     // Data does not exist at the specified location
                     waterConsumed = 0
                 }
-                Log.i(ContentValues.TAG, waterConsumed.toString())
+
                 waterConsumed?.let { setWaterLevel() }
             }
 
