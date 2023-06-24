@@ -48,12 +48,7 @@ class LoginActivity : AppCompatActivity() {
         firebaseDatabase = FirebaseDatabase.getInstance()
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
 
-        googleSignInClient = GoogleSignIn.getClient(this , gso)
 
         loadRememberMe()
 
@@ -165,7 +160,16 @@ class LoginActivity : AppCompatActivity() {
         binding.cbRememberAccount.isChecked = rememberMe
     }
     private fun signInGoogle() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this , gso)
+        googleSignInClient.signOut()
         val signInIntent = googleSignInClient.signInIntent
+//        signInIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
         launcher.launch(signInIntent)
     }
 
@@ -211,6 +215,11 @@ class LoginActivity : AppCompatActivity() {
                     intent.putExtra("email" , account.email)
                     intent.putExtra("name" , account.displayName)
                     startActivity(intent)
+
+                    // For testing only ------------
+//                    val editor = sharedPref.edit()
+//                    editor.putBoolean("isFirstSignIn", false)
+//                    editor.apply()
                     // It's not the first sign-in
                 }
 
