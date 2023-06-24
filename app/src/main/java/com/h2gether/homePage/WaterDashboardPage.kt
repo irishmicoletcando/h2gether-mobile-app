@@ -3,18 +3,15 @@ package com.h2gether.homePage
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -25,6 +22,16 @@ import com.google.firebase.database.ValueEventListener
 import com.h2gether.userAuthActivites.LoginActivity
 import com.h2gether.userConfigActivities.WeightSelection
 
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
+/**
+ * A simple [Fragment] subclass.
+ * Use the [WaterDashboardPage.newInstance] factory method to
+ * create an instance of this fragment.
+ */
 class WaterDashboardPage : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -37,6 +44,15 @@ class WaterDashboardPage : Fragment() {
     private lateinit var binding: FragmentWaterDashboardPageBinding
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +81,7 @@ class WaterDashboardPage : Fragment() {
                     saveWaterConsumption(it1)
                 }
             }
-//            Toast.makeText(context, "consumed $selectedOption ml", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "added $selectedOption ml, waterConsumed: $waterConsumed, percent: $percent", Toast.LENGTH_SHORT).show()
         }
 
         binding.op50ml.setOnClickListener{
@@ -118,8 +134,6 @@ class WaterDashboardPage : Fragment() {
             binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
         }
 
-<<<<<<< Updated upstream
-=======
         binding.opCustom.setOnClickListener {
             val promptsView = LayoutInflater.from(requireContext()).inflate(R.layout.custom_water_input_dialog, null)
             val userInput = promptsView.findViewById(R.id.etCustomInput) as TextInputLayout
@@ -148,9 +162,6 @@ class WaterDashboardPage : Fragment() {
             binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
             binding.opCustom.setBackgroundResource(R.drawable.option_select_bg_pressed)
         }
-
->>>>>>> Stashed changes
-
     }
 
     private fun setWaterLevel(){
@@ -199,7 +210,7 @@ class WaterDashboardPage : Fragment() {
                     // Data does not exist at the specified location
                     waterConsumed = 0
                 }
-
+                Log.i(ContentValues.TAG, waterConsumed.toString())
                 waterConsumed?.let { setWaterLevel() }
             }
 
@@ -216,5 +227,25 @@ class WaterDashboardPage : Fragment() {
     class YourDataModel {
         @PropertyName("waterConsumption")
         var waterConsumption: Int? = 0
+    }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment WaterDashboardPage.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            WaterDashboardPage().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
     }
 }
