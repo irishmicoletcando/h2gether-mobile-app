@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityNavigationBarBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class NavigationBarActivity : AppCompatActivity() {
 
@@ -16,12 +17,15 @@ class NavigationBarActivity : AppCompatActivity() {
         setContentView(binding.root)
         replaceFragment(WaterDashboardPage())
 
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.menu.getItem(2).isChecked = true // Set the middle menu item as checked
+
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
 
             when(it.itemId) {
-                R.id.water_page -> replaceFragment(WaterDashboardPage())
                 R.id.statistics_page -> replaceFragment(StatisticsPage())
                 R.id.reminder_page -> replaceFragment(ReminderPage())
+                R.id.water_page -> replaceFragment(WaterDashboardPage())
                 R.id.tips_page -> replaceFragment(TipsPage())
                 R.id.profile_page -> replaceFragment(ProfilePage())
 
