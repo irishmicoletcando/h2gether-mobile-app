@@ -2,6 +2,7 @@ package com.h2gether.homePage
 
 import android.app.AlertDialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -24,6 +25,11 @@ import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
 import com.h2gether.userAuthActivites.LoginActivity
 import com.h2gether.userConfigActivities.WeightSelection
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+
 
 class WaterDashboardPage : Fragment() {
     // TODO: Rename and change types of parameters
@@ -38,6 +44,7 @@ class WaterDashboardPage : Fragment() {
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,13 +52,16 @@ class WaterDashboardPage : Fragment() {
         binding = FragmentWaterDashboardPageBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         // fetch water details and other initializations
         fetchWaterDetails()
+        resetWaterConsumptionDaily()
 
         binding.progressBar.max = 100
 
@@ -237,6 +247,23 @@ class WaterDashboardPage : Fragment() {
         )
 
 
+    }
+
+    private fun resetWaterConsumptionDaily() {
+        val sharedPref = requireContext().getSharedPreferences("H2getherSharedPreferences", Context.MODE_PRIVATE)
+        val storedDate = sharedPref.getString("StoredDate", "")
+
+        val currentDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
+
+        if (storedDate != currentDate) {
+            // Reset the value to its initial state
+            waterConsumed = 0
+
+            // Update the stored date to the current date
+            val editor = sharedPref.edit()
+            editor.putString("StoredDate", currentDate)
+            editor.apply()
+        }
     }
 
     class WaterConsumptionDataModel {
