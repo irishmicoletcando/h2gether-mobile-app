@@ -73,11 +73,22 @@ class WaterDashboardPage : Fragment() {
             } else {
                 Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
                 waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
-                waterConsumed?.let { it1 -> setExcessWaterDetails() }
+                waterConsumed?.let { it1 -> setWaterDetails() }
                 waterConsumed?.let { it1 ->
                     if (uid != null) {
                         saveWaterConsumption(it1)
                     }
+                }
+            }
+
+        }
+
+        binding.btnUndoWater.setOnClickListener {
+            waterConsumed = selectedOption?.let { it1 -> waterConsumed?.minus(it1) }
+            waterConsumed?.let { setWaterDetails() }
+            waterConsumed?.let { it1 ->
+                if (uid != null) {
+                    saveWaterConsumption(it1)
                 }
             }
 
@@ -161,6 +172,7 @@ class WaterDashboardPage : Fragment() {
             binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
             binding.opCustom.setBackgroundResource(R.drawable.option_select_bg_pressed)
         }
+
     }
 
     private fun setWaterDetails(){
@@ -168,16 +180,12 @@ class WaterDashboardPage : Fragment() {
         binding.tvAmountConsumed.text = waterConsumed.toString()
         percent = (((waterConsumed?.toFloat()!!) / targetWater?.toFloat()!!) * 100).toInt()
         binding.progressBar.progress = percent!!
-        binding.tvPercent.text = percent.toString() + "%"
+
+        if (percent!! <= 100) {
+            binding.tvPercent.text = percent.toString() + "%"
+        } else {binding.tvPercent.text = "100%"}
     }
 
-    private fun setExcessWaterDetails(){
-        binding.tvRecommendedAmount.text = targetWater.toString()
-        binding.tvAmountConsumed.text = waterConsumed.toString()
-        percent = 100
-        binding.progressBar.progress = percent!!
-        binding.tvPercent.text = percent.toString() + "%"
-    }
 
     private fun saveWaterConsumption(waterConsumed: Int){
             databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
