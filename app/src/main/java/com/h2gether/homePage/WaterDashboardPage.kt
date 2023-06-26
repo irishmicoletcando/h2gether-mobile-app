@@ -75,7 +75,7 @@ class WaterDashboardPage : Fragment() {
             val weatherResponse = fetchWeather()
             Log.i(ContentValues.TAG, weatherResponse.toString())
             if (weatherResponse != null) {
-                binding.temperatureTextView.text = weatherResponse.temperature.toString()
+                binding.temperatureTextView.text = weatherResponse.weatherData.temperature.toString()
             }
         }
 
@@ -330,6 +330,11 @@ class WaterDashboardPage : Fragment() {
     data class WeatherResponse(
         @SerializedName("name")
         val cityName: String,
+        @SerializedName("main")
+        val weatherData: WeatherData
+    )
+
+    data class WeatherData(
         @SerializedName("temp")
         val temperature: Double,
         @SerializedName("humidity")
