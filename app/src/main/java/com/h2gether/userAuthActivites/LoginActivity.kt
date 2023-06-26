@@ -22,12 +22,14 @@ import android.content.Context
 import android.util.Log
 import com.h2gether.homePage.NavigationBarActivity
 import com.example.h2gether.R
+import com.example.h2gether.databinding.ActivityTrackWaterConsumptionOnboardingBinding
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.h2gether.homePage.WaterDashboardPage
+import com.h2gether.prefacePagesOnboarding.TrackWaterConsumptionOnboarding
 import com.h2gether.userConfigActivities.SexSelectionActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -215,7 +217,7 @@ class LoginActivity : AppCompatActivity() {
                         } else {
                             // No data exists for the UID
                             // It's the first sign-in
-                            val intent : Intent = Intent(this , SexSelectionActivity::class.java)
+                            val intent : Intent = Intent(this , TrackWaterConsumptionOnboarding::class.java)
                             intent.putExtra("email" , account.email)
                             intent.putExtra("name" , account.displayName)
                             startActivity(intent)

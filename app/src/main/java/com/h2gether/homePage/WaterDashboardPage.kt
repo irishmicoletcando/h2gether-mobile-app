@@ -58,7 +58,6 @@ class WaterDashboardPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         // fetch water details and other initializations
         fetchWaterDetails()
         resetWaterConsumptionDaily()
@@ -266,6 +265,10 @@ class WaterDashboardPage : Fragment() {
             editor.putString("StoredDate", currentDate)
             editor.apply()
         }
+    }
+
+    private fun fetchWeather(){
+
     }
 
     class WaterConsumptionDataModel {
