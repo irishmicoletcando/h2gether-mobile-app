@@ -3,7 +3,6 @@ package com.h2gether.homePage
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -12,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
 import com.google.android.material.textfield.TextInputLayout
@@ -24,8 +22,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.annotations.SerializedName
-import com.h2gether.userAuthActivites.LoginActivity
-import com.h2gether.userConfigActivities.WeightSelection
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -67,6 +66,18 @@ class WaterDashboardPage : Fragment() {
         // fetch water details and other initializations
         fetchWaterDetails()
         resetWaterConsumptionDaily()
+
+        // fetch weather
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+
+        // Call the fetchWeather function from a coroutine
+        coroutineScope.launch {
+            val weatherResponse = fetchWeather()
+            Log.i(ContentValues.TAG, weatherResponse.toString())
+            if (weatherResponse != null) {
+                binding.temperatureTextView.text = weatherResponse.temperature.toString()
+            }
+        }
 
         binding.progressBar.max = 100
 
@@ -246,7 +257,6 @@ class WaterDashboardPage : Fragment() {
                     // Data does not exist at the specified location
                     waterConsumed = 0
                 }
-                Log.i(ContentValues.TAG, waterConsumed.toString())
                 waterConsumed?.let { setWaterDetails() }
             }
 
@@ -277,12 +287,15 @@ class WaterDashboardPage : Fragment() {
         }
     }
 
-    private fun fetchWeather(){
+    private suspend fun fetchWeather(): WeatherResponse? {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org/data/2.5/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+        val client = OpenWeatherMapApiClient(retrofit.create(OpenWeatherMapService::class.java))
+
+        return client.getCurrentWeather("Manila")
 
     }
 
@@ -296,7 +309,8 @@ class WaterDashboardPage : Fragment() {
 
     class OpenWeatherMapApiClient(private val service: OpenWeatherMapService) {
         suspend fun getCurrentWeather(location: String): WeatherResponse? {
-            val response = service.getCurrentWeather(location, "fc935cb087f837bbd695351a6c5579a6")
+            val response = service.getCurrentWeather(location, "4d7436b2e953a39a0d36c842e7742e02")
+            Log.i(ContentValues.TAG, response.toString())
             if (response.isSuccessful) {
                 return response.body()
             }
