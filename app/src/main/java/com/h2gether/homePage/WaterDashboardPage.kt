@@ -93,8 +93,12 @@ class WaterDashboardPage : Fragment() {
         }
 
         binding.btnUndoWater.setOnClickListener {
-
             waterConsumed = selectedOption?.let { it1 -> waterConsumed?.minus(it1) }
+
+            if (waterConsumed!! < 0) {
+                waterConsumed = 0
+            }
+            
             waterConsumed?.let { setWaterDetails() }
             waterConsumed?.let { it1 ->
                 if (uid != null) {
