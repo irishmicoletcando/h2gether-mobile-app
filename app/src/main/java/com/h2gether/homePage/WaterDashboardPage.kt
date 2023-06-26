@@ -35,7 +35,7 @@ class WaterDashboardPage : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private var selectedOption: Int? = null
+    private var selectedOption: Int? = 0
     private var targetWater: Int? = 2200
     private var waterConsumed: Int? = 0
     private var percent: Int? = 0
@@ -77,7 +77,7 @@ class WaterDashboardPage : Fragment() {
                 waterConsumed?.let { it1 -> setWaterDetails() }
                 waterConsumed?.let { it1 ->
                     if (uid != null) {
-                        saveWaterConsumption(it1)
+                        selectedOption?.let { it2 -> saveWaterConsumption(it1, it2) }
                     }
                 }
             } else {
@@ -86,7 +86,7 @@ class WaterDashboardPage : Fragment() {
                 waterConsumed?.let { it1 -> setWaterDetails() }
                 waterConsumed?.let { it1 ->
                     if (uid != null) {
-                        saveWaterConsumption(it1)
+                        selectedOption?.let { it2 -> saveWaterConsumption(it1, it2) }
                     }
                 }
             }
@@ -94,14 +94,14 @@ class WaterDashboardPage : Fragment() {
         }
 
         binding.btnUndoWater.setOnClickListener {
+
             waterConsumed = selectedOption?.let { it1 -> waterConsumed?.minus(it1) }
             waterConsumed?.let { setWaterDetails() }
             waterConsumed?.let { it1 ->
                 if (uid != null) {
-                    saveWaterConsumption(it1)
+                    selectedOption?.let { it2 -> saveWaterConsumption(it1, it2) }
                 }
             }
-
         }
 
         binding.op50ml.setOnClickListener{
@@ -196,8 +196,7 @@ class WaterDashboardPage : Fragment() {
         } else {binding.tvPercent.text = "100%"}
     }
 
-
-    private fun saveWaterConsumption(waterConsumed: Int){
+    private fun saveWaterConsumption(waterConsumed: Int,selectedOption: Int){
             databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val existingData: Map<String, Any>? = snapshot.value as? Map<String, Any>
@@ -205,6 +204,8 @@ class WaterDashboardPage : Fragment() {
                     // Create a new map that includes the existing data and the new field
                     val newData = existingData?.toMutableMap() ?: mutableMapOf()
                     newData["waterConsumption"] = waterConsumed
+                    newData["selectedOption"] = selectedOption
+
 
                     databaseReference.updateChildren(newData)
                 }
@@ -269,5 +270,6 @@ class WaterDashboardPage : Fragment() {
     class WaterConsumptionDataModel {
         @PropertyName("waterConsumption")
         var waterConsumption: Int? = 0
+        var selectedOption: Int? = 0
     }
 }
