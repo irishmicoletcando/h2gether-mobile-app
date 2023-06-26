@@ -25,6 +25,9 @@ import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
 import com.h2gether.userAuthActivites.LoginActivity
 import com.h2gether.userConfigActivities.WeightSelection
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Query
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -98,7 +101,7 @@ class WaterDashboardPage : Fragment() {
             if (waterConsumed!! < 0) {
                 waterConsumed = 0
             }
-            
+
             waterConsumed?.let { setWaterDetails() }
             waterConsumed?.let { it1 ->
                 if (uid != null) {
@@ -280,4 +283,15 @@ class WaterDashboardPage : Fragment() {
         var waterConsumption: Int? = 0
         var selectedOption: Int? = 0
     }
+
+    // Weather
+
+    interface OpenWeatherMapService {
+        @GET("weather")
+        suspend fun getCurrentWeather(
+            @Query("q") location: String,
+            @Query("appid") apiKey: String
+        ): Response<WeatherResponse>
+    }
+
 }
