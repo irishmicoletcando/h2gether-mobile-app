@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
+import com.google.gson.annotations.SerializedName
 import com.h2gether.userAuthActivites.LoginActivity
 import com.h2gether.userConfigActivities.WeightSelection
 import retrofit2.Response
@@ -294,4 +295,12 @@ class WaterDashboardPage : Fragment() {
         ): Response<WeatherResponse>
     }
 
+    data class WeatherResponse(
+        @SerializedName("name")
+        val cityName: String,
+        @SerializedName("temp")
+        val temperature: Double,
+        @SerializedName("humidity")
+        val humidity: Double
+    )
 }
