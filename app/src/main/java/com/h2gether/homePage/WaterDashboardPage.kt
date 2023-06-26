@@ -75,7 +75,8 @@ class WaterDashboardPage : Fragment() {
             val weatherResponse = fetchWeather()
             Log.i(ContentValues.TAG, weatherResponse.toString())
             if (weatherResponse != null) {
-                binding.temperatureTextView.text = weatherResponse.weatherData.temperature.toString()
+                val tempinCelcius = weatherResponse.weatherData.temperature - 273.15
+                binding.temperatureTextView.text = tempinCelcius.toInt().toString() + "°C"
             }
         }
 
