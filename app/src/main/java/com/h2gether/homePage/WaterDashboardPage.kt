@@ -283,7 +283,7 @@ class WaterDashboardPage : Fragment() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        
+
     }
 
     class WaterConsumptionDataModel {
@@ -293,6 +293,17 @@ class WaterDashboardPage : Fragment() {
     }
 
     // Weather
+
+    class OpenWeatherMapApiClient(private val service: OpenWeatherMapService) {
+        suspend fun getCurrentWeather(location: String): WeatherResponse? {
+            val response = service.getCurrentWeather(location, "fc935cb087f837bbd695351a6c5579a6")
+            if (response.isSuccessful) {
+                return response.body()
+            }
+            return null
+        }
+    }
+
 
     interface OpenWeatherMapService {
         @GET("weather")
