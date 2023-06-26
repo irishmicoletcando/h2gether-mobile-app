@@ -231,6 +231,7 @@ class WaterDashboardPage : Fragment() {
 
                     if (waterConsumption != null) {
                         waterConsumed = waterConsumption.waterConsumption
+                        selectedOption = waterConsumption.selectedOption
                     }
                 } else {
                     // Data does not exist at the specified location
