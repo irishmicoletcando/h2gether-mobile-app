@@ -3,7 +3,6 @@ package com.h2gether.homePage
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -12,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
 import com.google.android.material.textfield.TextInputLayout
@@ -23,8 +21,15 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
-import com.h2gether.userAuthActivites.LoginActivity
-import com.h2gether.userConfigActivities.WeightSelection
+import com.google.gson.annotations.SerializedName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -58,10 +63,22 @@ class WaterDashboardPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         // fetch water details and other initializations
         fetchWaterDetails()
         resetWaterConsumptionDaily()
+
+        // fetch weather
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+
+        // Call the fetchWeather function from a coroutine
+        coroutineScope.launch {
+            val weatherResponse = fetchWeather()
+            Log.i(ContentValues.TAG, weatherResponse.toString())
+            if (weatherResponse != null) {
+                val tempinCelcius = weatherResponse.weatherData.temperature - 273.15
+                binding.temperatureTextView.text = tempinCelcius.toInt().toString() + "°C"
+            }
+        }
 
         binding.progressBar.max = 100
 
@@ -94,8 +111,12 @@ class WaterDashboardPage : Fragment() {
         }
 
         binding.btnUndoWater.setOnClickListener {
-
             waterConsumed = selectedOption?.let { it1 -> waterConsumed?.minus(it1) }
+
+            if (waterConsumed!! < 0) {
+                waterConsumed = 0
+            }
+
             waterConsumed?.let { setWaterDetails() }
             waterConsumed?.let { it1 ->
                 if (uid != null) {
@@ -237,7 +258,6 @@ class WaterDashboardPage : Fragment() {
                     // Data does not exist at the specified location
                     waterConsumed = 0
                 }
-                Log.i(ContentValues.TAG, waterConsumed.toString())
                 waterConsumed?.let { setWaterDetails() }
             }
 
@@ -268,9 +288,57 @@ class WaterDashboardPage : Fragment() {
         }
     }
 
+    private suspend fun fetchWeather(): WeatherResponse? {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.openweathermap.org/data/2.5/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val client = OpenWeatherMapApiClient(retrofit.create(OpenWeatherMapService::class.java))
+
+        return client.getCurrentWeather("Manila")
+
+    }
+
     class WaterConsumptionDataModel {
         @PropertyName("waterConsumption")
         var waterConsumption: Int? = 0
         var selectedOption: Int? = 0
     }
+
+    // Weather
+
+    class OpenWeatherMapApiClient(private val service: OpenWeatherMapService) {
+        suspend fun getCurrentWeather(location: String): WeatherResponse? {
+            val response = service.getCurrentWeather(location, "4d7436b2e953a39a0d36c842e7742e02")
+            Log.i(ContentValues.TAG, response.toString())
+            if (response.isSuccessful) {
+                return response.body()
+            }
+            return null
+        }
+    }
+
+
+    interface OpenWeatherMapService {
+        @GET("weather")
+        suspend fun getCurrentWeather(
+            @Query("q") location: String,
+            @Query("appid") apiKey: String
+        ): Response<WeatherResponse>
+    }
+
+    data class WeatherResponse(
+        @SerializedName("name")
+        val cityName: String,
+        @SerializedName("main")
+        val weatherData: WeatherData
+    )
+
+    data class WeatherData(
+        @SerializedName("temp")
+        val temperature: Double,
+        @SerializedName("humidity")
+        val humidity: Double
+    )
 }
