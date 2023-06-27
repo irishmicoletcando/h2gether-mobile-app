@@ -46,16 +46,16 @@ class ProfilePage : Fragment() {
         val userId = user?.uid
 
         if (userId != null) {
-            userRef = database.getReference("users/$userId")
+            userRef = database.getReference("users/$userId/user-profile")
         } else {
             // Handle the case where the user ID is null
         }
 
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val user = dataSnapshot.getValue(User::class.java)
-                user?.let {
-                    userSex.text = user.user_sex
+                val userProfile = dataSnapshot.getValue(User::class.java)
+                userProfile?.let {
+                    userSex.text = userProfile.user_sex
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
