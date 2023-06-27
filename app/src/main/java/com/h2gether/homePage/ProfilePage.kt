@@ -84,7 +84,13 @@ class ProfilePage : Fragment() {
                     userWeight.text = userProfile.weight?.toString() ?: ""
                     userHeight.text = userProfile.height?.toString() ?: ""
                     userLevel.text = userProfile.activityLevel
-
+                    userLevelImage.setImageResource(when (userProfile.activityLevel) {
+                        "Sedentary" -> R.drawable.sedentary_icon
+                        "Lightly active" -> R.drawable.lightly_active_icon
+                        "Moderately active" -> R.drawable.moderately_active_icon
+                        "Very active" -> R.drawable.very_active_icon
+                        else -> R.drawable.moderately_active_icon
+                    })
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
