@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.PropertyName
+import com.google.firebase.ktx.Firebase
 
 @IgnoreExtraProperties
 data class UserProfile(
@@ -60,17 +61,13 @@ class ProfilePage : Fragment() {
         userLevel = rootView.findViewById(R.id.user_level)
 
         // Initialize the Firebase database reference
+        auth = FirebaseAuth.getInstance()
+        val currentUser: FirebaseUser? = auth.currentUser
+        val userId = currentUser?.uid
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val user = firebaseAuth.currentUser
-        val userId = user?.uid
+        userRef = database.getReference("users/$userId/user-profile")
 
-        if (userId != null) {
-            userRef = database.getReference("users/$userId/user-profile")
-        } else {
-            // Handle the case where the user ID is null
-        }
-
+        // Fetch user data from the database
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val userProfile = dataSnapshot.getValue(UserProfile::class.java)
