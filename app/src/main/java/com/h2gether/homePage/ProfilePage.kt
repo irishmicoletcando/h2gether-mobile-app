@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.IgnoreExtraProperties
+import com.google.firebase.database.PropertyName
 
 @IgnoreExtraProperties
 data class UserProfile(
@@ -29,6 +31,7 @@ data class UserProfile(
 
     @get:PropertyName("weight (kg)") @set:PropertyName("weight (kg)")
     var weight: Int? = 0,
+    )
 
 class ProfilePage : Fragment() {
     // TODO: Rename and change types of parameters
