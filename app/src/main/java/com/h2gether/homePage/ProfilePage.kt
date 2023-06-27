@@ -44,6 +44,7 @@ class ProfilePage : Fragment() {
     private lateinit var userLevel: TextView
     private lateinit var userLevelImage: ImageView
     private lateinit var username: TextView
+    private lateinit var userProfilePicture: ImageView
 
     @IgnoreExtraProperties
     class UserProfile(
@@ -77,6 +78,7 @@ class ProfilePage : Fragment() {
         userHeight = rootView.findViewById(R.id.user_height)
         userLevel = rootView.findViewById(R.id.user_level)
         userLevelImage = rootView.findViewById<ImageView>(R.id.user_level_img)
+        userProfilePicture = rootView.findViewById(R.id.profile_image_view)
 
         // Initialize the Firebase database reference
         auth = FirebaseAuth.getInstance()
