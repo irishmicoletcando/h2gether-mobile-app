@@ -18,13 +18,16 @@ import com.google.firebase.database.FirebaseDatabase
 
 class ProfilePage : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    // Declare the Firebase database reference
+    private lateinit var userRef: DatabaseReference
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val rootView = inflater.inflate(R.layout.fragment_profile_page, container, false)
 
         val toolbar = rootView.findViewById<Toolbar>(R.id.tool_bar)
