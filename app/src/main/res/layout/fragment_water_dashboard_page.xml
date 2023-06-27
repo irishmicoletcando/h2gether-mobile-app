@@ -51,11 +51,11 @@
         android:layout_height="37dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/weather_background"
-        android:text="25°C"
+        android:gravity="center"
+        android:text="0°C"
         android:textColor="@color/slightDarkBlue"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />

@@ -67,17 +67,7 @@ class WaterDashboardPage : Fragment() {
         resetWaterConsumptionDaily()
 
         // fetch weather
-        val coroutineScope = CoroutineScope(Dispatchers.Main)
-
-        // Call the fetchWeather function from a coroutine
-        coroutineScope.launch {
-            val weatherResponse = fetchWeather()
-            Log.i(ContentValues.TAG, weatherResponse.toString())
-            if (weatherResponse != null) {
-                val tempinCelcius = weatherResponse.weatherData.temperature - 273.15
-                binding.temperatureTextView.text = tempinCelcius.toInt().toString() + "°C"
-            }
-        }
+        fetchWeather()
 
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
@@ -327,7 +317,21 @@ class WaterDashboardPage : Fragment() {
         }
     }
 
-    private suspend fun fetchWeather(): WeatherResponse? {
+    private fun fetchWeather(){
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+
+        // Call the fetchWeather function from a coroutine
+        coroutineScope.launch {
+            val weatherResponse = fetchWeatherFromOpenWeather()
+            Log.i(ContentValues.TAG, weatherResponse.toString())
+            if (weatherResponse != null) {
+                val tempinCelcius = weatherResponse.weatherData.temperature - 273.15
+                binding.temperatureTextView.text = tempinCelcius.toInt().toString() + "°C"
+            }
+        }
+    }
+
+    private suspend fun fetchWeatherFromOpenWeather(): WeatherResponse? {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org/data/2.5/")
             .addConverterFactory(GsonConverterFactory.create())
