@@ -67,10 +67,10 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginTop="56dp"
+        android:max="100"
         android:progress="0"
         android:progressDrawable="@drawable/progress_bar"
         android:rotation="270"
-        android:max="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,8 +108,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="0"
-                android:textSize="25sp"
-                android:textColor="@color/navbarTextColor"/>
+                android:textColor="@color/navbarTextColor"
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/tv_slash"
@@ -117,8 +117,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="/"
-                android:textSize="25sp"
-                android:textColor="@color/navbarTextColor"/>
+                android:textColor="@color/navbarTextColor"
+                android:textSize="25sp" />
 
             <!-- Recommended Water Text -->
             <TextView
@@ -127,8 +127,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="1850"
-                android:textSize="25sp"
-                android:textColor="@color/navbarTextColor"/>
+                android:textColor="@color/navbarTextColor"
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/tv_ml"
@@ -136,8 +136,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="mL"
-                android:textSize="25sp"
-                android:textColor="@color/navbarTextColor"/>
+                android:textColor="@color/navbarTextColor"
+                android:textSize="25sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -146,8 +146,8 @@
         android:id="@+id/cardView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="110dp"
         app:cardCornerRadius="8dp"
@@ -204,8 +204,8 @@
                         android:layout_marginTop="8dp"
                         android:text="50 ml"
                         android:textColor="@color/navbarTextColor"
-                        android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <View
@@ -243,8 +243,8 @@
                         android:layout_marginTop="8dp"
                         android:text="100 ml"
                         android:textColor="@color/navbarTextColor"
-                        android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <!-- 150 mL Button -->
@@ -272,8 +272,8 @@
                         android:layout_marginTop="8dp"
                         android:text="150 ml"
                         android:textColor="@color/navbarTextColor"
-                        android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -322,8 +322,8 @@
                         android:layout_marginTop="8dp"
                         android:text="200 ml"
                         android:textColor="@color/navbarTextColor"
-                        android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <!-- 250 mL Button -->
@@ -351,8 +351,8 @@
                         android:layout_marginTop="8dp"
                         android:text="250 ml"
                         android:textColor="@color/navbarTextColor"
-                        android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <!-- Custom mL Button -->
@@ -381,8 +381,8 @@
                         android:layout_marginTop="8dp"
                         android:text="Custom"
                         android:textColor="@color/navbarTextColor"
-                        android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -398,15 +398,15 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:clickable="true"
         android:backgroundTint="@color/white"
+        android:clickable="true"
         app:borderWidth="0dp"
-        app:tint="@color/azure"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:srcCompat="@drawable/add_button" />
+        app:srcCompat="@drawable/add_button"
+        app:tint="@color/azure" />
 
     <!--  Undo water button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -420,8 +420,8 @@
         android:backgroundTint="@color/white"
         android:clickable="true"
         android:src="@drawable/undo_icon"
-        app:fabCustomSize="43dp"
         app:borderWidth="0dp"
+        app:fabCustomSize="43dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.177"
@@ -439,8 +439,8 @@
         android:backgroundTint="@color/white"
         android:clickable="true"
         android:src="@drawable/reminder_icon"
-        app:fabCustomSize="42dp"
         app:borderWidth="0dp"
+        app:fabCustomSize="42dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.81"
@@ -462,5 +462,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.65" />
+
+    <TextView
+        android:id="@+id/weatherDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5sp"
+        android:background="#E9F1EEEE"
+        android:padding="3sp"
+        android:text="TextView"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.932"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/temperatureTextView"
+        app:layout_constraintVertical_bias="0.017" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
