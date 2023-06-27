@@ -2,7 +2,7 @@ package com.h2gether.homePage
 
 import android.app.AlertDialog
 import android.content.ContentValues
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
 import com.google.android.material.textfield.TextInputLayout
@@ -22,14 +21,26 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
-import com.h2gether.userAuthActivites.LoginActivity
-import com.h2gether.userConfigActivities.WeightSelection
+import com.google.gson.annotations.SerializedName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+
 
 class WaterDashboardPage : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private var selectedOption: Int? = null
+    private var selectedOption: Int? = 0
     private var targetWater: Int? = 2200
     private var waterConsumed: Int? = 0
     private var percent: Int? = 0
@@ -38,6 +49,7 @@ class WaterDashboardPage : Fragment() {
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,27 +57,72 @@ class WaterDashboardPage : Fragment() {
         binding = FragmentWaterDashboardPageBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.progressBar.max = 100
+
+        // fetch water details and other initializations
         fetchWaterDetails()
+        resetWaterConsumptionDaily()
+
+        // fetch weather
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+
+        // Call the fetchWeather function from a coroutine
+        coroutineScope.launch {
+            val weatherResponse = fetchWeather()
+            Log.i(ContentValues.TAG, weatherResponse.toString())
+            if (weatherResponse != null) {
+                val tempinCelcius = weatherResponse.weatherData.temperature - 273.15
+                binding.temperatureTextView.text = tempinCelcius.toInt().toString() + "°C"
+            }
+        }
+
+        binding.progressBar.max = 100
 
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
+
         databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
 
-
+        // button handlers
         binding.btnAddWater.setOnClickListener {
-            waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
-            waterConsumed?.let { it1 -> setWaterLevel() }
-            waterConsumed?.let { it1 ->
-                if (uid != null) {
-                    saveWaterConsumption(it1)
+            if (waterConsumed!! < targetWater!!) {
+                waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
+                waterConsumed?.let { it1 -> setWaterDetails() }
+                waterConsumed?.let { it1 ->
+                    if (uid != null) {
+                        selectedOption?.let { it2 -> saveWaterConsumption(it1, it2) }
+                    }
+                }
+            } else {
+                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+                waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
+                waterConsumed?.let { it1 -> setWaterDetails() }
+                waterConsumed?.let { it1 ->
+                    if (uid != null) {
+                        selectedOption?.let { it2 -> saveWaterConsumption(it1, it2) }
+                    }
                 }
             }
-            Toast.makeText(context, "added $selectedOption ml, waterConsumed: $waterConsumed, percent: $percent", Toast.LENGTH_SHORT).show()
+
+        }
+
+        binding.btnUndoWater.setOnClickListener {
+            waterConsumed = selectedOption?.let { it1 -> waterConsumed?.minus(it1) }
+
+            if (waterConsumed!! < 0) {
+                waterConsumed = 0
+            }
+
+            waterConsumed?.let { setWaterDetails() }
+            waterConsumed?.let { it1 ->
+                if (uid != null) {
+                    selectedOption?.let { it2 -> saveWaterConsumption(it1, it2) }
+                }
+            }
         }
 
         binding.op50ml.setOnClickListener{
@@ -146,17 +203,21 @@ class WaterDashboardPage : Fragment() {
             binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
             binding.opCustom.setBackgroundResource(R.drawable.option_select_bg_pressed)
         }
+
     }
 
-    private fun setWaterLevel(){
+    private fun setWaterDetails(){
         binding.tvRecommendedAmount.text = targetWater.toString()
         binding.tvAmountConsumed.text = waterConsumed.toString()
         percent = (((waterConsumed?.toFloat()!!) / targetWater?.toFloat()!!) * 100).toInt()
         binding.progressBar.progress = percent!!
-        binding.tvPercent.text = percent.toString() + "%"
+
+        if (percent!! <= 100) {
+            binding.tvPercent.text = percent.toString() + "%"
+        } else {binding.tvPercent.text = "100%"}
     }
 
-    private fun saveWaterConsumption(waterConsumed: Int){
+    private fun saveWaterConsumption(waterConsumed: Int,selectedOption: Int){
             databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val existingData: Map<String, Any>? = snapshot.value as? Map<String, Any>
@@ -164,6 +225,8 @@ class WaterDashboardPage : Fragment() {
                     // Create a new map that includes the existing data and the new field
                     val newData = existingData?.toMutableMap() ?: mutableMapOf()
                     newData["waterConsumption"] = waterConsumed
+                    newData["selectedOption"] = selectedOption
+
 
                     databaseReference.updateChildren(newData)
                 }
@@ -184,18 +247,18 @@ class WaterDashboardPage : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Handle the retrieved data here
                 if (dataSnapshot.exists()) {
-                    val waterConsumption = dataSnapshot.getValue(YourDataModel::class.java)
+                    val waterConsumption = dataSnapshot.getValue(WaterConsumptionDataModel::class.java)
                     // Process the retrieved value as needed
 
                     if (waterConsumption != null) {
                         waterConsumed = waterConsumption.waterConsumption
+                        selectedOption = waterConsumption.selectedOption
                     }
                 } else {
                     // Data does not exist at the specified location
                     waterConsumed = 0
                 }
-                Log.i(ContentValues.TAG, waterConsumed.toString())
-                waterConsumed?.let { setWaterLevel() }
+                waterConsumed?.let { setWaterDetails() }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -208,8 +271,74 @@ class WaterDashboardPage : Fragment() {
 
     }
 
-    class YourDataModel {
+    private fun resetWaterConsumptionDaily() {
+        val sharedPref = requireContext().getSharedPreferences("H2getherSharedPreferences", Context.MODE_PRIVATE)
+        val storedDate = sharedPref.getString("StoredDate", "")
+
+        val currentDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
+
+        if (storedDate != currentDate) {
+            // Reset the value to its initial state
+            waterConsumed = 0
+
+            // Update the stored date to the current date
+            val editor = sharedPref.edit()
+            editor.putString("StoredDate", currentDate)
+            editor.apply()
+        }
+    }
+
+    private suspend fun fetchWeather(): WeatherResponse? {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.openweathermap.org/data/2.5/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val client = OpenWeatherMapApiClient(retrofit.create(OpenWeatherMapService::class.java))
+
+        return client.getCurrentWeather("Manila")
+
+    }
+
+    class WaterConsumptionDataModel {
         @PropertyName("waterConsumption")
         var waterConsumption: Int? = 0
+        var selectedOption: Int? = 0
     }
+
+    // Weather
+
+    class OpenWeatherMapApiClient(private val service: OpenWeatherMapService) {
+        suspend fun getCurrentWeather(location: String): WeatherResponse? {
+            val response = service.getCurrentWeather(location, "4d7436b2e953a39a0d36c842e7742e02")
+            Log.i(ContentValues.TAG, response.toString())
+            if (response.isSuccessful) {
+                return response.body()
+            }
+            return null
+        }
+    }
+
+
+    interface OpenWeatherMapService {
+        @GET("weather")
+        suspend fun getCurrentWeather(
+            @Query("q") location: String,
+            @Query("appid") apiKey: String
+        ): Response<WeatherResponse>
+    }
+
+    data class WeatherResponse(
+        @SerializedName("name")
+        val cityName: String,
+        @SerializedName("main")
+        val weatherData: WeatherData
+    )
+
+    data class WeatherData(
+        @SerializedName("temp")
+        val temperature: Double,
+        @SerializedName("humidity")
+        val humidity: Double
+    )
 }

@@ -47,7 +47,7 @@
     <!-- Temperature Text -->
     <TextView
         android:id="@+id/temperatureTextView"
-        android:layout_width="101dp"
+        android:layout_width="80dp"
         android:layout_height="37dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/weather_background"
@@ -406,6 +406,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
         app:srcCompat="@drawable/add_button" />
+
+    <!--  Undo water button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_undo_water"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:src="@drawable/undo_icon"
+        app:fabCustomSize="43dp"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.177"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintVertical_bias="0.481"
+        app:tint="@color/azure" />
+
+    <!--  Reminder button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_reminder"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:src="@drawable/reminder_icon"
+        app:fabCustomSize="42dp"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.81"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintVertical_bias="0.052"
+        app:tint="@color/azure" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
