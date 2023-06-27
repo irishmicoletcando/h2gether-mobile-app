@@ -18,11 +18,11 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 data class UserProfile(
-    val sex: String? = "",
+    val activityLevel: String? = "",
     val age: Int? = 0,
-    val weight: Int? = 0,
     val height: Int? = 0,
-    val activityLevel: String? = ""
+    val sex: String? = "",
+    val weight: Int? = 0
 )
 
 class ProfilePage : Fragment() {
