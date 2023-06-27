@@ -108,12 +108,13 @@
     </LinearLayout>
 
     <!-- Next Button -->
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next"
         style="@style/MarginStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/user_config_button"
         android:fontFamily="@font/poppins_bold"
         android:padding="8dp"
@@ -122,9 +123,7 @@
         android:textColor="@color/white"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_age_picker"
-        app:layout_constraintVertical_bias="0.877"
-        tools:layout_editor_absoluteX="20dp" />
+        tools:layout_editor_absoluteX="16dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
