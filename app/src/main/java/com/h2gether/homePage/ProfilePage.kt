@@ -86,5 +86,6 @@ class ProfilePage : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance()= ProfilePage()
+        fun newInstance() = ProfilePage()
+    }
 }
