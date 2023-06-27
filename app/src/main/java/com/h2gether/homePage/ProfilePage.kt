@@ -34,6 +34,19 @@ class ProfilePage : Fragment() {
 
         userSex = rootView.findViewById(R.id.user_sex)
         
+        // Initialize the Firebase database reference
+        val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val user = firebaseAuth.currentUser
+        val userId = user?.uid
+
+        if (userId != null) {
+            userRef = database.getReference("users/$userId")
+        } else {
+            // Handle the case where the user ID is null
+        }
+
+
         val toolbar = rootView.findViewById<Toolbar>(R.id.tool_bar)
         val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
         val pageTitle = rootView.findViewById<TextView>(R.id.toolbar_title)
@@ -56,13 +69,6 @@ class ProfilePage : Fragment() {
          * @return A new instance of fragment ProfilePage.
          */
         // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            ProfilePage().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-    }
+        @JvmStatic
+        fun newInstance()= ProfilePage()
 }
