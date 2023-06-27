@@ -3,6 +3,7 @@ package com.h2gether.userConfigActivities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.SeekBar
 import android.widget.Toast
 import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityWeightSelectionBinding
@@ -17,6 +18,7 @@ class WeightSelection : AppCompatActivity() {
     private lateinit var binding: ActivityWeightSelectionBinding
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
+    private val INITIAL_WEIGHT = 50
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +31,26 @@ class WeightSelection : AppCompatActivity() {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/user-profile")
 
-        binding.npWeight.minValue = 1
-        binding.npWeight.maxValue = 300
+        var seekBarWeight = binding.seekbarWeight
+        var tvWeight = binding.tvWeight
+        seekBarWeight.progress = INITIAL_WEIGHT
+        tvWeight.text = INITIAL_WEIGHT.toString()
+
+        seekBarWeight.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                tvWeight.text = progress.toString()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
 
         binding.btnNext.setOnClickListener {
             if (uid != null) {
+                weightValue = binding.seekbarWeight.progress
+
                 databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val existingData: Map<String, Any>? = snapshot.value as? Map<String, Any>
@@ -44,7 +61,9 @@ class WeightSelection : AppCompatActivity() {
 
                         databaseReference.updateChildren(newData)
                             .addOnSuccessListener {
-                                //
+                                Toast.makeText(this@WeightSelection, "Weight has been set.", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this@WeightSelection, HeightSelection::class.java)
+                                startActivityWithSlideAnimation(intent)
                             }
                             .addOnFailureListener { error ->
                                 // Handle the failure
@@ -52,26 +71,17 @@ class WeightSelection : AppCompatActivity() {
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
+                        // Handle the cancellation
                     }
                 })
-
-                Toast.makeText(this,"Weight has been set.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, HeightSelection::class.java)
-                startActivityWithSlideAnimation(intent)
-
+            } else {
+                Toast.makeText(this, "Failed to set weight", Toast.LENGTH_SHORT).show()
             }
-            else Toast.makeText(this, "Failed to set weight", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnBack.setOnClickListener {
             val intent = Intent(this, AgeSelection::class.java)
             backActivityWithSlideAnimation(intent)
-        }
-
-        binding.npWeight.setOnValueChangedListener { picker, oldVal, newVal ->
-            weightValue = binding.npWeight.value
-
         }
     }
 
