@@ -136,6 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:inputType="textPassword"
             android:background="@drawable/edittext_border"
             android:padding="15dp" />
     </com.google.android.material.textfield.TextInputLayout>

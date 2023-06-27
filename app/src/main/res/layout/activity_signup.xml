@@ -136,6 +136,7 @@
             android:id="@+id/et_input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:layout_marginTop="8dp"
             android:background="@drawable/edittext_border"
             android:padding="15dp" />
@@ -171,6 +172,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_border"
+            android:inputType="textPassword"
             android:padding="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
