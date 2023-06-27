@@ -38,9 +38,6 @@ import java.util.Locale
 
 
 class WaterDashboardPage : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     private var selectedOption: Int? = 0
     private var targetWater: Int? = 2200
     private var waterConsumed: Int? = 0
@@ -81,8 +78,6 @@ class WaterDashboardPage : Fragment() {
                 binding.temperatureTextView.text = tempinCelcius.toInt().toString() + "°C"
             }
         }
-
-        binding.progressBar.max = 100
 
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
@@ -221,12 +216,11 @@ class WaterDashboardPage : Fragment() {
     }
 
     private fun setWaterDetails(){
-        startProgress()
         binding.tvRecommendedAmount.text = targetWater.toString()
         binding.tvAmountConsumed.text = waterConsumed.toString()
         previousPercent = percent
         percent = (((waterConsumed?.toFloat()!!) / targetWater?.toFloat()!!) * 100).toInt()
-        
+        startProgress()
         if (percent!! <= 100) {
             binding.tvPercent.text = percent.toString() + "%"
         } else {binding.tvPercent.text = "100%"}
@@ -267,6 +261,12 @@ class WaterDashboardPage : Fragment() {
                                 binding.progressBar.progress = currentProgress
                             }
                             progressHandler.postDelayed(this, 5)
+                    } else if (currentProgress > maxProgress!!) {
+                        currentProgress -= 1
+                        if (currentProgress != null) {
+                            binding.progressBar.progress = currentProgress
+                        }
+                        progressHandler.postDelayed(this, 5)
                     }
                 }
             }
@@ -291,6 +291,7 @@ class WaterDashboardPage : Fragment() {
                     if (waterConsumption != null) {
                         waterConsumed = waterConsumption.waterConsumption
                         selectedOption = waterConsumption.selectedOption
+                        previousPercent = waterConsumption.previousPercent
                     }
                 } else {
                     // Data does not exist at the specified location
