@@ -118,7 +118,7 @@ class ProfilePage : Fragment() {
             emailRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val email = dataSnapshot.getValue(String::class.java)
-                    username.text = email ?: ""
+                    username.text = currentUser.email ?: ""
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
