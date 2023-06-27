@@ -17,6 +17,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
+data class User(
+    val user_sex: String? = ""
+)
+
 class ProfilePage : Fragment() {
     // TODO: Rename and change types of parameters
     //Declare the views
