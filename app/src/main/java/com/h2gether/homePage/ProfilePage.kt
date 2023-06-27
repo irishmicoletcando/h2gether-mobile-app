@@ -43,6 +43,7 @@ class ProfilePage : Fragment() {
     private lateinit var userHeight: TextView
     private lateinit var userLevel: TextView
     private lateinit var userLevelImage: ImageView
+    private lateinit var username: TextView
 
     @IgnoreExtraProperties
     class UserProfile(
@@ -69,6 +70,7 @@ class ProfilePage : Fragment() {
 
         val rootView = inflater.inflate(R.layout.fragment_profile_page, container, false)
 
+        username = rootView.findViewById(R.id.username)
         userSex = rootView.findViewById(R.id.user_sex)
         userAge = rootView.findViewById(R.id.user_age)
         userWeight = rootView.findViewById(R.id.user_weight)
@@ -109,7 +111,7 @@ class ProfilePage : Fragment() {
             override fun onCancelled(databaseError: DatabaseError) {
                 // Handle any errors that occur during data fetching
             }
-})
+        })
 
         val toolbar = rootView.findViewById<Toolbar>(R.id.tool_bar)
         val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
