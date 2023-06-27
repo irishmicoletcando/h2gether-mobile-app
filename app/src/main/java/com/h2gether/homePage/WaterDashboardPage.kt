@@ -221,12 +221,12 @@ class WaterDashboardPage : Fragment() {
     }
 
     private fun setWaterDetails(){
+        startProgress()
         binding.tvRecommendedAmount.text = targetWater.toString()
         binding.tvAmountConsumed.text = waterConsumed.toString()
         previousPercent = percent
         percent = (((waterConsumed?.toFloat()!!) / targetWater?.toFloat()!!) * 100).toInt()
-        startProgress()
-
+        
         if (percent!! <= 100) {
             binding.tvPercent.text = percent.toString() + "%"
         } else {binding.tvPercent.text = "100%"}
@@ -262,11 +262,11 @@ class WaterDashboardPage : Fragment() {
             override fun run() {
                 if (currentProgress != null) {
                     if (currentProgress < maxProgress!!) {
-                            currentProgress += 10
+                            currentProgress += 1
                             if (currentProgress != null) {
                                 binding.progressBar.progress = currentProgress
                             }
-                            progressHandler.postDelayed(this, 500)
+                            progressHandler.postDelayed(this, 5)
                     }
                 }
             }
