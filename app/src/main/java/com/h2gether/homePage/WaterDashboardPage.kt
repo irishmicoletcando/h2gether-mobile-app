@@ -325,7 +325,7 @@ class WaterDashboardPage : Fragment() {
             if (weatherResponse != null) {
                 val tempinCelcius = weatherResponse.weatherData.feels_like - 273.15
                 binding.temperatureTextView.text = tempinCelcius.toInt().toString() + "°C"
-                binding.weatherDescriptionTextView.text = weatherResponse.weatherDetails[0].description
+                binding.weatherDescriptionTextView.text = weatherResponse.weatherDetails[0].description + " in ${weatherResponse.cityName}"
             }
         }
     }
