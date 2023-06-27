@@ -70,6 +70,7 @@
         android:progress="0"
         android:progressDrawable="@drawable/progress_bar"
         android:rotation="270"
+        android:max="100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"

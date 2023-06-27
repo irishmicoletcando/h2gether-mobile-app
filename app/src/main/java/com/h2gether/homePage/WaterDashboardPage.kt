@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -44,6 +45,7 @@ class WaterDashboardPage : Fragment() {
     private var targetWater: Int? = 2200
     private var waterConsumed: Int? = 0
     private var percent: Int? = 0
+    private var previousPercent: Int? = 0
 
     private lateinit var binding: FragmentWaterDashboardPageBinding
     private lateinit var databaseReference: DatabaseReference
@@ -94,7 +96,11 @@ class WaterDashboardPage : Fragment() {
                 waterConsumed?.let { it1 -> setWaterDetails() }
                 waterConsumed?.let { it1 ->
                     if (uid != null) {
-                        selectedOption?.let { it2 -> saveWaterConsumption(it1, it2) }
+                        selectedOption?.let { it2 -> previousPercent?.let { it3 ->
+                            saveWaterConsumption(it1, it2,
+                                it3
+                            )
+                        } }
                     }
                 }
             } else {
@@ -103,7 +109,11 @@ class WaterDashboardPage : Fragment() {
                 waterConsumed?.let { it1 -> setWaterDetails() }
                 waterConsumed?.let { it1 ->
                     if (uid != null) {
-                        selectedOption?.let { it2 -> saveWaterConsumption(it1, it2) }
+                        selectedOption?.let { it2 -> previousPercent?.let { it3 ->
+                            saveWaterConsumption(it1, it2,
+                                it3
+                            )
+                        } }
                     }
                 }
             }
@@ -120,7 +130,11 @@ class WaterDashboardPage : Fragment() {
             waterConsumed?.let { setWaterDetails() }
             waterConsumed?.let { it1 ->
                 if (uid != null) {
-                    selectedOption?.let { it2 -> saveWaterConsumption(it1, it2) }
+                    selectedOption?.let { it2 -> previousPercent?.let { it3 ->
+                        saveWaterConsumption(it1, it2,
+                            it3
+                        )
+                    } }
                 }
             }
         }
@@ -209,15 +223,16 @@ class WaterDashboardPage : Fragment() {
     private fun setWaterDetails(){
         binding.tvRecommendedAmount.text = targetWater.toString()
         binding.tvAmountConsumed.text = waterConsumed.toString()
+        previousPercent = percent
         percent = (((waterConsumed?.toFloat()!!) / targetWater?.toFloat()!!) * 100).toInt()
-        binding.progressBar.progress = percent!!
+        startProgress()
 
         if (percent!! <= 100) {
             binding.tvPercent.text = percent.toString() + "%"
         } else {binding.tvPercent.text = "100%"}
     }
 
-    private fun saveWaterConsumption(waterConsumed: Int,selectedOption: Int){
+    private fun saveWaterConsumption(waterConsumed: Int,selectedOption: Int, previousPercent: Int){
             databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val existingData: Map<String, Any>? = snapshot.value as? Map<String, Any>
@@ -226,6 +241,7 @@ class WaterDashboardPage : Fragment() {
                     val newData = existingData?.toMutableMap() ?: mutableMapOf()
                     newData["waterConsumption"] = waterConsumed
                     newData["selectedOption"] = selectedOption
+                    newData["previousPercent"] = previousPercent
 
 
                     databaseReference.updateChildren(newData)
@@ -235,6 +251,28 @@ class WaterDashboardPage : Fragment() {
                     TODO("Not yet implemented")
                 }
             })
+    }
+
+    private fun startProgress() {
+        val progressHandler = Handler()
+        val maxProgress = percent
+        var currentProgress = previousPercent
+
+        val progressRunnable = object : Runnable {
+            override fun run() {
+                if (currentProgress != null) {
+                    if (currentProgress < maxProgress!!) {
+                            currentProgress += 10
+                            if (currentProgress != null) {
+                                binding.progressBar.progress = currentProgress
+                            }
+                            progressHandler.postDelayed(this, 500)
+                    }
+                }
+            }
+        }
+
+        progressHandler.postDelayed(progressRunnable, 500)
     }
 
     private fun fetchWaterDetails(){
@@ -304,6 +342,7 @@ class WaterDashboardPage : Fragment() {
         @PropertyName("waterConsumption")
         var waterConsumption: Int? = 0
         var selectedOption: Int? = 0
+        var previousPercent: Int? = 0
     }
 
     // Weather
