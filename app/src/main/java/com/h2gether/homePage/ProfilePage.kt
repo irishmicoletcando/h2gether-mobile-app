@@ -19,21 +19,20 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.PropertyName
-import com.google.firebase.ktx.Firebase
 
-@IgnoreExtraProperties
-data class UserProfile(
-    val activityLevel: String? = "",
-    @get:PropertyName("age (yrs)") @set:PropertyName("age (yrs)")
-    var age: Int? = 0,
-
-    @get:PropertyName("height (cm)") @set:PropertyName("height (cm)")
-    var height: Int? = 0,
-    val sex: String? = "",
-
-    @get:PropertyName("weight (kg)") @set:PropertyName("weight (kg)")
-    var weight: Int? = 0,
-    )
+//@IgnoreExtraProperties
+//data class UserProfile(
+//    val activityLevel: String? = "",
+//    @get:PropertyName("age (yrs)") @set:PropertyName("age (yrs)")
+//    var age: Int? = 0,
+//
+//    @get:PropertyName("height (cm)") @set:PropertyName("height (cm)")
+//    var height: Int? = 0,
+//    val sex: String? = "",
+//
+//    @get:PropertyName("weight (kg)") @set:PropertyName("weight (kg)")
+//    var weight: Int? = 0,
+//    )
 
 class ProfilePage : Fragment() {
     // TODO: Rename and change types of parameters
@@ -44,6 +43,20 @@ class ProfilePage : Fragment() {
     private lateinit var userHeight: TextView
     private lateinit var userLevel: TextView
     private lateinit var userLevelImage: ImageView
+
+    @IgnoreExtraProperties
+    class UserProfile(
+        val activityLevel: String? = "",
+        @get:PropertyName("age (yrs)") @set:PropertyName("age (yrs)")
+        var age: Int? = 0,
+
+        @get:PropertyName("height (cm)") @set:PropertyName("height (cm)")
+        var height: Int? = 0,
+        val sex: String? = "",
+
+        @get:PropertyName("weight (kg)") @set:PropertyName("weight (kg)")
+        var weight: Int? = 0,
+    )
 
     // Declare the Firebase database reference
     private lateinit var userRef: DatabaseReference
