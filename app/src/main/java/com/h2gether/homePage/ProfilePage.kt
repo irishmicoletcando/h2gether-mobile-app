@@ -17,8 +17,12 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-data class User(
-    val user_sex: String? = ""
+data class UserProfile(
+    val sex: String? = "",
+    val age: Int? = 0,
+    val weight: Int? = 0,
+    val height: Int? = 0,
+    val activityLevel: String? = ""
 )
 
 class ProfilePage : Fragment() {
@@ -53,9 +57,9 @@ class ProfilePage : Fragment() {
 
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val userProfile = dataSnapshot.getValue(User::class.java)
+                val userProfile = dataSnapshot.getValue(UserProfile::class.java)
                 userProfile?.let {
-                    userSex.text = userProfile.user_sex
+                    userSex.text = userProfile.sex
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
