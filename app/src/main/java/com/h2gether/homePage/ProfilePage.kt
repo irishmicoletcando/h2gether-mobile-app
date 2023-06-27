@@ -33,7 +33,7 @@ class ProfilePage : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_profile_page, container, false)
 
         userSex = rootView.findViewById(R.id.user_sex)
-        
+
         // Initialize the Firebase database reference
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
         val firebaseAuth = FirebaseAuth.getInstance()
@@ -45,6 +45,14 @@ class ProfilePage : Fragment() {
         } else {
             // Handle the case where the user ID is null
         }
+
+        userRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val user = dataSnapshot.getValue(User::class.java)
+                user?.let {
+                    userSex.text = user.user_sex
+                }
+            }
 
 
         val toolbar = rootView.findViewById<Toolbar>(R.id.tool_bar)
