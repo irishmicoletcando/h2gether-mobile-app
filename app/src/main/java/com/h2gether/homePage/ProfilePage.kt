@@ -29,6 +29,10 @@ class ProfilePage : Fragment() {
     // TODO: Rename and change types of parameters
     //Declare the views
     private lateinit var userSex: TextView
+    private lateinit var userAge: TextView
+    private lateinit var userWeight: TextView
+    private lateinit var userHeight: TextView
+    private lateinit var userLevel: TextView
 
     // Declare the Firebase database reference
     private lateinit var userRef: DatabaseReference
@@ -42,6 +46,10 @@ class ProfilePage : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_profile_page, container, false)
 
         userSex = rootView.findViewById(R.id.user_sex)
+        userAge = rootView.findViewById(R.id.user_age)
+        userWeight = rootView.findViewById(R.id.user_weight)
+        userHeight = rootView.findViewById(R.id.user_height)
+        userLevel = rootView.findViewById(R.id.user_level)
 
         // Initialize the Firebase database reference
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
