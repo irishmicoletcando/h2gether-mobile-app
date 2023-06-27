@@ -97,6 +97,11 @@ class ProfilePage : Fragment() {
                         "Male" -> "M"
                         else -> ""
                     }
+                    userProfilePicture.setImageResource(when (userProfile.sex){
+                        "Female" -> R.drawable.female_profile
+                        "Male" -> R.drawable.male_profile
+                        else -> R.drawable.profile
+                    })
                     userAge.text = userProfile.age?.toString() ?: ""
                     userWeight.text = userProfile.weight?.toString() ?: ""
                     userHeight.text = userProfile.height?.toString() ?: ""
