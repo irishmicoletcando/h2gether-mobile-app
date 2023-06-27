@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -162,6 +163,7 @@ class ProfilePage : Fragment() {
         val intent = Intent(requireContext(), LoginActivity::class.java)
         startActivity(intent)
 
+        Toast.makeText(requireContext(), "Signed out successfully", Toast.LENGTH_SHORT).show()
         requireActivity().finish()
     }
 
