@@ -58,6 +58,9 @@ class ProfilePage : Fragment() {
                     userSex.text = user.user_sex
                 }
             }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occur during data fetching
+            }
 })
 
         val toolbar = rootView.findViewById<Toolbar>(R.id.tool_bar)
