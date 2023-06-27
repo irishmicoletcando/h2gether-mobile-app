@@ -17,13 +17,18 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
+@IgnoreExtraProperties
 data class UserProfile(
     val activityLevel: String? = "",
-    val age: Int? = 0,
-    val height: Int? = 0,
+    @get:PropertyName("age (yrs)") @set:PropertyName("age (yrs)")
+    var age: Int? = 0,
+
+    @get:PropertyName("height (cm)") @set:PropertyName("height (cm)")
+    var height: Int? = 0,
     val sex: String? = "",
-    val weight: Int? = 0
-)
+
+    @get:PropertyName("weight (kg)") @set:PropertyName("weight (kg)")
+    var weight: Int? = 0,
 
 class ProfilePage : Fragment() {
     // TODO: Rename and change types of parameters
