@@ -58,7 +58,7 @@ class ProfilePage : Fragment() {
                     userSex.text = user.user_sex
                 }
             }
-
+})
 
         val toolbar = rootView.findViewById<Toolbar>(R.id.tool_bar)
         val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
