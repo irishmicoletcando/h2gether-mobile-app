@@ -35,8 +35,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
-
 class WaterDashboardPage : Fragment() {
     private var selectedOption: Int? = 0
     private var targetWater: Int? = 2200
@@ -69,9 +67,9 @@ class WaterDashboardPage : Fragment() {
         // fetch weather
         fetchWeather()
 
+        // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
-
         databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
 
         // button handlers
@@ -325,7 +323,7 @@ class WaterDashboardPage : Fragment() {
             val weatherResponse = fetchWeatherFromOpenWeather()
             Log.i(ContentValues.TAG, weatherResponse.toString())
             if (weatherResponse != null) {
-                val tempinCelcius = weatherResponse.weatherData.temperature - 273.15
+                val tempinCelcius = weatherResponse.weatherData.feels_like - 273.15
                 binding.temperatureTextView.text = tempinCelcius.toInt().toString() + "°C"
             }
         }
@@ -363,7 +361,6 @@ class WaterDashboardPage : Fragment() {
         }
     }
 
-
     interface OpenWeatherMapService {
         @GET("weather")
         suspend fun getCurrentWeather(
@@ -376,13 +373,22 @@ class WaterDashboardPage : Fragment() {
         @SerializedName("name")
         val cityName: String,
         @SerializedName("main")
-        val weatherData: WeatherData
+        val weatherData: WeatherData,
+        @SerializedName("weather")
+        val weatherDetails: List<WeatherDetails>
     )
 
     data class WeatherData(
         @SerializedName("temp")
         val temperature: Double,
         @SerializedName("humidity")
-        val humidity: Double
+        val humidity: Double,
+        @SerializedName("feels_like")
+        val feels_like: Double
+    )
+
+    data class WeatherDetails(
+        @SerializedName("description")
+        val description: String,
     )
 }
