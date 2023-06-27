@@ -67,7 +67,11 @@ class ProfilePage : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val userProfile = dataSnapshot.getValue(UserProfile::class.java)
                 userProfile?.let {
-                    userSex.text = userProfile.sex
+                    userSex.text = when (userProfile.sex){
+                        "Female" -> "F"
+                        "Male" -> "M"
+                        else -> ""
+                    }
                     userAge.text = userProfile.age?.toString() ?: ""
                     userWeight.text = userProfile.weight?.toString() ?: ""
                     userHeight.text = userProfile.height?.toString() ?: ""
