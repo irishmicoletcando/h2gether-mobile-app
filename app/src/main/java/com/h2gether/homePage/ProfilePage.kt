@@ -1,5 +1,6 @@
 package com.h2gether.homePage
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.PropertyName
+import com.h2gether.userAuthActivites.LoginActivity
 
 //@IgnoreExtraProperties
 //data class UserProfile(
@@ -82,6 +84,11 @@ class ProfilePage : Fragment() {
         userLevelImage = rootView.findViewById<ImageView>(R.id.user_level_img)
         userProfilePicture = rootView.findViewById(R.id.profile_image_view)
         signOutButton = rootView.findViewById<ImageButton>(R.id.logout_button)
+
+        //Sign Out
+        signOutButton.setOnClickListener {
+            signOutUser()
+        }
 
         // Initialize the Firebase database reference
         auth = FirebaseAuth.getInstance()
@@ -148,6 +155,14 @@ class ProfilePage : Fragment() {
             //TODO: Handle back button click
         }
         return rootView
+    }
+    private fun signOutUser() {
+        auth.signOut()
+
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        startActivity(intent)
+
+        requireActivity().finish()
     }
 
     companion object {
