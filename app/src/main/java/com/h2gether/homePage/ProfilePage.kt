@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.h2gether.R
 import androidx.appcompat.widget.Toolbar
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -42,6 +43,7 @@ class ProfilePage : Fragment() {
     private lateinit var userWeight: TextView
     private lateinit var userHeight: TextView
     private lateinit var userLevel: TextView
+    private lateinit var userLevelImage: ImageView
 
     // Declare the Firebase database reference
     private lateinit var userRef: DatabaseReference
@@ -59,6 +61,7 @@ class ProfilePage : Fragment() {
         userWeight = rootView.findViewById(R.id.user_weight)
         userHeight = rootView.findViewById(R.id.user_height)
         userLevel = rootView.findViewById(R.id.user_level)
+        userLevelImage = rootView.findViewById<ImageView>(R.id.user_level_img)
 
         // Initialize the Firebase database reference
         auth = FirebaseAuth.getInstance()
@@ -81,6 +84,7 @@ class ProfilePage : Fragment() {
                     userWeight.text = userProfile.weight?.toString() ?: ""
                     userHeight.text = userProfile.height?.toString() ?: ""
                     userLevel.text = userProfile.activityLevel
+
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
