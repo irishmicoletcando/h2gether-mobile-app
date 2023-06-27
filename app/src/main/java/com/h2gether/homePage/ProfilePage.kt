@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.example.h2gether.R
 import androidx.appcompat.widget.Toolbar
 import android.widget.ImageButton
@@ -45,6 +46,7 @@ class ProfilePage : Fragment() {
     private lateinit var userLevelImage: ImageView
     private lateinit var username: TextView
     private lateinit var userProfilePicture: ImageView
+    private lateinit var signOutButton: ImageButton
 
     @IgnoreExtraProperties
     class UserProfile(
@@ -79,6 +81,7 @@ class ProfilePage : Fragment() {
         userLevel = rootView.findViewById(R.id.user_level)
         userLevelImage = rootView.findViewById<ImageView>(R.id.user_level_img)
         userProfilePicture = rootView.findViewById(R.id.profile_image_view)
+        signOutButton = rootView.findViewById<ImageButton>(R.id.logout_button)
 
         // Initialize the Firebase database reference
         auth = FirebaseAuth.getInstance()
