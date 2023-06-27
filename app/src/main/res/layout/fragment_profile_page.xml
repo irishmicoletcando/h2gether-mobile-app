@@ -14,13 +14,12 @@
     <!--Profile Picture-->
     <ImageView
         android:id="@+id/profile_image_view"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_marginTop="20dp"
+        android:src="@drawable/female_profile"
         android:background="@drawable/profile_border"
-        android:src="@drawable/profile"
         android:elevation="2dp"
-        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
