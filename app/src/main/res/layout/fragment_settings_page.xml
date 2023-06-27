@@ -6,11 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.h2gether.homePage.SettingsPage">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <include
+        android:id="@+id/toolbarSettingsLayout"
+        layout="@layout/activity_tool_bar_settings" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
