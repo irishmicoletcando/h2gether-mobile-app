@@ -202,7 +202,6 @@
             android:layout_height="100dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/config_buttons"
-            android:src="@drawable/moderately_active_icon"
             android:id="@+id/user_level_img"
             android:layout_gravity="center"
             android:padding="10dp"/>
