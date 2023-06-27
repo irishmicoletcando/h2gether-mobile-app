@@ -113,6 +113,20 @@ class ProfilePage : Fragment() {
             }
         })
 
+        currentUser?.let {
+            val emailRef = database.getReference("users/$userId/email")
+            emailRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val email = dataSnapshot.getValue(String::class.java)
+                    username.text = email ?: ""
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle any errors that occur during email retrieval
+                }
+            })
+        }
+
         val toolbar = rootView.findViewById<Toolbar>(R.id.tool_bar)
         val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
         val pageTitle = rootView.findViewById<TextView>(R.id.toolbar_title)
