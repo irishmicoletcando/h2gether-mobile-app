@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightBlue"
+    android:background="#F3F9FB"
     tools:context="com.h2gether.homePage.ProfilePage">
 
     <include
