@@ -153,7 +153,7 @@ class ProfilePage : Fragment() {
         // Customize the toolbar as needed
         pageTitle.text = "Profile"
         backButton.setOnClickListener {
-            //TODO: Handle back button click
+            parentFragmentManager.popBackStack()
         }
         return rootView
     }
@@ -165,19 +165,5 @@ class ProfilePage : Fragment() {
 
         Toast.makeText(requireContext(), "Signed out successfully", Toast.LENGTH_SHORT).show()
         requireActivity().finish()
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfilePage.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance() = ProfilePage()
     }
 }
