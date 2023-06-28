@@ -9,6 +9,7 @@ import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,11 +63,19 @@ class WaterDashboardPage : Fragment() {
         // fetch weather
         fetchWeather()
 
+        // settings button
+        binding.btnSettings.setOnClickListener {
+            val settingsFragment = SettingsPage()
+            val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+            fragmentManager.beginTransaction()
+                .replace(R.id.constraint_layout, settingsFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
         // Inflate the layout for this fragment
         return binding.root
-
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
