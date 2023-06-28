@@ -24,7 +24,7 @@ class NavigationBarActivity : AppCompatActivity() {
 
             when(it.itemId) {
                 R.id.statistics_page -> replaceFragment(StatisticsPage())
-                R.id.reminder_page -> replaceFragment(ReminderPage())
+                R.id.weather_page -> replaceFragment(WeatherPage())
                 R.id.water_page -> replaceFragment(WaterDashboardPage())
                 R.id.tips_page -> replaceFragment(TipsPage())
                 R.id.profile_page -> replaceFragment(ProfilePage())

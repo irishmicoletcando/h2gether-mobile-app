@@ -5,9 +5,9 @@
         android:id="@+id/statistics_page"
         android:icon="@drawable/baseline_bar_chart_24"/>
 
-    <item android:title="Reminder"
-        android:id="@+id/reminder_page"
-        android:icon="@drawable/baseline_alarm_on_24"/>
+    <item android:title="Weather"
+        android:id="@+id/weather_page"
+        android:icon="@drawable/baseline_light_mode_24"/>
 
     <item android:title="Water"
         android:id="@+id/water_page"
