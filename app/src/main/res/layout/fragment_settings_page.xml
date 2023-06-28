@@ -21,12 +21,13 @@
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:gravity="left|center_vertical"
-            android:paddingLeft="33dp">
+            android:paddingLeft="35dp">
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/change_language_btn" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/change_language_btn"
+                app:tint="@color/settingsTextColor"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -34,7 +35,7 @@
                 android:text="Change Language"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:paddingStart="28dp" />
+                android:paddingStart="30dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -47,7 +48,8 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/feedback_btn" />
+                android:src="@drawable/feedback_btn"
+                app:tint="@color/settingsTextColor"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,12 +65,13 @@
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:gravity="left|center_vertical"
-            android:paddingLeft="30dp">
+            android:paddingLeft="35dp">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/privacy_policy_btn" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/privacy_policy_btn"
+                app:tint="@color/settingsTextColor"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -76,7 +79,7 @@
                 android:text="Privacy Policy"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:paddingStart="25dp" />
+                android:paddingStart="30dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,7 +92,8 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/about_us_btn" />
+                android:src="@drawable/about_us_btn"
+                app:tint="@color/settingsTextColor" />
 
             <TextView
                 android:layout_width="wrap_content"
