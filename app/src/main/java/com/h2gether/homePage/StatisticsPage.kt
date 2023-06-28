@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import com.example.h2gether.R
+import com.example.h2gether.databinding.ActivityToolBarBinding
 import com.example.h2gether.databinding.FragmentStatisticsPageBinding
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -30,6 +31,7 @@ import java.util.Locale
 class StatisticsPage : Fragment() {
 
     private lateinit var binding: FragmentStatisticsPageBinding
+    private lateinit var toolBarBinding: ActivityToolBarBinding
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
     private var waterConsumed: Int? = 0
@@ -40,15 +42,19 @@ class StatisticsPage : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentStatisticsPageBinding.inflate(inflater, container, false)
-        val rootView = inflater.inflate(R.layout.fragment_tips_page, container, false)
+        toolBarBinding = ActivityToolBarBinding.bind(binding.root.findViewById(R.id.toolbarLayout))
 
-        val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
-        val pageTitle = rootView.findViewById<TextView>(R.id.toolbar_title)
-        val logoutButton: ImageButton = rootView.findViewById(R.id.logout_button)
+        val backButton = toolBarBinding.backButton
+        val pageTitle = toolBarBinding.toolbarTitle
+        val logoutButton = toolBarBinding.logoutButton
+//
+//        val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
+//        val pageTitle = rootView.findViewById<TextView>(R.id.toolbar_title)
+//        val logoutButton: ImageButton = rootView.findViewById(R.id.logout_button)
         logoutButton.visibility = View.GONE
         backButton.visibility = View.GONE
         // Customize the toolbar as needed
-        pageTitle.text = "Hydration Tips"
+        pageTitle.text = "Statistics"
         return binding.root
     }
 
