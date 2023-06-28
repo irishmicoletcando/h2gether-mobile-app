@@ -25,7 +25,7 @@ class WeatherPage : Fragment() {
         // Customize the toolbar as needed
         pageTitle.text = "Weather"
         backButton.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            //TODO: Handle back button click
         }
         return rootView
     }
