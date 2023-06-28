@@ -37,6 +37,27 @@
                 android:paddingStart="30dp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="35dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/feedback_btn" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Feedback"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingStart="30dp" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
