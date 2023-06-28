@@ -21,12 +21,12 @@ class WeatherPage : Fragment() {
         val pageTitle = rootView.findViewById<TextView>(R.id.toolbar_title)
         val logoutButton: ImageButton = rootView.findViewById(R.id.logout_button)
         logoutButton.visibility = View.GONE
-
+        backButton.visibility = View.GONE
         // Customize the toolbar as needed
         pageTitle.text = "Weather"
-        backButton.setOnClickListener {
-            //TODO: Handle back button click
-        }
+//        backButton.setOnClickListener {
+//            //TODO: Handle back button click
+//        }
         return rootView
     }
 }

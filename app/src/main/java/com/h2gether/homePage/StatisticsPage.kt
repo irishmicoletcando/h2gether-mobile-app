@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
+import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentStatisticsPageBinding
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -37,6 +40,15 @@ class StatisticsPage : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentStatisticsPageBinding.inflate(inflater, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_tips_page, container, false)
+
+        val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
+        val pageTitle = rootView.findViewById<TextView>(R.id.toolbar_title)
+        val logoutButton: ImageButton = rootView.findViewById(R.id.logout_button)
+        logoutButton.visibility = View.GONE
+        backButton.visibility = View.GONE
+        // Customize the toolbar as needed
+        pageTitle.text = "Hydration Tips"
         return binding.root
     }
 

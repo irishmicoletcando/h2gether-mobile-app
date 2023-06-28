@@ -149,6 +149,7 @@ class ProfilePage : Fragment() {
         val toolbar = rootView.findViewById<Toolbar>(R.id.tool_bar)
         val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
         val pageTitle = rootView.findViewById<TextView>(R.id.toolbar_title)
+        backButton.visibility = View.GONE
 
         // Customize the toolbar as needed
         pageTitle.text = "Profile"
