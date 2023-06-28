@@ -54,13 +54,6 @@ class WaterDashboardPage : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentWaterDashboardPageBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
-        return binding.root
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         // fetch water details and other initializations
         fetchWaterDetails()
@@ -68,6 +61,14 @@ class WaterDashboardPage : Fragment() {
 
         // fetch weather
         fetchWeather()
+
+        // Inflate the layout for this fragment
+        return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
