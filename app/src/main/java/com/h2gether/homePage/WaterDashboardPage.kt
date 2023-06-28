@@ -3,6 +3,7 @@ package com.h2gether.homePage
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
 import com.google.android.material.textfield.TextInputLayout
@@ -123,6 +125,10 @@ class WaterDashboardPage : Fragment() {
         }
 
         binding.op50ml.setOnClickListener{
+            val tint = context?.let { it1 -> ContextCompat.getColor(it1, R.color.progressBar) }
+            if (tint != null) {
+                binding.iv50ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+            }
             selectedOption = 50
             binding.op50ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
             binding.op100ml.setBackgroundResource(R.drawable.option_select_bg)
