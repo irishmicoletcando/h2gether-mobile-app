@@ -3,6 +3,7 @@ package com.h2gether.homePage
 import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
 import com.google.android.material.textfield.TextInputLayout
@@ -52,13 +54,6 @@ class WaterDashboardPage : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentWaterDashboardPageBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
-        return binding.root
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         // fetch water details and other initializations
         fetchWaterDetails()
@@ -67,12 +62,23 @@ class WaterDashboardPage : Fragment() {
         // fetch weather
         fetchWeather()
 
+        // Inflate the layout for this fragment
+        return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
         databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
 
         // button handlers
+
+        val tint = context?.let { it1 -> ContextCompat.getColor(it1, R.color.azure) }
+
         binding.btnAddWater.setOnClickListener {
             if (waterConsumed!! < targetWater!!) {
                 waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
@@ -124,52 +130,67 @@ class WaterDashboardPage : Fragment() {
 
         binding.op50ml.setOnClickListener{
             selectedOption = 50
-            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
-            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
+            binding.iv50ml.colorFilter = null
+            binding.iv100ml.colorFilter = null
+            binding.iv150ml.colorFilter = null
+            binding.iv200ml.colorFilter = null
+            binding.iv250ml.colorFilter = null
+            binding.ivCustom.colorFilter = null
+            if (tint != null) {
+                binding.iv50ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+            }
         }
 
         binding.op100ml.setOnClickListener{
             selectedOption = 100
-            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
-            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
+            binding.iv50ml.colorFilter = null
+            binding.iv100ml.colorFilter = null
+            binding.iv150ml.colorFilter = null
+            binding.iv200ml.colorFilter = null
+            binding.iv250ml.colorFilter = null
+            binding.ivCustom.colorFilter = null
+            if (tint != null) {
+                binding.iv100ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+            }
         }
 
         binding.op150ml.setOnClickListener{
             selectedOption = 150
-            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
-            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
+            binding.iv50ml.colorFilter = null
+            binding.iv100ml.colorFilter = null
+            binding.iv150ml.colorFilter = null
+            binding.iv200ml.colorFilter = null
+            binding.iv250ml.colorFilter = null
+            binding.ivCustom.colorFilter = null
+            if (tint != null) {
+                binding.iv150ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+            }
         }
 
         binding.op200ml.setOnClickListener{
             selectedOption = 200
-            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
-            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
+            binding.iv50ml.colorFilter = null
+            binding.iv100ml.colorFilter = null
+            binding.iv150ml.colorFilter = null
+            binding.iv200ml.colorFilter = null
+            binding.iv250ml.colorFilter = null
+            binding.ivCustom.colorFilter = null
+            if (tint != null) {
+                binding.iv200ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+            }
         }
 
         binding.op250ml.setOnClickListener{
+            binding.iv50ml.colorFilter = null
+            binding.iv100ml.colorFilter = null
+            binding.iv150ml.colorFilter = null
+            binding.iv200ml.colorFilter = null
+            binding.iv250ml.colorFilter = null
+            binding.ivCustom.colorFilter = null
             selectedOption = 250
-            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg_pressed)
-            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg)
+            if (tint != null) {
+                binding.iv250ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+            }
         }
 
         binding.opCustom.setOnClickListener {
@@ -193,12 +214,15 @@ class WaterDashboardPage : Fragment() {
             val alertDialog = alertDialogBuilder.create()
             alertDialog.show()
 
-            binding.op50ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op100ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op150ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op200ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.op250ml.setBackgroundResource(R.drawable.option_select_bg)
-            binding.opCustom.setBackgroundResource(R.drawable.option_select_bg_pressed)
+            binding.iv50ml.colorFilter = null
+            binding.iv100ml.colorFilter = null
+            binding.iv150ml.colorFilter = null
+            binding.iv200ml.colorFilter = null
+            binding.iv250ml.colorFilter = null
+            binding.ivCustom.colorFilter = null
+            if (tint != null) {
+                binding.ivCustom.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+            }
         }
 
     }
