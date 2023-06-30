@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.h2gether.homePage.WeatherPage">
+
+    <data>
+        <variable
+            name="weatherDetails"
+            type="String" />
+        <variable
+            name="temperature"
+            type="String" />
+        <variable
+            name="weatherDescription"
+            type="String" />
+        <variable
+            name="max"
+            type="String" />
+        <variable
+            name="min"
+            type="String" />
+        <variable
+            name="date"
+            type="String" />
+        <variable
+            name="targetWater"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F3F9FB"
-    tools:context="com.h2gether.homePage.WeatherPage">
+    >
 
     <include
         android:id="@+id/toolbarLayout"
@@ -30,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="Manila"
+            android:text="@{weatherDetails}"
             android:textColor="@color/navbarTextColor"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +72,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="top|center_horizontal"
-            android:text="37°"
+            android:text='@{temperature}'
             android:textColor="#1046B8"
             android:textSize="90sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="Mostly Clear"
+            android:text='@{weatherDescription}'
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="10dp"
-                    android:text="39°"
+                    android:text="@{max}"
                     android:textSize="20sp" />
 
                 <TextView
@@ -97,7 +125,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="33°"
+                    android:text="@{min}"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -149,7 +177,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
-            android:text="2023-06-29"
+            android:text='@{date}'
             android:textColor="@color/darkGray"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -186,3 +214,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
