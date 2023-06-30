@@ -62,7 +62,7 @@ class WeatherPage : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateUI(){
-        binding.temperature = AppUtils.temperatureIndex.toString()
+        binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
         binding.cityName = AppUtils.cityName
         binding.weatherDescription = AppUtils.description?.let { AppUtils.capitalizeEachWord(it) }
         binding.max = AppUtils.temperatureMax.toString()

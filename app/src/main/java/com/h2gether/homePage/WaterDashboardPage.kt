@@ -50,6 +50,7 @@ class WaterDashboardPage : Fragment() {
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
     val WeatherUtils = WeatherUtils()
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,8 +69,11 @@ class WaterDashboardPage : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         AppUtils.isInitiallyOpened = true
         setWaterDetails()
+
+        AppUtils.selectedOption?.let { retainSelectedOptionIcon(it) }
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
@@ -78,8 +82,8 @@ class WaterDashboardPage : Fragment() {
         databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
 
         // button handlers
-        val tint = context?.let { it1 -> ContextCompat.getColor(it1, R.color.azure) }
 
+        val tint = context?.let { it1 -> ContextCompat.getColor(it1, R.color.azure) }
         binding.btnAddWater.setOnClickListener {
             if (AppUtils.waterConsumed!! < AppUtils.targetWater!!) {
                 AppUtils.waterConsumed =
@@ -281,7 +285,6 @@ class WaterDashboardPage : Fragment() {
         }
         }
 
-
     private fun saveWaterConsumption(
         waterConsumed: Int,
         selectedOption: Int,
@@ -337,6 +340,43 @@ class WaterDashboardPage : Fragment() {
         binding.iv200ml.colorFilter = null
         binding.iv250ml.colorFilter = null
         binding.ivCustom.colorFilter = null
+    }
+
+    private fun retainSelectedOptionIcon(selectedOption: Int){
+        val tint = context?.let { it1 -> ContextCompat.getColor(it1, R.color.azure) }
+        when (selectedOption) {
+            50 -> {
+                if (tint != null) {
+                    binding.iv50ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+                }
+            }
+            100 -> {
+                if (tint != null) {
+                    binding.iv100ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+                }
+            }
+            150 -> {
+                if (tint != null) {
+                    binding.iv150ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+                }
+            }
+            200 -> {
+                if (tint != null) {
+                    binding.iv200ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+                }
+            }
+            250 -> {
+                if (tint != null) {
+                    binding.iv250ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+                }
+            }
+
+            else -> {
+                if (tint != null) {
+                    binding.ivCustom.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
+                }
+            }
+        }
     }
 
     class WaterConsumptionDataModel {
