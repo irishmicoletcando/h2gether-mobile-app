@@ -15,10 +15,6 @@ import retrofit2.http.Query
 
 
 class WeatherUtils {
-    suspend fun fetchWeather(): WeatherResponse? = withContext(Dispatchers.IO) {
-        return@withContext fetchWeatherFromOpenWeather()
-    }
-
     suspend fun getWeatherDetails(): WeatherResponse? {
         return coroutineScope {
             val weatherDeferred = async { fetchWeather() }
@@ -28,7 +24,9 @@ class WeatherUtils {
             return@coroutineScope weatherResponse
         }
     }
-
+    private suspend fun fetchWeather(): WeatherResponse? = withContext(Dispatchers.IO) {
+        return@withContext fetchWeatherFromOpenWeather()
+    }
 
     private suspend fun fetchWeatherFromOpenWeather(): WeatherResponse? {
         val retrofit = Retrofit.Builder()
