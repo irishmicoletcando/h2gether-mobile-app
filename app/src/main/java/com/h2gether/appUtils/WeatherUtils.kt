@@ -94,7 +94,11 @@ class WeatherUtils {
         @SerializedName("humidity")
         val humidity: Double,
         @SerializedName("feels_like")
-        var feels_like: Double
+        var feels_like: Double,
+        @SerializedName("temp_min")
+        var temp_min: Double,
+        @SerializedName("temp_max")
+        var temp_max: Double
     )
 
     data class WeatherDetails(

@@ -15,10 +15,10 @@
             name="weatherDescription"
             type="String" />
         <variable
-            name="H"
+            name="max"
             type="String" />
         <variable
-            name="L"
+            name="min"
             type="String" />
         <variable
             name="date"
@@ -113,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="10dp"
-                    android:text="39°"
+                    android:text="@{max}"
                     android:textSize="20sp" />
 
                 <TextView
@@ -125,7 +125,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="33°"
+                    android:text="@{min}"
                     android:textSize="20sp" />
 
             </LinearLayout>

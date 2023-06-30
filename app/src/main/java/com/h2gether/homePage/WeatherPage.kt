@@ -31,11 +31,16 @@ class WeatherPage : Fragment() {
 
         if (weatherDetails != null) {
 
-            // modify index heat to celcius
+            // set values to text views
             binding.temperature = weatherDetails?.weatherData?.feels_like?.minus(
                 273.15)!!.toInt().toString() + "°C"
             binding.weatherDetails = weatherDetails.cityName
             binding.weatherDescription = capitalizeEachWord(weatherDetails.weatherDetails[0].description)
+            binding.max = weatherDetails?.weatherData?.temp_max?.minus(
+                273.15)!!.toInt().toString()
+
+            binding.min = weatherDetails?.weatherData?.temp_min?.minus(
+                273.15)!!.toInt().toString()
 
             val currentDate = getCurrentDate()
             binding.date = currentDate
