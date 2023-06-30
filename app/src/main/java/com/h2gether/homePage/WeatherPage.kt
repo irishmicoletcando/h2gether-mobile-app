@@ -26,6 +26,10 @@ class WeatherPage : Fragment() {
         Log.i(ContentValues.TAG, "eto $weatherDetails")
 
         if (weatherDetails != null) {
+
+            // modify index heat to celcius
+            binding.temperature = weatherDetails?.weatherData?.feels_like?.minus(
+                273.15)!!.toInt()
             binding.weatherDetails = weatherDetails
         }
 
