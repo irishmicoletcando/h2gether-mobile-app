@@ -26,13 +26,13 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/change_language_btn"
+                android:src="@drawable/rate_us_btn"
                 app:tint="@color/settingsTextColor"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Change Language"
+                android:text="Rate us"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:paddingStart="30dp" />
