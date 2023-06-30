@@ -60,12 +60,16 @@ class WaterDashboardPage : Fragment() {
         // fetch water details and other initializations
         fetchWaterDetails()
         WeatherUtils.setWeatherDetails()
+        setWaterDetails()
 
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AppUtils.isInitiallyOpened = true
+        setWaterDetails()
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
@@ -260,19 +264,20 @@ class WaterDashboardPage : Fragment() {
         binding.waterConsumed = AppUtils.waterConsumed.toString()
         binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
 
-        if (AppUtils.percent!! <= 100) {
-            binding.percent = AppUtils.percent.toString() + "%"
-        } else {
-            binding.percent = "100%"
-        }
-
-        if (AppUtils.percent == 0) {
+        if (AppUtils.isInitiallyOpened) {
             AppUtils.previousPercent?.let { delayProgress(0, it) }
+            AppUtils.isInitiallyOpened = false
         } else {
             AppUtils.previousPercent = AppUtils.percent
             AppUtils.percent =
                 (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
             AppUtils.previousPercent?.let { delayProgress(it, AppUtils.percent!!) }
+        }
+
+        if (AppUtils.percent!! <= 100) {
+            binding.percent = AppUtils.percent.toString() + "%"
+        } else {
+            binding.percent = "100%"
         }
         }
 

@@ -14,6 +14,7 @@ class AppUtils private constructor(){
     var waterConsumed: Int? = 0
     var percent: Int? = 0
     var previousPercent: Int? = 0
+    var isInitiallyOpened: Boolean = true
 
     // Weather Variables
     var temperatureIndex: Int? = 0
