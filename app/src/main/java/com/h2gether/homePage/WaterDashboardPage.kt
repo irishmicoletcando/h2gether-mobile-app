@@ -142,12 +142,7 @@ class WaterDashboardPage : Fragment() {
 
         binding.op50ml.setOnClickListener {
             AppUtils.selectedOption = 50
-            binding.iv50ml.colorFilter = null
-            binding.iv100ml.colorFilter = null
-            binding.iv150ml.colorFilter = null
-            binding.iv200ml.colorFilter = null
-            binding.iv250ml.colorFilter = null
-            binding.ivCustom.colorFilter = null
+            decolorUnpressedIcons()
             if (tint != null) {
                 binding.iv50ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
             }
@@ -155,12 +150,7 @@ class WaterDashboardPage : Fragment() {
 
         binding.op100ml.setOnClickListener {
             AppUtils.selectedOption = 100
-            binding.iv50ml.colorFilter = null
-            binding.iv100ml.colorFilter = null
-            binding.iv150ml.colorFilter = null
-            binding.iv200ml.colorFilter = null
-            binding.iv250ml.colorFilter = null
-            binding.ivCustom.colorFilter = null
+            decolorUnpressedIcons()
             if (tint != null) {
                 binding.iv100ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
             }
@@ -168,12 +158,7 @@ class WaterDashboardPage : Fragment() {
 
         binding.op150ml.setOnClickListener {
             AppUtils.selectedOption = 150
-            binding.iv50ml.colorFilter = null
-            binding.iv100ml.colorFilter = null
-            binding.iv150ml.colorFilter = null
-            binding.iv200ml.colorFilter = null
-            binding.iv250ml.colorFilter = null
-            binding.ivCustom.colorFilter = null
+            decolorUnpressedIcons()
             if (tint != null) {
                 binding.iv150ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
             }
@@ -181,24 +166,14 @@ class WaterDashboardPage : Fragment() {
 
         binding.op200ml.setOnClickListener {
             AppUtils.selectedOption = 200
-            binding.iv50ml.colorFilter = null
-            binding.iv100ml.colorFilter = null
-            binding.iv150ml.colorFilter = null
-            binding.iv200ml.colorFilter = null
-            binding.iv250ml.colorFilter = null
-            binding.ivCustom.colorFilter = null
+            decolorUnpressedIcons()
             if (tint != null) {
                 binding.iv200ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
             }
         }
 
         binding.op250ml.setOnClickListener {
-            binding.iv50ml.colorFilter = null
-            binding.iv100ml.colorFilter = null
-            binding.iv150ml.colorFilter = null
-            binding.iv200ml.colorFilter = null
-            binding.iv250ml.colorFilter = null
-            binding.ivCustom.colorFilter = null
+            decolorUnpressedIcons()
             AppUtils.selectedOption = 250
             if (tint != null) {
                 binding.iv250ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
@@ -227,12 +202,7 @@ class WaterDashboardPage : Fragment() {
             val alertDialog = alertDialogBuilder.create()
             alertDialog.show()
 
-            binding.iv50ml.colorFilter = null
-            binding.iv100ml.colorFilter = null
-            binding.iv150ml.colorFilter = null
-            binding.iv200ml.colorFilter = null
-            binding.iv250ml.colorFilter = null
-            binding.ivCustom.colorFilter = null
+            decolorUnpressedIcons()
             if (tint != null) {
                 binding.ivCustom.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
             }
@@ -350,36 +320,20 @@ class WaterDashboardPage : Fragment() {
         progressHandler.postDelayed(progressRunnable, 500)
     }
 
+    private fun decolorUnpressedIcons(){
+        binding.iv50ml.colorFilter = null
+        binding.iv100ml.colorFilter = null
+        binding.iv150ml.colorFilter = null
+        binding.iv200ml.colorFilter = null
+        binding.iv250ml.colorFilter = null
+        binding.ivCustom.colorFilter = null
+    }
+
     class WaterConsumptionDataModel {
         @PropertyName("waterConsumption")
         var waterConsumption: Int? = 0
         var selectedOption: Int? = 0
         var previousPercent: Int? = 0
     }
-
-
-    // fetch weather details
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    private fun setWeatherDetails(){
-//        var weatherDetails = runBlocking { fetchWeatherDetails() }
-//        AppUtils.temperatureIndex = weatherDetails?.weatherData?.feels_like?.minus(
-//            273.15
-//        )!!.toInt()
-//        // set values to text views
-//        AppUtils.cityName = weatherDetails.cityName
-//        AppUtils.description = AppUtils.capitalizeEachWord(weatherDetails.weatherDetails[0].description)
-//        AppUtils.temperatureMax = weatherDetails?.weatherData?.temp_max?.minus(
-//            273.15)!!.toInt()
-//        AppUtils.temperatureMin = weatherDetails?.weatherData?.temp_min?.minus(
-//            273.15)!!.toInt()
-//
-//        val currentDate = AppUtils.getCurrentDate()
-//        AppUtils.date = currentDate
-//    }
-    private suspend fun setWeather(): WeatherUtils.WeatherResponse? {
-        val weatherUtils = WeatherUtils()
-        return weatherUtils.getWeatherDetails()
-    }
-
 
 }
