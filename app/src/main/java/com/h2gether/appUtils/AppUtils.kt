@@ -23,6 +23,7 @@ class AppUtils private constructor(){
     var date: String? = ""
     var description: String? = ""
     var cityName: String? = ""
+    var imageReference: String? = ""
 
     companion object {
         @Volatile

@@ -12,6 +12,7 @@ import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWeatherPageBinding
+import com.h2gether.appUtils.AppUtils
 import com.h2gether.appUtils.WeatherUtils
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
@@ -22,6 +23,7 @@ import java.util.TimerTask
 class WeatherPage : Fragment() {
     private lateinit var binding: FragmentWeatherPageBinding
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
+    val weatherUtils = WeatherUtils()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -32,10 +34,12 @@ class WeatherPage : Fragment() {
         binding = FragmentWeatherPageBinding.inflate(inflater, container, false)
         setToolBar("Weather")
 
-        var weatherDetails = runBlocking {fetchWeatherDetails()}
-        if (weatherDetails != null) {
-            updateUI(weatherDetails)
-        }
+//        var weatherDetails = runBlocking {fetchWeatherDetails()}
+//        if (weatherDetails != null) {
+//            updateUI(weatherDetails)
+//        }
+
+        updateUI()
 
         return binding.root
     }
@@ -57,8 +61,8 @@ class WeatherPage : Fragment() {
         return weatherUtils.getWeatherDetails()
     }
 
-    private fun setWeatherImage(weatherDetails: WeatherUtils.WeatherResponse): Any {
-        return when (weatherDetails.weatherDetails[0].main) {
+    private fun setWeatherImage(imageReference: String) {
+        return when (imageReference) {
             "Clear", -> binding.ivTemperatureIcon.setImageResource(R.drawable.sunny_weather)
             "Haze","Clouds","Mist","Fog"  -> binding.ivTemperatureIcon.setImageResource(R.drawable.cloudy_weather)
             "Rain", "Drizzle","Thunderstorm","Snow"  ->binding.ivTemperatureIcon.setImageResource(R.drawable.rainy_weather)
@@ -66,21 +70,36 @@ class WeatherPage : Fragment() {
         }
     }
 
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    private fun updateUI(weatherDetails: WeatherUtils.WeatherResponse){
+//        // set values to text views
+//        binding.temperature = weatherDetails?.weatherData?.feels_like?.minus(
+//            273.15)!!.toInt().toString() + "°C"
+//        binding.weatherDetails = weatherDetails.cityName
+//        binding.weatherDescription = AppUtils.capitalizeEachWord(weatherDetails.weatherDetails[0].description)
+//        setWeatherImage(weatherDetails)
+//        binding.max = weatherDetails?.weatherData?.temp_max?.minus(
+//            273.15)!!.toInt().toString()
+//        binding.min = weatherDetails?.weatherData?.temp_min?.minus(
+//            273.15)!!.toInt().toString()
+//
+//        val currentDate = AppUtils.getCurrentDate()
+//        binding.date = currentDate
+//
+//    }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun updateUI(weatherDetails: WeatherUtils.WeatherResponse){
-        // set values to text views
-        binding.temperature = weatherDetails?.weatherData?.feels_like?.minus(
-            273.15)!!.toInt().toString() + "°C"
-        binding.weatherDetails = weatherDetails.cityName
-        binding.weatherDescription = AppUtils.capitalizeEachWord(weatherDetails.weatherDetails[0].description)
-        setWeatherImage(weatherDetails)
-        binding.max = weatherDetails?.weatherData?.temp_max?.minus(
-            273.15)!!.toInt().toString()
-        binding.min = weatherDetails?.weatherData?.temp_min?.minus(
-            273.15)!!.toInt().toString()
+    private fun updateUI(){
+        binding.temperature = AppUtils.temperatureIndex.toString()
+        binding.cityName = AppUtils.cityName
+        binding.weatherDescription = AppUtils.description?.let { AppUtils.capitalizeEachWord(it) }
+        binding.max = AppUtils.temperatureMax.toString()
+        binding.min = AppUtils.temperatureMin.toString()
 
         val currentDate = AppUtils.getCurrentDate()
         binding.date = currentDate
+
+        setWeatherImage(AppUtils.imageReference.toString())
 
     }
 
@@ -91,10 +110,8 @@ class WeatherPage : Fragment() {
         val task = object : TimerTask() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun run() {
-                var weatherDetails = runBlocking {fetchWeatherDetails()}
-                if (weatherDetails != null) {
-                    updateUI(weatherDetails)
-                }
+                weatherUtils.setWeatherDetails()
+                updateUI()
             }
         }
 

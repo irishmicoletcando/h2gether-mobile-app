@@ -19,15 +19,6 @@ import retrofit2.http.Query
 
 class WeatherUtils {
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
-    suspend fun getWeatherDetails(): WeatherResponse? {
-        return coroutineScope {
-            val weatherDeferred = async { fetchWeather() }
-            val weatherResponse = weatherDeferred.await()
-
-            return@coroutineScope weatherResponse
-        }
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun setWeatherDetails(){
         var weatherDetails = runBlocking { getWeatherDetails() }
@@ -41,9 +32,19 @@ class WeatherUtils {
             273.15)!!.toInt()
         AppUtils.temperatureMin = weatherDetails?.weatherData?.temp_min?.minus(
             273.15)!!.toInt()
+        AppUtils.imageReference = weatherDetails.weatherDetails[0].main
 
-        val currentDate = AppUtils.getCurrentDate()
-        AppUtils.date = currentDate
+        @RequiresApi(Build.VERSION_CODES.O)
+        AppUtils.date =  AppUtils.getCurrentDate()
+    }
+
+    suspend fun getWeatherDetails(): WeatherResponse? {
+        return coroutineScope {
+            val weatherDeferred = async { fetchWeather() }
+            val weatherResponse = weatherDeferred.await()
+
+            return@coroutineScope weatherResponse
+        }
     }
 
     private suspend fun fetchWeather(): WeatherResponse? = withContext(Dispatchers.IO) {
@@ -59,7 +60,6 @@ class WeatherUtils {
         val client = OpenWeatherMapApiClient(retrofit.create(OpenWeatherMapService::class.java))
 
         return client.getCurrentWeather("Manila")
-
     }
 
     class OpenWeatherMapApiClient(private val service: OpenWeatherMapService) {

@@ -6,7 +6,7 @@
 
     <data>
         <variable
-            name="weatherDetails"
+            name="cityName"
             type="String" />
         <variable
             name="temperature"
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="@{weatherDetails}"
+            android:text="@{cityName}"
             android:textColor="@color/navbarTextColor"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
