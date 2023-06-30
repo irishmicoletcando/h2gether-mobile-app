@@ -3,9 +3,10 @@
 
     <!-- Background layer -->
     <item android:id="@android:id/background">
-        <shape>
+        <shape android:shape="rectangle">
             <corners android:radius="100dp" />
             <solid android:color="#D2D2D3" />
+            <size android:height="1dp" />
         </shape>
     </item>
 
@@ -14,7 +15,7 @@
         <clip>
             <shape>
                 <corners android:radius="100dp" />
-                <solid android:color="#008577" />
+                <solid android:color="@color/azure" />
             </shape>
         </clip>
     </item>
