@@ -1,6 +1,8 @@
 package com.h2gether.homePage
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
 import com.example.h2gether.databinding.FragmentWeatherPageBinding
 import com.h2gether.appUtils.WeatherUtils
+import kotlin.reflect.typeOf
 
 class WeatherPage : Fragment() {
     private lateinit var binding: FragmentWeatherPageBinding
@@ -24,7 +27,6 @@ class WeatherPage : Fragment() {
         setToolBar("Weather")
 
         val weatherDetails = weatherUtils.fetchWeather()
-
 
         return binding.root
     }
