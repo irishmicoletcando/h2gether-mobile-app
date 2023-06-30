@@ -64,9 +64,7 @@
         style="@style/MarginStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/user_config_button"
         android:fontFamily="@font/poppins_bold"
         android:padding="8dp"
@@ -75,8 +73,6 @@
         android:textColor="@color/white"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_competition_description"
-        app:layout_constraintVertical_bias="0.738"
         tools:layout_editor_absoluteX="16dp" />
 
     <androidx.constraintlayout.widget.Guideline

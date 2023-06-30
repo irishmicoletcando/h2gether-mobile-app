@@ -106,7 +106,7 @@
         style="@style/MarginStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/user_config_button"
         android:fontFamily="@font/poppins_bold"
         android:padding="8dp"

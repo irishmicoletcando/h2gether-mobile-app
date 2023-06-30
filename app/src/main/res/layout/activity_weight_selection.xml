@@ -92,13 +92,15 @@
         <!-- Weight Picker -->
         <SeekBar
             android:id="@+id/seekbarWeight"
-            android:layout_width="300dp"
-            android:layout_height="24dp"
+            android:layout_width="375dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:max="200"
             android:min="10"
             android:progress="50"
             android:thumb="@drawable/custom_seekbar_thumb"
+            android:progressDrawable="@drawable/custom_seekbar_progress"
+            android:splitTrack="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_kg" />
@@ -112,7 +114,7 @@
         style="@style/MarginStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/user_config_button"
         android:fontFamily="@font/poppins_bold"
         android:padding="8dp"
