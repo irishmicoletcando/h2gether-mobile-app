@@ -1,19 +1,24 @@
 package com.h2gether.homePage
 
 import android.content.ContentValues
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import com.example.h2gether.databinding.FragmentWeatherPageBinding
 import com.h2gether.appUtils.WeatherUtils
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class WeatherPage : Fragment() {
     private lateinit var binding: FragmentWeatherPageBinding
     private val weatherUtils = WeatherUtils()
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,6 +36,10 @@ class WeatherPage : Fragment() {
                 273.15)!!.toInt().toString() + "°C"
             binding.weatherDetails = weatherDetails.cityName
             binding.weatherDescription = capitalizeEachWord(weatherDetails.weatherDetails[0].description)
+
+            val currentDate = getCurrentDate()
+            binding.date = currentDate
+
         }
 
         return binding.root
@@ -51,6 +60,13 @@ class WeatherPage : Fragment() {
         val words = input.split(" ")
         val capitalizedWords = words.map { it.capitalize() }
         return capitalizedWords.joinToString(" ")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getCurrentDate(): String {
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
+        return currentDate.format(formatter)
     }
 
 }
