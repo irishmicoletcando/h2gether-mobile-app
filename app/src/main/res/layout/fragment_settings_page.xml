@@ -17,11 +17,13 @@
         android:layout_marginTop="60dp">
 
         <LinearLayout
-            android:id="@+id/ll_change_language"
+            android:id="@+id/ll_rate_us"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:gravity="left|center_vertical"
-            android:paddingLeft="35dp">
+            android:paddingLeft="35dp"
+            android:clickable="true"
+            android:background="@drawable/settings_btn_bg" >
 
             <ImageView
                 android:layout_width="30dp"
@@ -43,7 +45,9 @@
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:gravity="left|center_vertical"
-            android:paddingLeft="35dp">
+            android:paddingLeft="35dp"
+            android:clickable="true"
+            android:background="@drawable/settings_btn_bg" >
 
             <ImageView
                 android:layout_width="30dp"
@@ -65,7 +69,9 @@
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:gravity="left|center_vertical"
-            android:paddingLeft="35dp">
+            android:paddingLeft="35dp"
+            android:clickable="true"
+            android:background="@drawable/settings_btn_bg" >
 
             <ImageView
                 android:layout_width="30dp"
@@ -87,7 +93,9 @@
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:gravity="left|center_vertical"
-            android:paddingLeft="35dp">
+            android:paddingLeft="35dp"
+            android:clickable="true"
+            android:background="@drawable/settings_btn_bg" >
 
             <ImageView
                 android:layout_width="30dp"
@@ -109,7 +117,9 @@
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:gravity="left|center_vertical"
-            android:paddingLeft="35dp">
+            android:paddingLeft="35dp"
+            android:clickable="true"
+            android:background="@drawable/settings_btn_bg" >
 
             <ImageView
                 android:layout_width="30dp"
