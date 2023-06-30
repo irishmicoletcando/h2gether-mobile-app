@@ -22,6 +22,7 @@ import java.util.TimerTask
 class WeatherPage : Fragment() {
     private lateinit var binding: FragmentWeatherPageBinding
     private val weatherUtils = WeatherUtils()
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,8 +37,14 @@ class WeatherPage : Fragment() {
             updateUI(weatherDetails)
         }
 
-        
+
         return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        fetchWeatherPeriodically()
+
     }
 
     private fun setToolBar(title: String){
@@ -91,18 +98,25 @@ class WeatherPage : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val interval = 15 * 60 * 1000 // 15 minutes in milliseconds
+    private fun fetchWeatherPeriodically() {
+        val interval = 1 * 60 * 1000 // 15 minutes in milliseconds
         val timer = Timer()
-//        timer.scheduleAtFixedRate(object : TimerTask() {
-//            override fun run() {
-//                fetchWeatherDetails()
-//            }
-//        }, 0, interval)
+
+        val task = object : TimerTask() {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun run() {
+                var weatherDetails = runBlocking {fetchWeatherDetails()}
+                if (weatherDetails != null) {
+                    updateUI(weatherDetails)
+                }
+            }
+        }
+
+        timer.scheduleAtFixedRate (task , 0, interval.toLong())
     }
 
+
 }
+
 
 
