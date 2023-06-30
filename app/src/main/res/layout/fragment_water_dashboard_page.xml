@@ -5,6 +5,18 @@
     tools:context="com.h2gether.homePage.WaterDashboardPage">
 
     <data>
+        <variable
+            name="waterConsumed"
+            type="String" />
+        <variable
+            name="targetWater"
+            type="String" />
+        <variable
+            name="percent"
+            type="String" />
+        <variable
+            name="temperature"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,7 +69,7 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/weather_background"
             android:gravity="center"
-            android:text="0°C"
+            android:text='@{temperature}'
             android:textColor="@color/slightDarkBlue"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -97,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="66dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="0%"
+                android:text='@{percent}'
                 android:textAlignment="center"
                 android:textColor="@color/navbarTextColor"
                 android:textSize="50sp" />
@@ -112,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="0"
+                    android:text='@{waterConsumed}'
                     android:textColor="@color/navbarTextColor"
                     android:textSize="25sp" />
 
@@ -131,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="1850"
+                    android:text='@{targetWater}'
                     android:textColor="@color/navbarTextColor"
                     android:textSize="25sp" />
 

@@ -61,14 +61,11 @@ class WaterDashboardPage : Fragment() {
         fetchWaterDetails()
         WeatherUtils.setWeatherDetails()
 
-        // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setWaterDetails()
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
@@ -83,7 +80,7 @@ class WaterDashboardPage : Fragment() {
             if (AppUtils.waterConsumed!! < AppUtils.targetWater!!) {
                 AppUtils.waterConsumed =
                     AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
-                AppUtils.waterConsumed?.let { it1 -> setWaterDetails() }
+                AppUtils.waterConsumed?.let { it1 -> setWaterDetails()}
                 AppUtils.waterConsumed?.let { it1 ->
                     if (uid != null) {
                         AppUtils.selectedOption?.let { it2 ->
@@ -100,7 +97,7 @@ class WaterDashboardPage : Fragment() {
                 Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
                 AppUtils.waterConsumed =
                     AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
-                AppUtils.waterConsumed?.let { it1 -> setWaterDetails() }
+                AppUtils.waterConsumed?.let { it1 -> setWaterDetails()}
                 AppUtils.waterConsumed?.let { it1 ->
                     if (uid != null) {
                         AppUtils.selectedOption?.let { it2 ->
@@ -259,18 +256,26 @@ class WaterDashboardPage : Fragment() {
     }
 
     private fun setWaterDetails() {
-        binding.tvRecommendedAmount.text = AppUtils.targetWater.toString()
-        binding.tvAmountConsumed.text = AppUtils.waterConsumed.toString()
-        AppUtils.previousPercent = AppUtils.percent
-        AppUtils.percent =
-            (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
-        delayProgress()
+        binding.targetWater = AppUtils.targetWater.toString()
+        binding.waterConsumed = AppUtils.waterConsumed.toString()
+        binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+
         if (AppUtils.percent!! <= 100) {
-            binding.tvPercent.text = AppUtils.percent.toString() + "%"
+            binding.percent = AppUtils.percent.toString() + "%"
         } else {
-            binding.tvPercent.text = "100%"
+            binding.percent = "100%"
         }
-    }
+
+        if (AppUtils.percent == 0) {
+            AppUtils.previousPercent?.let { delayProgress(0, it) }
+        } else {
+            AppUtils.previousPercent = AppUtils.percent
+            AppUtils.percent =
+                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+            AppUtils.previousPercent?.let { delayProgress(it, AppUtils.percent!!) }
+        }
+        }
+
 
     private fun saveWaterConsumption(
         waterConsumed: Int,
@@ -296,10 +301,10 @@ class WaterDashboardPage : Fragment() {
         })
     }
 
-    private fun delayProgress() {
+    private fun delayProgress(currentProgress: Int, maxProgress: Int) {
         val progressHandler = Handler()
-        val maxProgress = AppUtils.percent
-        var currentProgress = AppUtils.previousPercent
+        val maxProgress = maxProgress
+        var currentProgress = currentProgress
 
         val progressRunnable = object : Runnable {
             override fun run() {
