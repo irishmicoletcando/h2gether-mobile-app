@@ -30,6 +30,7 @@ class WeatherPage : Fragment() {
             binding.temperature = weatherDetails?.weatherData?.feels_like?.minus(
                 273.15)!!.toInt().toString() + "°C"
             binding.weatherDetails = weatherDetails.cityName
+            binding.weatherDescription = capitalizeEachWord(weatherDetails.weatherDetails[0].description)
         }
 
         return binding.root
@@ -45,4 +46,11 @@ class WeatherPage : Fragment() {
         val weatherUtils = WeatherUtils()
         return weatherUtils.getWeatherDetails()
     }
+
+    private fun capitalizeEachWord(input: String): String {
+        val words = input.split(" ")
+        val capitalizedWords = words.map { it.capitalize() }
+        return capitalizedWords.joinToString(" ")
+    }
+
 }
