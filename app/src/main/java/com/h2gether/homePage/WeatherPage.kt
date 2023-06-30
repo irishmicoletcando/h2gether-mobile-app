@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWeatherPageBinding
 import com.h2gether.appUtils.WeatherUtils
 import kotlinx.coroutines.runBlocking
@@ -36,9 +38,9 @@ class WeatherPage : Fragment() {
                 273.15)!!.toInt().toString() + "°C"
             binding.weatherDetails = weatherDetails.cityName
             binding.weatherDescription = capitalizeEachWord(weatherDetails.weatherDetails[0].description)
+            setWeatherImage(weatherDetails)
             binding.max = weatherDetails?.weatherData?.temp_max?.minus(
                 273.15)!!.toInt().toString()
-
             binding.min = weatherDetails?.weatherData?.temp_min?.minus(
                 273.15)!!.toInt().toString()
 
@@ -72,6 +74,15 @@ class WeatherPage : Fragment() {
         val currentDate = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
         return currentDate.format(formatter)
+    }
+
+    private fun setWeatherImage(weatherDetails: WeatherUtils.WeatherResponse): Any {
+        return when (weatherDetails.weatherDetails[0].main) {
+            "Clear", -> binding.ivTemperatureIcon.setImageResource(R.drawable.sunny_weather)
+            "Haze","Clouds","Mist","Fog"  -> binding.ivTemperatureIcon.setImageResource(R.drawable.cloudy_weather)
+            "Rain", "Drizzle","Thunderstorm","Snow"  ->binding.ivTemperatureIcon.setImageResource(R.drawable.rainy_weather)
+            else -> binding.ivTemperatureIcon.setImageResource(R.drawable.sunny_weather)
+        }
     }
 
 }

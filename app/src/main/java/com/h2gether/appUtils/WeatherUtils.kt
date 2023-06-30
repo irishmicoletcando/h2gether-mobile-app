@@ -2,35 +2,19 @@ package com.h2gether.appUtils
 
 import android.content.ContentValues
 import android.util.Log
-import com.google.firebase.database.PropertyName
 import com.google.gson.annotations.SerializedName
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import java.util.Objects
+
 
 class WeatherUtils {
-//    fun fetchWeather(): WeatherResponse? {
-//        val coroutineScope = CoroutineScope(Dispatchers.Main)
-//        var weatherResponse: WeatherResponse? = null
-//
-//        // Call the fetchWeather function from a coroutine
-//        coroutineScope.launch {
-//            weatherResponse = fetchWeatherFromOpenWeather()
-//
-//        }
-//
-//        Log.i(ContentValues.TAG, weatherResponse.toString())
-//        return weatherResponse
-//    }
     suspend fun fetchWeather(): WeatherResponse? = withContext(Dispatchers.IO) {
         return@withContext fetchWeatherFromOpenWeather()
     }
@@ -102,6 +86,8 @@ class WeatherUtils {
     )
 
     data class WeatherDetails(
+        @SerializedName("main")
+        val main: String,
         @SerializedName("description")
         val description: String,
     )
