@@ -7,10 +7,10 @@
     <data>
         <variable
             name="weatherDetails"
-            type="com.h2gether.appUtils.WeatherUtils.WeatherResponse" />
+            type="String" />
         <variable
             name="temperature"
-            type="int"/>
+            type="String"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="@{weatherDetails.cityName}"
+            android:text="@{weatherDetails}"
             android:textColor="@color/navbarTextColor"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +56,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="top|center_horizontal"
-            android:text='@{String.format("%.1f°C", weatherDetails.weatherData.feels_like)}'
+            android:text='@{temperature}'
             android:textColor="#1046B8"
             android:textSize="90sp"
             app:layout_constraintEnd_toEndOf="parent"

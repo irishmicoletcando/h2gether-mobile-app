@@ -23,14 +23,13 @@ class WeatherPage : Fragment() {
         setToolBar("Weather")
 
         var weatherDetails = runBlocking {fetchWeatherDetails()}
-        Log.i(ContentValues.TAG, "eto $weatherDetails")
 
         if (weatherDetails != null) {
 
             // modify index heat to celcius
             binding.temperature = weatherDetails?.weatherData?.feels_like?.minus(
-                273.15)!!.toInt()
-            binding.weatherDetails = weatherDetails
+                273.15)!!.toInt().toString() + "°C"
+            binding.weatherDetails = weatherDetails.cityName
         }
 
         return binding.root
