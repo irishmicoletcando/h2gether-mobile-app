@@ -34,11 +34,6 @@ class WeatherPage : Fragment() {
         binding = FragmentWeatherPageBinding.inflate(inflater, container, false)
         setToolBar("Weather")
 
-//        var weatherDetails = runBlocking {fetchWeatherDetails()}
-//        if (weatherDetails != null) {
-//            updateUI(weatherDetails)
-//        }
-
         updateUI()
 
         return binding.root
@@ -56,11 +51,6 @@ class WeatherPage : Fragment() {
         binding.toolbarLayout.toolbarTitle.text = title
     }
 
-    private suspend fun fetchWeatherDetails(): WeatherUtils.WeatherResponse? {
-        val weatherUtils = WeatherUtils()
-        return weatherUtils.getWeatherDetails()
-    }
-
     private fun setWeatherImage(imageReference: String) {
         return when (imageReference) {
             "Clear", -> binding.ivTemperatureIcon.setImageResource(R.drawable.sunny_weather)
@@ -69,24 +59,6 @@ class WeatherPage : Fragment() {
             else -> binding.ivTemperatureIcon.setImageResource(R.drawable.sunny_weather)
         }
     }
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    private fun updateUI(weatherDetails: WeatherUtils.WeatherResponse){
-//        // set values to text views
-//        binding.temperature = weatherDetails?.weatherData?.feels_like?.minus(
-//            273.15)!!.toInt().toString() + "°C"
-//        binding.weatherDetails = weatherDetails.cityName
-//        binding.weatherDescription = AppUtils.capitalizeEachWord(weatherDetails.weatherDetails[0].description)
-//        setWeatherImage(weatherDetails)
-//        binding.max = weatherDetails?.weatherData?.temp_max?.minus(
-//            273.15)!!.toInt().toString()
-//        binding.min = weatherDetails?.weatherData?.temp_min?.minus(
-//            273.15)!!.toInt().toString()
-//
-//        val currentDate = AppUtils.getCurrentDate()
-//        binding.date = currentDate
-//
-//    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateUI(){
