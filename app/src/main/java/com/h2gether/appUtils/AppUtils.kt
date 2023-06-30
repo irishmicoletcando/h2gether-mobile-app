@@ -2,7 +2,7 @@ package com.h2gether.appUtils
 
 import java.util.Date
 
-class AppUtils {
+class AppUtils private constructor(){
 
     // Water Variables
     var selectedOption: Int? = 0
@@ -18,8 +18,17 @@ class AppUtils {
     var location: String? = ""
     var date: String? = ""
     var cityName: String? = ""
-    
-    //
+
+    companion object {
+        @Volatile
+        private var instance: AppUtils? = null
+
+        fun getInstance(): AppUtils {
+            return instance ?: synchronized(this) {
+                instance ?: AppUtils().also { instance = it }
+            }
+        }
+    }
 
 
 }

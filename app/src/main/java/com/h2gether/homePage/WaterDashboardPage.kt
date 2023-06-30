@@ -26,9 +26,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.annotations.SerializedName
+import com.h2gether.appUtils.AppUtils
+import com.h2gether.appUtils.WeatherUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -39,16 +42,10 @@ import java.util.Date
 import java.util.Locale
 
 class WaterDashboardPage : Fragment() {
-    private var selectedOption: Int? = 0
-    private var targetWater: Int? = 2200
-    private var waterConsumed: Int? = 0
-    private var percent: Int? = 0
-    private var previousPercent: Int? = 0
-
     private lateinit var binding: FragmentWaterDashboardPageBinding
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
-
+    val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,8 +57,6 @@ class WaterDashboardPage : Fragment() {
         fetchWaterDetails()
         resetWaterConsumptionDaily()
 
-        // fetch weather
-        fetchWeather()
 
         // settings button
         binding.btnSettings.setOnClickListener {
@@ -79,22 +74,27 @@ class WaterDashboardPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var weatherDetails = runBlocking {fetchWeatherDetails()}
+        AppUtils.temperatureIndex = weatherDetails?.weatherData?.feels_like?.minus(
+            273.15)!!.toInt()
+
+        binding.temperatureTextView.text = AppUtils.temperatureIndex.toString()
+
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
         databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
 
         // button handlers
-
         val tint = context?.let { it1 -> ContextCompat.getColor(it1, R.color.azure) }
 
         binding.btnAddWater.setOnClickListener {
-            if (waterConsumed!! < targetWater!!) {
-                waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
-                waterConsumed?.let { it1 -> setWaterDetails() }
-                waterConsumed?.let { it1 ->
+            if (AppUtils.waterConsumed!! < AppUtils.targetWater!!) {
+                AppUtils.waterConsumed = AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
+                AppUtils.waterConsumed?.let { it1 -> setWaterDetails() }
+                AppUtils.waterConsumed?.let { it1 ->
                     if (uid != null) {
-                        selectedOption?.let { it2 -> previousPercent?.let { it3 ->
+                        AppUtils.selectedOption?.let { it2 -> AppUtils.previousPercent?.let { it3 ->
                             saveWaterConsumption(it1, it2,
                                 it3
                             )
@@ -103,11 +103,11 @@ class WaterDashboardPage : Fragment() {
                 }
             } else {
                 Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
-                waterConsumed = selectedOption?.let { it1 -> waterConsumed?.plus(it1) }
-                waterConsumed?.let { it1 -> setWaterDetails() }
-                waterConsumed?.let { it1 ->
+                AppUtils.waterConsumed = AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
+                AppUtils.waterConsumed?.let { it1 -> setWaterDetails() }
+                AppUtils.waterConsumed?.let { it1 ->
                     if (uid != null) {
-                        selectedOption?.let { it2 -> previousPercent?.let { it3 ->
+                        AppUtils.selectedOption?.let { it2 -> AppUtils.previousPercent?.let { it3 ->
                             saveWaterConsumption(it1, it2,
                                 it3
                             )
@@ -119,16 +119,16 @@ class WaterDashboardPage : Fragment() {
         }
 
         binding.btnUndoWater.setOnClickListener {
-            waterConsumed = selectedOption?.let { it1 -> waterConsumed?.minus(it1) }
+            AppUtils.waterConsumed = AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.minus(it1) }
 
-            if (waterConsumed!! < 0) {
-                waterConsumed = 0
+            if (AppUtils.waterConsumed!! < 0) {
+                AppUtils.waterConsumed = 0
             }
 
-            waterConsumed?.let { setWaterDetails() }
-            waterConsumed?.let { it1 ->
+            AppUtils.waterConsumed?.let { setWaterDetails() }
+            AppUtils.waterConsumed?.let { it1 ->
                 if (uid != null) {
-                    selectedOption?.let { it2 -> previousPercent?.let { it3 ->
+                    AppUtils.selectedOption?.let { it2 -> AppUtils.previousPercent?.let { it3 ->
                         saveWaterConsumption(it1, it2,
                             it3
                         )
@@ -138,7 +138,7 @@ class WaterDashboardPage : Fragment() {
         }
 
         binding.op50ml.setOnClickListener{
-            selectedOption = 50
+            AppUtils.selectedOption = 50
             binding.iv50ml.colorFilter = null
             binding.iv100ml.colorFilter = null
             binding.iv150ml.colorFilter = null
@@ -151,7 +151,7 @@ class WaterDashboardPage : Fragment() {
         }
 
         binding.op100ml.setOnClickListener{
-            selectedOption = 100
+            AppUtils.selectedOption = 100
             binding.iv50ml.colorFilter = null
             binding.iv100ml.colorFilter = null
             binding.iv150ml.colorFilter = null
@@ -164,7 +164,7 @@ class WaterDashboardPage : Fragment() {
         }
 
         binding.op150ml.setOnClickListener{
-            selectedOption = 150
+            AppUtils.selectedOption = 150
             binding.iv50ml.colorFilter = null
             binding.iv100ml.colorFilter = null
             binding.iv150ml.colorFilter = null
@@ -177,7 +177,7 @@ class WaterDashboardPage : Fragment() {
         }
 
         binding.op200ml.setOnClickListener{
-            selectedOption = 200
+            AppUtils.selectedOption = 200
             binding.iv50ml.colorFilter = null
             binding.iv100ml.colorFilter = null
             binding.iv150ml.colorFilter = null
@@ -196,7 +196,7 @@ class WaterDashboardPage : Fragment() {
             binding.iv200ml.colorFilter = null
             binding.iv250ml.colorFilter = null
             binding.ivCustom.colorFilter = null
-            selectedOption = 250
+            AppUtils.selectedOption = 250
             if (tint != null) {
                 binding.iv250ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
             }
@@ -213,7 +213,7 @@ class WaterDashboardPage : Fragment() {
                 val inputText = userInput.editText!!.text.toString()
                 if (!TextUtils.isEmpty(inputText)) {
                     binding.tvCustom.text = "$inputText ml"
-                    selectedOption = inputText.toInt()
+                    AppUtils.selectedOption = inputText.toInt()
                 }
             }.setNegativeButton("Cancel") { dialog, id ->
                 dialog.cancel()
@@ -237,13 +237,13 @@ class WaterDashboardPage : Fragment() {
     }
 
     private fun setWaterDetails(){
-        binding.tvRecommendedAmount.text = targetWater.toString()
-        binding.tvAmountConsumed.text = waterConsumed.toString()
-        previousPercent = percent
-        percent = (((waterConsumed?.toFloat()!!) / targetWater?.toFloat()!!) * 100).toInt()
+        binding.tvRecommendedAmount.text = AppUtils.targetWater.toString()
+        binding.tvAmountConsumed.text = AppUtils.waterConsumed.toString()
+        AppUtils.previousPercent = AppUtils.percent
+        AppUtils.percent = (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
         startProgress()
-        if (percent!! <= 100) {
-            binding.tvPercent.text = percent.toString() + "%"
+        if (AppUtils.percent!! <= 100) {
+            binding.tvPercent.text = AppUtils.percent.toString() + "%"
         } else {binding.tvPercent.text = "100%"}
     }
 
@@ -270,8 +270,8 @@ class WaterDashboardPage : Fragment() {
 
     private fun startProgress() {
         val progressHandler = Handler()
-        val maxProgress = percent
-        var currentProgress = previousPercent
+        val maxProgress = AppUtils.percent
+        var currentProgress = AppUtils.previousPercent
 
         val progressRunnable = object : Runnable {
             override fun run() {
@@ -310,15 +310,15 @@ class WaterDashboardPage : Fragment() {
                     // Process the retrieved value as needed
 
                     if (waterConsumption != null) {
-                        waterConsumed = waterConsumption.waterConsumption
-                        selectedOption = waterConsumption.selectedOption
-                        previousPercent = waterConsumption.previousPercent
+                        AppUtils.waterConsumed = waterConsumption.waterConsumption
+                        AppUtils.selectedOption = waterConsumption.selectedOption
+                        AppUtils.previousPercent = waterConsumption.previousPercent
                     }
                 } else {
                     // Data does not exist at the specified location
-                    waterConsumed = 0
+                    AppUtils.waterConsumed = 0
                 }
-                waterConsumed?.let { setWaterDetails() }
+                AppUtils.waterConsumed?.let { setWaterDetails() }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -339,7 +339,7 @@ class WaterDashboardPage : Fragment() {
 
         if (storedDate != currentDate) {
             // Reset the value to its initial state
-            waterConsumed = 0
+            AppUtils.waterConsumed = 0
 
             // Update the stored date to the current date
             val editor = sharedPref.edit()
@@ -348,32 +348,32 @@ class WaterDashboardPage : Fragment() {
         }
     }
 
-    private fun fetchWeather(){
-        val coroutineScope = CoroutineScope(Dispatchers.Main)
+//    private fun fetchWeather(){
+//        val coroutineScope = CoroutineScope(Dispatchers.Main)
+//
+//        // Call the fetchWeather function from a coroutine
+//        coroutineScope.launch {
+//            val weatherResponse = fetchWeatherFromOpenWeather()
+//            Log.i(ContentValues.TAG, weatherResponse.toString())
+//            if (weatherResponse != null) {
+//                val tempinCelcius = weatherResponse.weatherData.feels_like - 273.15
+//                binding.temperatureTextView.text = tempinCelcius.toInt().toString() + "°C"
+//                binding.weatherDescriptionTextView.text = weatherResponse.weatherDetails[0].description + " in ${weatherResponse.cityName}"
+//            }
+//        }
+//    }
 
-        // Call the fetchWeather function from a coroutine
-        coroutineScope.launch {
-            val weatherResponse = fetchWeatherFromOpenWeather()
-            Log.i(ContentValues.TAG, weatherResponse.toString())
-            if (weatherResponse != null) {
-                val tempinCelcius = weatherResponse.weatherData.feels_like - 273.15
-                binding.temperatureTextView.text = tempinCelcius.toInt().toString() + "°C"
-                binding.weatherDescriptionTextView.text = weatherResponse.weatherDetails[0].description + " in ${weatherResponse.cityName}"
-            }
-        }
-    }
-
-    private suspend fun fetchWeatherFromOpenWeather(): WeatherResponse? {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.openweathermap.org/data/2.5/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val client = OpenWeatherMapApiClient(retrofit.create(OpenWeatherMapService::class.java))
-
-        return client.getCurrentWeather("Manila")
-
-    }
+//    private suspend fun fetchWeatherFromOpenWeather(): WeatherResponse? {
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl("https://api.openweathermap.org/data/2.5/")
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//
+//        val client = OpenWeatherMapApiClient(retrofit.create(OpenWeatherMapService::class.java))
+//
+//        return client.getCurrentWeather("Manila")
+//
+//    }
 
     class WaterConsumptionDataModel {
         @PropertyName("waterConsumption")
@@ -382,47 +382,52 @@ class WaterDashboardPage : Fragment() {
         var previousPercent: Int? = 0
     }
 
+    private suspend fun fetchWeatherDetails(): WeatherUtils.WeatherResponse? {
+        val weatherUtils = WeatherUtils()
+        return weatherUtils.getWeatherDetails()
+    }
+
     // Weather
 
-    class OpenWeatherMapApiClient(private val service: OpenWeatherMapService) {
-        suspend fun getCurrentWeather(location: String): WeatherResponse? {
-            val response = service.getCurrentWeather(location, "4d7436b2e953a39a0d36c842e7742e02")
-            Log.i(ContentValues.TAG, response.toString())
-            if (response.isSuccessful) {
-                return response.body()
-            }
-            return null
-        }
-    }
-
-    interface OpenWeatherMapService {
-        @GET("weather")
-        suspend fun getCurrentWeather(
-            @Query("q") location: String,
-            @Query("appid") apiKey: String
-        ): Response<WeatherResponse>
-    }
-
-    data class WeatherResponse(
-        @SerializedName("name")
-        val cityName: String,
-        @SerializedName("main")
-        val weatherData: WeatherData,
-        @SerializedName("weather")
-        val weatherDetails: List<WeatherDetails>
-    )
-
-    data class WeatherData(
-        @SerializedName("temp")
-        val temperature: Double,
-        @SerializedName("humidity")
-        val humidity: Double,
-        @SerializedName("feels_like")
-        val feels_like: Double
-    )
-
-    data class WeatherDetails(
-        @SerializedName("description")
-        val description: String,
-    )
+//    class OpenWeatherMapApiClient(private val service: OpenWeatherMapService) {
+//        suspend fun getCurrentWeather(location: String): WeatherResponse? {
+//            val response = service.getCurrentWeather(location, "4d7436b2e953a39a0d36c842e7742e02")
+//            Log.i(ContentValues.TAG, response.toString())
+//            if (response.isSuccessful) {
+//                return response.body()
+//            }
+//            return null
+//        }
+//    }
+//
+//    interface OpenWeatherMapService {
+//        @GET("weather")
+//        suspend fun getCurrentWeather(
+//            @Query("q") location: String,
+//            @Query("appid") apiKey: String
+//        ): Response<WeatherResponse>
+//    }
+//
+//    data class WeatherResponse(
+//        @SerializedName("name")
+//        val cityName: String,
+//        @SerializedName("main")
+//        val weatherData: WeatherData,
+//        @SerializedName("weather")
+//        val weatherDetails: List<WeatherDetails>
+//    )
+//
+//    data class WeatherData(
+//        @SerializedName("temp")
+//        val temperature: Double,
+//        @SerializedName("humidity")
+//        val humidity: Double,
+//        @SerializedName("feels_like")
+//        val feels_like: Double
+//    )
+//
+//    data class WeatherDetails(
+//        @SerializedName("description")
+//        val description: String,
+//    )
 }
