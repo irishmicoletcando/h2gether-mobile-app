@@ -21,7 +21,7 @@ import java.util.TimerTask
 
 class WeatherPage : Fragment() {
     private lateinit var binding: FragmentWeatherPageBinding
-    private val weatherUtils = WeatherUtils()
+    val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -42,7 +42,7 @@ class WeatherPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fetchWeatherPeriodically()
+        fetchWeatherPeriodically(1)
 
     }
 
@@ -55,19 +55,6 @@ class WeatherPage : Fragment() {
     private suspend fun fetchWeatherDetails(): WeatherUtils.WeatherResponse? {
         val weatherUtils = WeatherUtils()
         return weatherUtils.getWeatherDetails()
-    }
-
-    private fun capitalizeEachWord(input: String): String {
-        val words = input.split(" ")
-        val capitalizedWords = words.map { it.capitalize() }
-        return capitalizedWords.joinToString(" ")
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getCurrentDate(): String {
-        val currentDate = LocalDate.now()
-        val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
-        return currentDate.format(formatter)
     }
 
     private fun setWeatherImage(weatherDetails: WeatherUtils.WeatherResponse): Any {
@@ -85,20 +72,20 @@ class WeatherPage : Fragment() {
         binding.temperature = weatherDetails?.weatherData?.feels_like?.minus(
             273.15)!!.toInt().toString() + "°C"
         binding.weatherDetails = weatherDetails.cityName
-        binding.weatherDescription = capitalizeEachWord(weatherDetails.weatherDetails[0].description)
+        binding.weatherDescription = AppUtils.capitalizeEachWord(weatherDetails.weatherDetails[0].description)
         setWeatherImage(weatherDetails)
         binding.max = weatherDetails?.weatherData?.temp_max?.minus(
             273.15)!!.toInt().toString()
         binding.min = weatherDetails?.weatherData?.temp_min?.minus(
             273.15)!!.toInt().toString()
 
-        val currentDate = getCurrentDate()
+        val currentDate = AppUtils.getCurrentDate()
         binding.date = currentDate
 
     }
 
-    private fun fetchWeatherPeriodically() {
-        val interval = 1 * 60 * 1000 // 15 minutes in milliseconds
+    private fun fetchWeatherPeriodically(min: Int) {
+        val interval = min * 60 * 1000 // 15 minutes in milliseconds
         val timer = Timer()
 
         val task = object : TimerTask() {

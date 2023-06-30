@@ -1,11 +1,14 @@
 package com.h2gether.appUtils
 
 import android.content.ContentValues
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -15,6 +18,7 @@ import retrofit2.http.Query
 
 
 class WeatherUtils {
+    val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
     suspend fun getWeatherDetails(): WeatherResponse? {
         return coroutineScope {
             val weatherDeferred = async { fetchWeather() }
@@ -23,6 +27,25 @@ class WeatherUtils {
             return@coroutineScope weatherResponse
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setWeatherDetails(){
+        var weatherDetails = runBlocking { getWeatherDetails() }
+        AppUtils.temperatureIndex = weatherDetails?.weatherData?.feels_like?.minus(
+            273.15
+        )!!.toInt()
+        // set values to text views
+        AppUtils.cityName = weatherDetails.cityName
+        AppUtils.description = AppUtils.capitalizeEachWord(weatherDetails.weatherDetails[0].description)
+        AppUtils.temperatureMax = weatherDetails?.weatherData?.temp_max?.minus(
+            273.15)!!.toInt()
+        AppUtils.temperatureMin = weatherDetails?.weatherData?.temp_min?.minus(
+            273.15)!!.toInt()
+
+        val currentDate = AppUtils.getCurrentDate()
+        AppUtils.date = currentDate
+    }
+
     private suspend fun fetchWeather(): WeatherResponse? = withContext(Dispatchers.IO) {
         return@withContext fetchWeatherFromOpenWeather()
     }
@@ -38,8 +61,6 @@ class WeatherUtils {
         return client.getCurrentWeather("Manila")
 
     }
-
-    // Weather
 
     class OpenWeatherMapApiClient(private val service: OpenWeatherMapService) {
         suspend fun getCurrentWeather(location: String): WeatherResponse? {
@@ -88,4 +109,5 @@ class WeatherUtils {
         @SerializedName("description")
         val description: String,
     )
+
 }

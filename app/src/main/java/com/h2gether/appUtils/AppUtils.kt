@@ -1,5 +1,9 @@
 package com.h2gether.appUtils
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Date
 
 class AppUtils private constructor(){
@@ -17,6 +21,7 @@ class AppUtils private constructor(){
     var temperatureMax: Int? = 0
     var location: String? = ""
     var date: String? = ""
+    var description: String? = ""
     var cityName: String? = ""
 
     companion object {
@@ -28,6 +33,19 @@ class AppUtils private constructor(){
                 instance ?: AppUtils().also { instance = it }
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getCurrentDate(): String {
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
+        return currentDate.format(formatter)
+    }
+
+    fun capitalizeEachWord(input: String): String {
+        val words = input.split(" ")
+        val capitalizedWords = words.map { it.capitalize() }
+        return capitalizedWords.joinToString(" ")
     }
 
 

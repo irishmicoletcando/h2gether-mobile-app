@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.PorterDuff
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
@@ -14,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
@@ -46,7 +48,9 @@ class WaterDashboardPage : Fragment() {
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
+    val WeatherUtils = WeatherUtils()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,7 +59,7 @@ class WaterDashboardPage : Fragment() {
 
         // fetch water details and other initializations
         fetchWaterDetails()
-        setWeatherDetails()
+        WeatherUtils.setWeatherDetails()
 
         // Inflate the layout for this fragment
         return binding.root
@@ -64,10 +68,12 @@ class WaterDashboardPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setWaterDetails()
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
+
         databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
 
         // button handlers
@@ -243,6 +249,45 @@ class WaterDashboardPage : Fragment() {
 
     }
 
+    private fun fetchWaterDetails() {
+        firebaseAuth = FirebaseAuth.getInstance()
+        val uid = firebaseAuth.currentUser?.uid
+        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
+        val dataRef: DatabaseReference = database.child("users/$uid/water-consumption")
+
+        dataRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Handle the retrieved data here
+                if (dataSnapshot.exists()) {
+                    val waterConsumption =
+                        dataSnapshot.getValue(WaterConsumptionDataModel::class.java)
+                    // Process the retrieved value as needed
+
+                    if (waterConsumption != null) {
+                        AppUtils.waterConsumed = waterConsumption.waterConsumption
+                        AppUtils.selectedOption = waterConsumption.selectedOption
+                        AppUtils.previousPercent = waterConsumption.previousPercent
+                    }
+                } else {
+                    // Data does not exist at the specified location
+                    AppUtils.waterConsumed = 0
+                    AppUtils.selectedOption = 0
+                    AppUtils.previousPercent = 0
+                }
+
+                AppUtils.waterConsumed?.let { setWaterDetails() }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occur during retrieval
+            }
+        }
+
+        )
+
+
+    }
+
     private fun setWaterDetails() {
         binding.tvRecommendedAmount.text = AppUtils.targetWater.toString()
         binding.tvAmountConsumed.text = AppUtils.waterConsumed.toString()
@@ -305,42 +350,6 @@ class WaterDashboardPage : Fragment() {
         progressHandler.postDelayed(progressRunnable, 500)
     }
 
-    private fun fetchWaterDetails() {
-        firebaseAuth = FirebaseAuth.getInstance()
-        val uid = firebaseAuth.currentUser?.uid
-        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-        val dataRef: DatabaseReference = database.child("users/$uid/water-consumption")
-
-        dataRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Handle the retrieved data here
-                if (dataSnapshot.exists()) {
-                    val waterConsumption =
-                        dataSnapshot.getValue(WaterConsumptionDataModel::class.java)
-                    // Process the retrieved value as needed
-
-                    if (waterConsumption != null) {
-                        AppUtils.waterConsumed = waterConsumption.waterConsumption
-                        AppUtils.selectedOption = waterConsumption.selectedOption
-                        AppUtils.previousPercent = waterConsumption.previousPercent
-                    }
-                } else {
-                    // Data does not exist at the specified location
-                    AppUtils.waterConsumed = 0
-                }
-                AppUtils.waterConsumed?.let { setWaterDetails() }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle any errors that occur during retrieval
-            }
-        }
-
-        )
-
-
-    }
-
     class WaterConsumptionDataModel {
         @PropertyName("waterConsumption")
         var waterConsumption: Int? = 0
@@ -348,16 +357,29 @@ class WaterDashboardPage : Fragment() {
         var previousPercent: Int? = 0
     }
 
-    private suspend fun fetchWeatherDetails(): WeatherUtils.WeatherResponse? {
+
+    // fetch weather details
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    private fun setWeatherDetails(){
+//        var weatherDetails = runBlocking { fetchWeatherDetails() }
+//        AppUtils.temperatureIndex = weatherDetails?.weatherData?.feels_like?.minus(
+//            273.15
+//        )!!.toInt()
+//        // set values to text views
+//        AppUtils.cityName = weatherDetails.cityName
+//        AppUtils.description = AppUtils.capitalizeEachWord(weatherDetails.weatherDetails[0].description)
+//        AppUtils.temperatureMax = weatherDetails?.weatherData?.temp_max?.minus(
+//            273.15)!!.toInt()
+//        AppUtils.temperatureMin = weatherDetails?.weatherData?.temp_min?.minus(
+//            273.15)!!.toInt()
+//
+//        val currentDate = AppUtils.getCurrentDate()
+//        AppUtils.date = currentDate
+//    }
+    private suspend fun setWeather(): WeatherUtils.WeatherResponse? {
         val weatherUtils = WeatherUtils()
         return weatherUtils.getWeatherDetails()
     }
 
-    private fun setWeatherDetails(){
-        var weatherDetails = runBlocking { fetchWeatherDetails() }
-        AppUtils.temperatureIndex = weatherDetails?.weatherData?.feels_like?.minus(
-            273.15
-        )!!.toInt()
-        binding.temperatureTextView.text = AppUtils.temperatureIndex.toString()
-    }
+
 }
