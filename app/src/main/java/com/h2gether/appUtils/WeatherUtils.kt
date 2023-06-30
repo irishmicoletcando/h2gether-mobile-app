@@ -20,7 +20,6 @@ class WeatherUtils {
             val weatherDeferred = async { fetchWeather() }
             val weatherResponse = weatherDeferred.await()
 
-            Log.i(ContentValues.TAG, weatherResponse.toString())
             return@coroutineScope weatherResponse
         }
     }

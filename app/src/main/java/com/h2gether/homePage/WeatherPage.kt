@@ -16,6 +16,8 @@ import com.h2gether.appUtils.WeatherUtils
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Timer
+import java.util.TimerTask
 
 class WeatherPage : Fragment() {
     private lateinit var binding: FragmentWeatherPageBinding
@@ -30,25 +32,11 @@ class WeatherPage : Fragment() {
         setToolBar("Weather")
 
         var weatherDetails = runBlocking {fetchWeatherDetails()}
-
         if (weatherDetails != null) {
-
-            // set values to text views
-            binding.temperature = weatherDetails?.weatherData?.feels_like?.minus(
-                273.15)!!.toInt().toString() + "°C"
-            binding.weatherDetails = weatherDetails.cityName
-            binding.weatherDescription = capitalizeEachWord(weatherDetails.weatherDetails[0].description)
-            setWeatherImage(weatherDetails)
-            binding.max = weatherDetails?.weatherData?.temp_max?.minus(
-                273.15)!!.toInt().toString()
-            binding.min = weatherDetails?.weatherData?.temp_min?.minus(
-                273.15)!!.toInt().toString()
-
-            val currentDate = getCurrentDate()
-            binding.date = currentDate
-
+            updateUI(weatherDetails)
         }
 
+        
         return binding.root
     }
 
@@ -85,4 +73,36 @@ class WeatherPage : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun updateUI(weatherDetails: WeatherUtils.WeatherResponse){
+        // set values to text views
+        binding.temperature = weatherDetails?.weatherData?.feels_like?.minus(
+            273.15)!!.toInt().toString() + "°C"
+        binding.weatherDetails = weatherDetails.cityName
+        binding.weatherDescription = capitalizeEachWord(weatherDetails.weatherDetails[0].description)
+        setWeatherImage(weatherDetails)
+        binding.max = weatherDetails?.weatherData?.temp_max?.minus(
+            273.15)!!.toInt().toString()
+        binding.min = weatherDetails?.weatherData?.temp_min?.minus(
+            273.15)!!.toInt().toString()
+
+        val currentDate = getCurrentDate()
+        binding.date = currentDate
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val interval = 15 * 60 * 1000 // 15 minutes in milliseconds
+        val timer = Timer()
+//        timer.scheduleAtFixedRate(object : TimerTask() {
+//            override fun run() {
+//                fetchWeatherDetails()
+//            }
+//        }, 0, interval)
+    }
+
 }
+
+
