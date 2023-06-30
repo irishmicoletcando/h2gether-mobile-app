@@ -6,7 +6,7 @@
 
     <data>
         <variable
-            name="weather"
+            name="weatherDetails"
             type="com.h2gether.appUtils.WeatherUtils.WeatherResponse" />
     </data>
 
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="Manila"
+            android:text="@{weatherDetails.cityName}"
             android:textColor="@color/navbarTextColor"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"

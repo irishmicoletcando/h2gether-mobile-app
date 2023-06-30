@@ -7,13 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
-import com.example.h2gether.R
-import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
 import com.example.h2gether.databinding.FragmentWeatherPageBinding
 import com.h2gether.appUtils.WeatherUtils
-import kotlin.reflect.typeOf
+import kotlinx.coroutines.runBlocking
 
 class WeatherPage : Fragment() {
     private lateinit var binding: FragmentWeatherPageBinding
@@ -26,7 +22,12 @@ class WeatherPage : Fragment() {
         binding = FragmentWeatherPageBinding.inflate(inflater, container, false)
         setToolBar("Weather")
 
-        val weatherDetails = weatherUtils.fetchWeather()
+        var weatherDetails = runBlocking {fetchWeatherDetails()}
+        Log.i(ContentValues.TAG, "eto $weatherDetails")
+
+        if (weatherDetails != null) {
+            binding.weatherDetails = weatherDetails
+        }
 
         return binding.root
     }
@@ -35,5 +36,10 @@ class WeatherPage : Fragment() {
         binding.toolbarLayout.logoutButton.visibility = View.GONE
         binding.toolbarLayout.backButton.visibility = View.GONE
         binding.toolbarLayout.toolbarTitle.text = title
+    }
+
+    private suspend fun fetchWeatherDetails(): WeatherUtils.WeatherResponse? {
+        val weatherUtils = WeatherUtils()
+        return weatherUtils.getWeatherDetails()
     }
 }

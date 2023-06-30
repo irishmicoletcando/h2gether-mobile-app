@@ -6,7 +6,10 @@ import com.google.firebase.database.PropertyName
 import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -15,19 +18,33 @@ import retrofit2.http.Query
 import java.util.Objects
 
 class WeatherUtils {
-    fun fetchWeather(): WeatherResponse? {
-        val coroutineScope = CoroutineScope(Dispatchers.Main)
-        var weatherResponse: WeatherResponse? = null
-
-        // Call the fetchWeather function from a coroutine
-        coroutineScope.launch {
-            weatherResponse = fetchWeatherFromOpenWeather()
-
-        }
-
-        Log.i(ContentValues.TAG, weatherResponse.toString())
-        return weatherResponse
+//    fun fetchWeather(): WeatherResponse? {
+//        val coroutineScope = CoroutineScope(Dispatchers.Main)
+//        var weatherResponse: WeatherResponse? = null
+//
+//        // Call the fetchWeather function from a coroutine
+//        coroutineScope.launch {
+//            weatherResponse = fetchWeatherFromOpenWeather()
+//
+//        }
+//
+//        Log.i(ContentValues.TAG, weatherResponse.toString())
+//        return weatherResponse
+//    }
+    suspend fun fetchWeather(): WeatherResponse? = withContext(Dispatchers.IO) {
+        return@withContext fetchWeatherFromOpenWeather()
     }
+
+    suspend fun getWeatherDetails(): WeatherResponse? {
+        return coroutineScope {
+            val weatherDeferred = async { fetchWeather() }
+            val weatherResponse = weatherDeferred.await()
+
+            Log.i(ContentValues.TAG, weatherResponse.toString())
+            return@coroutineScope weatherResponse
+        }
+    }
+
 
     private suspend fun fetchWeatherFromOpenWeather(): WeatherResponse? {
         val retrofit = Retrofit.Builder()
