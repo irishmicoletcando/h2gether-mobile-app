@@ -10,17 +10,21 @@ import android.widget.TextView
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
 import com.example.h2gether.databinding.FragmentWeatherPageBinding
+import com.h2gether.appUtils.WeatherUtils
 
 class WeatherPage : Fragment() {
     private lateinit var binding: FragmentWeatherPageBinding
+    private val weatherUtils = WeatherUtils()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         binding = FragmentWeatherPageBinding.inflate(inflater, container, false)
-
         setToolBar("Weather")
+
+        val weatherDetails = weatherUtils.fetchWeather()
+
 
         return binding.root
     }

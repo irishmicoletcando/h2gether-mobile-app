@@ -15,7 +15,7 @@ import retrofit2.http.Query
 import java.util.Objects
 
 class WeatherUtils {
-    private fun fetchWeather(): WeatherResponse? {
+    fun fetchWeather(): WeatherResponse? {
         val coroutineScope = CoroutineScope(Dispatchers.Main)
         var weatherResponse: WeatherResponse? = null
 
