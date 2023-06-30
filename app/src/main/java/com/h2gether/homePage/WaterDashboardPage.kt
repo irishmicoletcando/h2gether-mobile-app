@@ -55,6 +55,7 @@ class WaterDashboardPage : Fragment() {
 
         // fetch water details and other initializations
         fetchWaterDetails()
+        setWeatherDetails()
 
         // Inflate the layout for this fragment
         return binding.root
@@ -63,18 +64,11 @@ class WaterDashboardPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var weatherDetails = runBlocking { fetchWeatherDetails() }
-        AppUtils.temperatureIndex = weatherDetails?.weatherData?.feels_like?.minus(
-            273.15
-        )!!.toInt()
-
-        binding.temperatureTextView.text = AppUtils.temperatureIndex.toString()
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
-        databaseReference =
-            FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
+        databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
 
         // button handlers
         val tint = context?.let { it1 -> ContextCompat.getColor(it1, R.color.azure) }
@@ -357,5 +351,13 @@ class WaterDashboardPage : Fragment() {
     private suspend fun fetchWeatherDetails(): WeatherUtils.WeatherResponse? {
         val weatherUtils = WeatherUtils()
         return weatherUtils.getWeatherDetails()
+    }
+
+    private fun setWeatherDetails(){
+        var weatherDetails = runBlocking { fetchWeatherDetails() }
+        AppUtils.temperatureIndex = weatherDetails?.weatherData?.feels_like?.minus(
+            273.15
+        )!!.toInt()
+        binding.temperatureTextView.text = AppUtils.temperatureIndex.toString()
     }
 }
