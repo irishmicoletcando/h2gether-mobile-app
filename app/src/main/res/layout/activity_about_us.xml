@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context="com.h2gether.settingsPage.AboutUsActivity">
 
+    <include
+        android:id="@+id/toolbarPrivacyLayout"
+        layout="@layout/activity_tool_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" >
+
+        <TextView
+            android:id="@+id/textViewAboutUs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="" />
+
+    </ScrollView>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
         android:layout_width="wrap_content"
