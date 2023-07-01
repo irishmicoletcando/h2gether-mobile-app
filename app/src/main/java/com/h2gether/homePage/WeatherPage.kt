@@ -70,6 +70,7 @@ class WeatherPage : Fragment() {
 
         val currentDate = AppUtils.getCurrentDate()
         binding.date = currentDate
+        binding.targetWater = AppUtils.targetWater.toString()
 
         setWeatherImage(AppUtils.imageReference.toString())
 
