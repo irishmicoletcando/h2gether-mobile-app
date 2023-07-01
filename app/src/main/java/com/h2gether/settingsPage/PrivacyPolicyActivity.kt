@@ -1,29 +1,38 @@
 package com.h2gether.settingsPage
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import com.example.h2gether.R
+import com.example.h2gether.databinding.ActivityPrivacyPolicyBinding
+import com.example.h2gether.databinding.ActivityToolBarBinding
 
 class PrivacyPolicyActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityPrivacyPolicyBinding
+    private lateinit var toolBarBinding: ActivityToolBarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_privacy_policy)
+        binding = ActivityPrivacyPolicyBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val backButton = findViewById<ImageButton>(R.id.back_button)
-        val pageTitle = findViewById<TextView>(R.id.toolbar_title)
-        val logoutButton: ImageButton = findViewById(R.id.logout_button)
+        toolBarBinding = ActivityToolBarBinding.bind(binding.root.findViewById(R.id.toolbarPrivacyLayout))
+        val pageTitle = toolBarBinding.toolbarTitle
+        val logoutButton = toolBarBinding.logoutButton
         logoutButton.visibility = View.GONE
 
         // Customize the toolbar as needed
         pageTitle.text = "Privacy Policy"
-        backButton.setOnClickListener {
-            finish()
+
+        toolBarBinding.backButton.setOnClickListener {
+            onBackPressed()
         }
+    }
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
 }
