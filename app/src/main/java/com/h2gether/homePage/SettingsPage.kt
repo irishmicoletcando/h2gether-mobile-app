@@ -1,13 +1,16 @@
 package com.h2gether.homePage
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.h2gether.R
+import com.h2gether.settingsPage.PrivacyPolicyActivity
 
 class SettingsPage : Fragment() {
     override fun onCreateView(
@@ -27,6 +30,14 @@ class SettingsPage : Fragment() {
         backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+
+        val privacyPolicyLayout = rootView.findViewById<LinearLayout>(R.id.ll_privacy_policy)
+
+        privacyPolicyLayout.setOnClickListener {
+            val intent = Intent(activity, PrivacyPolicyActivity::class.java)
+            startActivity(intent)
+        }
+
         return rootView
     }
 }
