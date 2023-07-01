@@ -16,7 +16,7 @@ class AppUtils private constructor(){
 
     // Water Variables
     var selectedOption: Int? = 0
-    var targetWater: Int? = 2200
+    var targetWater: Int? = 0
     var waterConsumed: Int? = 0
     var percent: Int? = 0
     var previousPercent: Int? = 0

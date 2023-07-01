@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.gson.annotations.SerializedName
 import com.h2gether.appUtils.AppUtils
 import com.h2gether.appUtils.UserConfigUtils
+import com.h2gether.appUtils.WaterPlanUtils
 import com.h2gether.appUtils.WeatherUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +52,7 @@ class WaterDashboardPage : Fragment() {
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
     val WeatherUtils = WeatherUtils()
     val UserConfigUtils = UserConfigUtils()
+    val WaterPlanUtils = WaterPlanUtils()
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -64,6 +66,7 @@ class WaterDashboardPage : Fragment() {
         fetchWaterDetails()
         UserConfigUtils.setUserConfigurationDetails()
         WeatherUtils.setWeatherDetails()
+        WaterPlanUtils.setTargetWater()
         setWaterDetails()
 
         return binding.root

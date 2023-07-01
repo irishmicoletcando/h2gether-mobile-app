@@ -5,7 +5,18 @@ class WaterPlanUtils {
     val WeatherUtils = WeatherUtils()
     val UserConfigUtils = UserConfigUtils()
 
-    fun calculateTargetWaterLevel(gender: String, age: Int, temperatureIndexCelsius: Int): Int {
+
+    fun setTargetWater() {
+        AppUtils.targetWater = AppUtils.age?.let {
+            AppUtils.temperatureIndex?.let { it1 ->
+                calculateTargetWater(AppUtils.sex.toString(),
+                    it, it1
+                )
+            }
+        }
+    }
+
+    private fun calculateTargetWater(gender: String, age: Int, temperatureIndexCelsius: Int): Int {
         return when (gender) {
             "Female" -> {
                 when {
