@@ -14,23 +14,24 @@ import com.h2gether.homePage.ProfilePage
 
 class UserConfigUtils {
     lateinit var auth: FirebaseAuth
-    val currentUser: FirebaseUser? = auth.currentUser
-    private val uid = currentUser?.uid
-
-    val database = FirebaseDatabase.getInstance()
-    val userRef: DatabaseReference = database.getReference("users/$uid/user-profile")
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
 
-    fun fetchUserConfigurationDetails(){
+    fun setUserConfigurationDetails(){
+        auth = FirebaseAuth.getInstance()
+        val currentUser: FirebaseUser? = auth.currentUser
+        val uid = currentUser?.uid
+
+        val database = FirebaseDatabase.getInstance()
+        val userRef: DatabaseReference = database.getReference("users/$uid/user-profile")
         userRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val userProfile = dataSnapshot.getValue(UserConfigUtils.UserProfile::class.java)
                 userProfile?.let {
-                    AppUtils.sex = userProfile.sex
+                    AppUtils.sex = userProfile.sex.toString()
                     AppUtils.age = userProfile.age
                     AppUtils.weight = userProfile.weight
                     AppUtils.height = userProfile.height
-                    AppUtils.activityLevel = userProfile.activityLevel
+                    AppUtils.activityLevel = userProfile.activityLevel.toString()
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {

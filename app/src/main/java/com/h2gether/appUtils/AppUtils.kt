@@ -1,7 +1,9 @@
 package com.h2gether.appUtils
 
+import android.content.ContentValues
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.google.firebase.database.IgnoreExtraProperties
@@ -64,6 +66,10 @@ class AppUtils private constructor(){
 
     fun showToast(message: String, context: Context) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun log(message: String){
+        Log.i(ContentValues.TAG, message)
     }
 
 }

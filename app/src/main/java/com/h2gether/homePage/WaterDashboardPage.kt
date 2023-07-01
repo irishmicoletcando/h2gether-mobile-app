@@ -29,6 +29,7 @@ import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.annotations.SerializedName
 import com.h2gether.appUtils.AppUtils
+import com.h2gether.appUtils.UserConfigUtils
 import com.h2gether.appUtils.WeatherUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,6 +50,7 @@ class WaterDashboardPage : Fragment() {
     private lateinit var firebaseAuth: FirebaseAuth
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
     val WeatherUtils = WeatherUtils()
+    val UserConfigUtils = UserConfigUtils()
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -60,8 +62,8 @@ class WaterDashboardPage : Fragment() {
 
         // fetch water details and other initializations
         fetchWaterDetails()
+        UserConfigUtils.setUserConfigurationDetails()
         WeatherUtils.setWeatherDetails()
-
         setWaterDetails()
 
         return binding.root
