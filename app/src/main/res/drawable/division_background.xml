@@ -20,7 +20,7 @@
     <!-- Shape Layer -->
     <item android:top="1dp">
         <shape>
-            <solid android:color="@color/white" /> <!-- Background color -->
+            <solid android:color="#F5F7FB" /> <!-- Background color -->
             <corners
                 android:topLeftRadius="30dp"
                 android:topRightRadius="30dp"
