@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.google.firebase.database.IgnoreExtraProperties
+import com.google.firebase.database.PropertyName
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -27,6 +29,14 @@ class AppUtils private constructor(){
     var description: String? = ""
     var cityName: String? = ""
     var imageReference: String? = ""
+
+    // User Configuration
+    var age: Int? = 0
+    var height: Int? = 0
+    var weight: Int? = 0
+    var sex: String? = ""
+    var activityLevel: String? = ""
+
 
     companion object {
         @Volatile
@@ -56,6 +66,18 @@ class AppUtils private constructor(){
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
+    @IgnoreExtraProperties
+    class UserProfile(
+        val activityLevel: String? = "",
+        @get:PropertyName("age (yrs)") @set:PropertyName("age (yrs)")
+        var age: Int? = 0,
 
+        @get:PropertyName("height (cm)") @set:PropertyName("height (cm)")
+        var height: Int? = 0,
+        val sex: String? = "",
+
+        @get:PropertyName("weight (kg)") @set:PropertyName("weight (kg)")
+        var weight: Int? = 0,
+    )
 
 }
