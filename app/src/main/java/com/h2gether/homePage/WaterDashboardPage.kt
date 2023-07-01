@@ -61,8 +61,8 @@ class WaterDashboardPage : Fragment() {
         // fetch water details and other initializations
         fetchWaterDetails()
         WeatherUtils.setWeatherDetails()
-        setWaterDetails()
 
+        setWaterDetails()
 
         return binding.root
     }
@@ -70,11 +70,9 @@ class WaterDashboardPage : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        AppUtils.selectedOption = 0
         AppUtils.previousPercent = 0
         AppUtils.percent = AppUtils.previousPercent
-
-        AppUtils.selectedOption?.let { retainSelectedOptionIcon(it) }
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
@@ -86,51 +84,55 @@ class WaterDashboardPage : Fragment() {
 
         val tint = context?.let { it1 -> ContextCompat.getColor(it1, R.color.azure) }
         binding.btnAddWater.setOnClickListener {
-            if (AppUtils.waterConsumed!! < AppUtils.targetWater!!) {
-                AppUtils.waterConsumed =
-                    AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
-                AppUtils.waterConsumed?.let { setWaterDetails()}
-                AppUtils.waterConsumed?.let { it1 ->
-                    if (uid != null) {
-                        AppUtils.selectedOption?.let { it2 ->
-                            AppUtils.previousPercent?.let { it3 ->
-                                saveWaterConsumption(
-                                    it1, it2,
-                                    it3
-                                )
+            if (AppUtils.selectedOption == 0 ) {
+                context?.let { it1 -> AppUtils.showToast("Please select an option", it1) }
+            } else {
+                if (AppUtils.waterConsumed!! < AppUtils.targetWater!!) {
+                    AppUtils.waterConsumed =
+                        AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
+                    AppUtils.waterConsumed?.let { setWaterDetails() }
+                    AppUtils.waterConsumed?.let { it1 ->
+                        if (uid != null) {
+                            AppUtils.selectedOption?.let { it2 ->
+                                AppUtils.previousPercent?.let { it3 ->
+                                    saveWaterConsumption(
+                                        it1, it2,
+                                        it3
+                                    )
+                                }
                             }
                         }
                     }
-                }
-            } else {
-                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
-                AppUtils.waterConsumed =
-                    AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
-                AppUtils.waterConsumed?.let { setWaterDetails()}
-                AppUtils.waterConsumed?.let { it1 ->
-                    if (uid != null) {
-                        AppUtils.selectedOption?.let { it2 ->
-                            AppUtils.previousPercent?.let { it3 ->
-                                saveWaterConsumption(
-                                    it1, it2,
-                                    it3
-                                )
+                } else {
+                    AppUtils.waterConsumed =
+                        AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
+                    AppUtils.waterConsumed?.let { setWaterDetails() }
+                    AppUtils.waterConsumed?.let { it1 ->
+                        if (uid != null) {
+                            AppUtils.selectedOption?.let { it2 ->
+                                AppUtils.previousPercent?.let { it3 ->
+                                    saveWaterConsumption(
+                                        it1, it2,
+                                        it3
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
-
         }
 
         binding.btnUndoWater.setOnClickListener {
+            if (AppUtils.selectedOption == 0 ) {
+                context?.let { it1 -> AppUtils.showToast("Please select an option", it1) }
+            } else {
             AppUtils.waterConsumed =
                 AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.minus(it1) }
 
             if (AppUtils.waterConsumed!! < 0) {
                 AppUtils.waterConsumed = 0
             }
-
             AppUtils.waterConsumed?.let { setWaterDetails() }
             AppUtils.waterConsumed?.let { it1 ->
                 if (uid != null) {
@@ -143,6 +145,7 @@ class WaterDashboardPage : Fragment() {
                         }
                     }
                 }
+            }
             }
         }
 
@@ -241,13 +244,11 @@ class WaterDashboardPage : Fragment() {
 
                     if (waterConsumption != null) {
                         AppUtils.waterConsumed = waterConsumption.waterConsumption
-                        AppUtils.selectedOption = waterConsumption.selectedOption
                         AppUtils.previousPercent = waterConsumption.previousPercent
                     }
                 } else {
                     // Data does not exist at the specified location
                     AppUtils.waterConsumed = 0
-                    AppUtils.selectedOption = 0
                     AppUtils.previousPercent = 0
                 }
 
@@ -306,6 +307,7 @@ class WaterDashboardPage : Fragment() {
             binding.percent = AppUtils.percent.toString() + "%"
         } else {
             binding.percent = "100%"
+            Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
         }
 
         val progressHandler = Handler()
@@ -323,6 +325,8 @@ class WaterDashboardPage : Fragment() {
             }
         }
         progressHandler.postDelayed(progressRunnable, 500)
+
+
     }
 
     private fun decolorUnpressedIcons(){
@@ -332,43 +336,6 @@ class WaterDashboardPage : Fragment() {
         binding.iv200ml.colorFilter = null
         binding.iv250ml.colorFilter = null
         binding.ivCustom.colorFilter = null
-    }
-
-    private fun retainSelectedOptionIcon(selectedOption: Int){
-        val tint = context?.let { it1 -> ContextCompat.getColor(it1, R.color.azure) }
-        when (selectedOption) {
-            50 -> {
-                if (tint != null) {
-                    binding.iv50ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
-                }
-            }
-            100 -> {
-                if (tint != null) {
-                    binding.iv100ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
-                }
-            }
-            150 -> {
-                if (tint != null) {
-                    binding.iv150ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
-                }
-            }
-            200 -> {
-                if (tint != null) {
-                    binding.iv200ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
-                }
-            }
-            250 -> {
-                if (tint != null) {
-                    binding.iv250ml.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
-                }
-            }
-
-            else -> {
-                if (tint != null) {
-                    binding.ivCustom.setColorFilter(tint, PorterDuff.Mode.SRC_IN)
-                }
-            }
-        }
     }
 
     class WaterConsumptionDataModel {

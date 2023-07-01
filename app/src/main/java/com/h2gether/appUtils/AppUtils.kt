@@ -1,6 +1,8 @@
 package com.h2gether.appUtils
 
+import android.content.Context
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -49,6 +51,11 @@ class AppUtils private constructor(){
         val capitalizedWords = words.map { it.capitalize() }
         return capitalizedWords.joinToString(" ")
     }
+
+    fun showToast(message: String, context: Context) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
 
 
 }
