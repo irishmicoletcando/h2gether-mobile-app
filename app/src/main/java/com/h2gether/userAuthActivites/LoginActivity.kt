@@ -45,15 +45,24 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDatabase = FirebaseDatabase.getInstance()
         sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
+        // Check if the user is already signed in
+        val currentUser = firebaseAuth.currentUser
+        if (currentUser != null) {
+            // User is already signed in, navigate to the desired activity
+            val intent = Intent(this, NavigationBarActivity::class.java)
+            startActivity(intent)
+            finish() // Optional: Prevents the user from going back to the login screen using the back button
+        } else {
+            // User is not signed in, continue with the regular login flow
+            binding = ActivityLoginBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-
-        loadRememberMe()
+            loadRememberMe()
+        }
 
         binding.tvRegisterAccount.setOnClickListener{
             val intent = Intent(this, SignupActivity::class.java)
@@ -125,11 +134,8 @@ class LoginActivity : AppCompatActivity() {
             data class User(val email: String, val password: String)
             val email = binding.etInputEmail.text.toString()
             val pass = binding.etInputPassword.text.toString()
-            val newUser = User(email,pass)
+            val newUser = User(email, pass)
             databaseReference.setValue(newUser)
-            println("user remembered")
-
-
 
             // Perform necessary actions like saving login credentials or other relevant tasks
         } else {
@@ -142,15 +148,16 @@ class LoginActivity : AppCompatActivity() {
             binding.etInputPassword.setText("")
 
             // Sign out the user from Firebase Authentication
-//            firebaseAuth.signOut()
-//
-//            // Delete the user ID from Firebase Database
-//            if (userId != null) {
-//                val databaseReference = firebaseDatabase.getReference("users")
-//                databaseReference.child(userId).removeValue()
-//            }
+            firebaseAuth.signOut()
+
+            // Delete the user ID from Firebase Database
+            if (userId != null) {
+                val databaseReference = firebaseDatabase.getReference("users")
+                databaseReference.child(userId).removeValue()
+            }
         }
     }
+
 
     private fun saveRememberMeStatus(rememberMe: Boolean) {
         val editor = sharedPreferences.edit()
@@ -297,7 +304,7 @@ class LoginActivity : AppCompatActivity() {
     class YourDataModel {
         var email: String? = null
         var password: String? = null
-        }
+    }
 
     fun hasDataInDatabase(uid: String, databaseReference: DatabaseReference, onDataExists: (Boolean) -> Unit) {
         val userRef = FirebaseDatabase.getInstance().getReference("users/$uid/user-profile")
