@@ -1,32 +1,38 @@
 package com.h2gether.settingsPage
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import com.example.h2gether.R
+import com.example.h2gether.databinding.ActivityPrivacyPolicyBinding
+import com.example.h2gether.databinding.ActivityToolBarBinding
 
-class privacyPolicyActivity : AppCompatActivity() {
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_settings_page, container, false)
+class PrivacyPolicyActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityPrivacyPolicyBinding
+    private lateinit var toolBarBinding: ActivityToolBarBinding
 
-        val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
-        val pageTitle = rootView.findViewById<TextView>(R.id.toolbar_title)
-        val logoutButton: ImageButton = rootView.findViewById(R.id.logout_button)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityPrivacyPolicyBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        toolBarBinding = ActivityToolBarBinding.bind(binding.root.findViewById(R.id.toolbarPrivacyLayout))
+        val pageTitle = toolBarBinding.toolbarTitle
+        val logoutButton = toolBarBinding.logoutButton
         logoutButton.visibility = View.GONE
 
         // Customize the toolbar as needed
         pageTitle.text = "Privacy Policy"
-        backButton.setOnClickListener {
-            parentFragmentManager.popBackStack()
+
+        toolBarBinding.backButton.setOnClickListener {
+            onBackPressed()
         }
-        return rootView
+    }
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
 }
