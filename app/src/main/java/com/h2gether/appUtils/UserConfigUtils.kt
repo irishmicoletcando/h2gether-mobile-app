@@ -1,10 +1,43 @@
 package com.h2gether.appUtils
 
+import com.example.h2gether.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.PropertyName
+import com.google.firebase.database.ValueEventListener
+import com.h2gether.homePage.ProfilePage
 
 class UserConfigUtils {
+    lateinit var auth: FirebaseAuth
+    val currentUser: FirebaseUser? = auth.currentUser
+    private val uid = currentUser?.uid
+
+    val database = FirebaseDatabase.getInstance()
+    val userRef: DatabaseReference = database.getReference("users/$uid/user-profile")
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
+
+    fun fetchUserConfigurationDetails(){
+        userRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val userProfile = dataSnapshot.getValue(UserConfigUtils.UserProfile::class.java)
+                userProfile?.let {
+                    AppUtils.sex = userProfile.sex
+                    AppUtils.age = userProfile.age
+                    AppUtils.weight = userProfile.weight
+                    AppUtils.height = userProfile.height
+                    AppUtils.activityLevel = userProfile.activityLevel
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occur during data fetching
+            }
+        })
+    }
 
     @IgnoreExtraProperties
     class UserProfile(
