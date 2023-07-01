@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityToolBarBinding
 import com.example.h2gether.databinding.FragmentSettingsPageBinding
+import com.h2gether.settingsPage.AboutUsActivity
 import com.h2gether.settingsPage.PrivacyPolicyActivity
 
 class SettingsPage : Fragment() {
@@ -39,6 +40,12 @@ class SettingsPage : Fragment() {
             val intent = Intent(requireActivity(), PrivacyPolicyActivity::class.java)
             startActivity(intent)
         }
+
+        binding.llAboutUs.setOnClickListener {
+            val intent = Intent(requireActivity(), AboutUsActivity::class.java)
+            startActivity(intent)
+        }
+
         return binding.root
     }
 }
