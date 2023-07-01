@@ -19,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Next Button -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.43">
+        app:layout_constraintVertical_bias="0.367">
 
         <ImageView
             android:id="@+id/imageView"
@@ -44,8 +45,8 @@
             android:id="@+id/tv_step_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_semibold"
             android:layout_marginTop="10dp"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Step 2/5"
             android:textColor="@color/azure"
             android:textSize="16sp"
@@ -59,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Select your age"
+            android:text="How old are you?"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_age_description"
@@ -68,20 +69,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_step_2" />
 
-        <TextView
-            android:id="@+id/tv_age_description"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="To give you a personalized experience, we need to know your age."
-            android:textAlignment="center"
-            android:textColor="@color/slightDarkGray"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/ll_age_picker"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_select_your_age_heading" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_age_description"-->
+<!--            android:layout_width="300dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/poppins_semibold"-->
+<!--            android:text="To give you a personalized experience, we need to know your age."-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/slightDarkGray"-->
+<!--            android:textSize="18sp"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/ll_age_picker"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.5"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tv_select_your_age_heading" />-->
 
         <LinearLayout
             android:id="@+id/ll_age_picker"
@@ -91,7 +92,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_age_description">
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_your_age_heading">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -107,7 +108,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:paddingRight="5dp"
                     android:text=""
-                    android:textSize="24sp" />
+                    android:textSize="32sp" />
 
                 <TextView
                     android:id="@+id/tv_years_old"
@@ -115,13 +116,13 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="years old"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <!-- Age Picker -->
             <SeekBar
                 android:id="@+id/seekbarAge"
-                android:layout_width="375dp"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:max="100"
@@ -137,13 +138,12 @@
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Next Button -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next"
         style="@style/MarginStyle"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/user_config_button"
         android:fontFamily="@font/poppins_bold"
         android:padding="8dp"
@@ -152,7 +152,8 @@
         android:textColor="@color/white"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"

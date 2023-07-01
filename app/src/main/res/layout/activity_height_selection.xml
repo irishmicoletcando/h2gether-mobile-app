@@ -56,25 +56,25 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Select your height"
+            android:text="What is your height?"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_step_4" />
 
-        <TextView
-            android:id="@+id/tv_height_description"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="To give you a personalized experience, we need to know your height."
-            android:textAlignment="center"
-            android:textColor="@color/slightDarkGray"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_select_your_height_heading" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_height_description"-->
+<!--            android:layout_width="300dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/poppins_semibold"-->
+<!--            android:text="To give you a personalized experience, we need to know your height."-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/slightDarkGray"-->
+<!--            android:textSize="18sp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tv_select_your_height_heading" />-->
 
         <LinearLayout
             android:id="@+id/ll_height_picker"
@@ -84,7 +84,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_height_description">
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_your_height_heading">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:paddingRight="5dp"
                     android:text=""
-                    android:textSize="24sp" />
+                    android:textSize="32sp" />
 
                 <TextView
                     android:id="@+id/tv_cm"
@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="cm"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <!-- Height Picker -->
@@ -135,9 +135,9 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next"
         style="@style/MarginStyle"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/user_config_button"
         android:fontFamily="@font/poppins_bold"
         android:padding="8dp"
@@ -146,7 +146,8 @@
         android:textColor="@color/white"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
