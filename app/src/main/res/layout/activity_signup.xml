@@ -65,11 +65,12 @@
         style="@style/MarginStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="Create an account"
         android:textColor="@color/gray"
         android:textSize="25sp"
-        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout3" />
 
@@ -79,7 +80,7 @@
         style="@style/MarginStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="2dp"
         android:fontFamily="@font/poppins_black"
         android:text="EMAIL"
         android:textColor="@color/gray"
@@ -114,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins_black"
         android:text="PASSWORD"
         android:textColor="@color/gray"
@@ -148,7 +149,7 @@
         style="@style/MarginStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins_black"
         android:text="CONFIRM PASSWORD"
         android:textColor="@color/gray"
@@ -179,22 +180,36 @@
             app:layout_constraintStart_toStartOf="parent" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/tv_privacy_policy_agreement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        style="@style/MarginStyle"
+        android:fontFamily="@font/poppins_medium"
+        android:text="By registering, you are agreeing to the Terms of Use and Privacy Policy of H2gether."
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_confirm_password" />
+
+
     <!-- Sign up button-->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_signup"
         style="@style/MarginStyle"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:background="@drawable/proceed_button_background"
         android:fontFamily="@font/poppins_extrabold"
         android:padding="12dp"
+        android:layout_marginTop="18dp"
         android:text="SIGN UP"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_confirm_password" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_privacy_policy_agreement" />
 
     <!--Or sign up with-->
     <!--    <LinearLayout-->
