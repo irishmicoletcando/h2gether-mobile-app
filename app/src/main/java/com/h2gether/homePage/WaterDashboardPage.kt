@@ -2,6 +2,7 @@ package com.h2gether.homePage
 
 import android.app.AlertDialog
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.PorterDuff
 import android.os.Build
@@ -17,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
 import com.google.android.material.textfield.TextInputLayout
@@ -34,6 +36,8 @@ import com.h2gether.appUtils.WaterPlanUtils
 import com.h2gether.appUtils.WeatherUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.Response
@@ -45,7 +49,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class WaterDashboardPage : Fragment() {
+class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     private lateinit var binding: FragmentWaterDashboardPageBinding
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
@@ -62,22 +66,31 @@ class WaterDashboardPage : Fragment() {
     ): View {
         binding = FragmentWaterDashboardPageBinding.inflate(inflater, container, false)
 
-        // fetch water details and other initializations
         fetchWaterDetails()
-        UserConfigUtils.setUserConfigurationDetails()
+        UserConfigUtils.setUserConfigurationDetails(this)
         WeatherUtils.setWeatherDetails()
-        WaterPlanUtils.setTargetWater()
-        setWaterDetails()
 
         return binding.root
     }
 
+    override fun onUserConfigFetched() {
+        // The user configuration details are fetched and ready to use
+        runBlocking { WaterPlanUtils.setTargetWater()
+        }
+        binding.targetWater = AppUtils.targetWater.toString()
+        binding.temperature = AppUtils.temperatureIndex.toString()
+        AppUtils.percent =
+            (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+        binding.percent = AppUtils.percent.toString() + "%"
+        AppUtils.percent?.let { initializeProgressBar(0, it) }
+    }
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         AppUtils.selectedOption = 0
-        AppUtils.previousPercent = 0
-        AppUtils.percent = AppUtils.previousPercent
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
@@ -95,7 +108,8 @@ class WaterDashboardPage : Fragment() {
                 if (AppUtils.waterConsumed!! < AppUtils.targetWater!!) {
                     AppUtils.waterConsumed =
                         AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
-                    AppUtils.waterConsumed?.let { setWaterDetails() }
+                    AppUtils.waterConsumed?.let { setWaterDetails()
+                    setProgressBar()}
                     AppUtils.waterConsumed?.let { it1 ->
                         if (uid != null) {
                             AppUtils.selectedOption?.let { it2 ->
@@ -111,7 +125,8 @@ class WaterDashboardPage : Fragment() {
                 } else {
                     AppUtils.waterConsumed =
                         AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
-                    AppUtils.waterConsumed?.let { setWaterDetails() }
+                    AppUtils.waterConsumed?.let { setWaterDetails()
+                    setProgressBar()}
                     AppUtils.waterConsumed?.let { it1 ->
                         if (uid != null) {
                             AppUtils.selectedOption?.let { it2 ->
@@ -138,7 +153,8 @@ class WaterDashboardPage : Fragment() {
             if (AppUtils.waterConsumed!! < 0) {
                 AppUtils.waterConsumed = 0
             }
-            AppUtils.waterConsumed?.let { setWaterDetails() }
+            AppUtils.waterConsumed?.let { setWaterDetails()
+            setProgressBar()}
             AppUtils.waterConsumed?.let { it1 ->
                 if (uid != null) {
                     AppUtils.selectedOption?.let { it2 ->
@@ -298,15 +314,13 @@ class WaterDashboardPage : Fragment() {
         binding.targetWater = AppUtils.targetWater.toString()
         binding.waterConsumed = AppUtils.waterConsumed.toString()
         binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
-        binding.percent = AppUtils.previousPercent.toString()
-
-        setProgressBar()
     }
 
     private fun setProgressBar() {
         AppUtils.previousPercent = AppUtils.percent
         AppUtils.percent =
             (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+        binding.percent = AppUtils.percent.toString()
 
         if (AppUtils.percent!! < 100) {
             binding.percent = AppUtils.percent.toString() + "%"
@@ -331,7 +345,26 @@ class WaterDashboardPage : Fragment() {
         }
         progressHandler.postDelayed(progressRunnable, 500)
 
+    }
 
+    private fun initializeProgressBar(prev: Int, max: Int){
+        val progressHandler = Handler()
+        var prev = prev
+        var max = max
+        val progressRunnable = object : Runnable {
+            override fun run() {
+                if (prev!! < max!!) {
+                    prev = prev!! + 1
+                    binding.progressBar.progress = prev!!
+                    progressHandler.postDelayed(this, 5)
+                } else if (prev!! > max!!) {
+                    prev = prev!! - 1
+                    binding.progressBar.progress = prev!!
+                    progressHandler.postDelayed(this, 5)
+                }
+            }
+        }
+        progressHandler.postDelayed(progressRunnable, 500)
     }
 
     private fun decolorUnpressedIcons(){

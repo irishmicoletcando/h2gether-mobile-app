@@ -16,7 +16,7 @@ class UserConfigUtils {
     lateinit var auth: FirebaseAuth
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
 
-    fun setUserConfigurationDetails(){
+    fun setUserConfigurationDetails(callback: UserConfigCallback){
         auth = FirebaseAuth.getInstance()
         val currentUser: FirebaseUser? = auth.currentUser
         val uid = currentUser?.uid
@@ -32,12 +32,18 @@ class UserConfigUtils {
                     AppUtils.weight = userProfile.weight
                     AppUtils.height = userProfile.height
                     AppUtils.activityLevel = userProfile.activityLevel.toString()
+                    callback.onUserConfigFetched()
                 }
+
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 // Handle any errors that occur during data fetching
             }
         })
+    }
+
+    interface UserConfigCallback {
+        fun onUserConfigFetched()
     }
 
     @IgnoreExtraProperties
