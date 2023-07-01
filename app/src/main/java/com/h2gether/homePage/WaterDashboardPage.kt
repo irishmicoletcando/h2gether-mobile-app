@@ -303,7 +303,7 @@ class WaterDashboardPage : Fragment() {
         AppUtils.percent =
             (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
 
-        if (AppUtils.percent!! <= 100) {
+        if (AppUtils.percent!! < 100) {
             binding.percent = AppUtils.percent.toString() + "%"
         } else {
             binding.percent = "100%"
