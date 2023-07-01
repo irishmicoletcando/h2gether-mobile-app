@@ -63,6 +63,7 @@ class WaterDashboardPage : Fragment() {
         WeatherUtils.setWeatherDetails()
         setWaterDetails()
 
+
         return binding.root
     }
 
@@ -70,8 +71,8 @@ class WaterDashboardPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        AppUtils.isInitiallyOpened = true
-        setWaterDetails()
+        AppUtils.previousPercent = 0
+        AppUtils.percent = AppUtils.previousPercent
 
         AppUtils.selectedOption?.let { retainSelectedOptionIcon(it) }
 
@@ -88,7 +89,7 @@ class WaterDashboardPage : Fragment() {
             if (AppUtils.waterConsumed!! < AppUtils.targetWater!!) {
                 AppUtils.waterConsumed =
                     AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
-                AppUtils.waterConsumed?.let { it1 -> setWaterDetails()}
+                AppUtils.waterConsumed?.let { setWaterDetails()}
                 AppUtils.waterConsumed?.let { it1 ->
                     if (uid != null) {
                         AppUtils.selectedOption?.let { it2 ->
@@ -105,7 +106,7 @@ class WaterDashboardPage : Fragment() {
                 Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
                 AppUtils.waterConsumed =
                     AppUtils.selectedOption?.let { it1 -> AppUtils.waterConsumed?.plus(it1) }
-                AppUtils.waterConsumed?.let { it1 -> setWaterDetails()}
+                AppUtils.waterConsumed?.let { setWaterDetails()}
                 AppUtils.waterConsumed?.let { it1 ->
                     if (uid != null) {
                         AppUtils.selectedOption?.let { it2 ->
@@ -263,28 +264,6 @@ class WaterDashboardPage : Fragment() {
 
     }
 
-    private fun setWaterDetails() {
-        binding.targetWater = AppUtils.targetWater.toString()
-        binding.waterConsumed = AppUtils.waterConsumed.toString()
-        binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
-
-        if (AppUtils.isInitiallyOpened) {
-            AppUtils.previousPercent?.let { delayProgress(0, it) }
-            AppUtils.isInitiallyOpened = false
-        } else {
-            AppUtils.previousPercent = AppUtils.percent
-            AppUtils.percent =
-                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
-            AppUtils.previousPercent?.let { delayProgress(it, AppUtils.percent!!) }
-        }
-
-        if (AppUtils.percent!! <= 100) {
-            binding.percent = AppUtils.percent.toString() + "%"
-        } else {
-            binding.percent = "100%"
-        }
-        }
-
     private fun saveWaterConsumption(
         waterConsumed: Int,
         selectedOption: Int,
@@ -309,27 +288,40 @@ class WaterDashboardPage : Fragment() {
         })
     }
 
-    private fun delayProgress(currentProgress: Int, maxProgress: Int) {
-        val progressHandler = Handler()
-        val maxProgress = maxProgress
-        var currentProgress = currentProgress
+    private fun setWaterDetails() {
+        binding.targetWater = AppUtils.targetWater.toString()
+        binding.waterConsumed = AppUtils.waterConsumed.toString()
+        binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+        binding.percent = AppUtils.previousPercent.toString()
 
+        setProgressBar()
+    }
+
+    private fun setProgressBar() {
+        AppUtils.previousPercent = AppUtils.percent
+        AppUtils.percent =
+            (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+
+        if (AppUtils.percent!! <= 100) {
+            binding.percent = AppUtils.percent.toString() + "%"
+        } else {
+            binding.percent = "100%"
+        }
+
+        val progressHandler = Handler()
         val progressRunnable = object : Runnable {
             override fun run() {
-                if (currentProgress != null) {
-                    if (currentProgress < maxProgress!!) {
-                        currentProgress += 1
-                        binding.progressBar.progress = currentProgress
-                        progressHandler.postDelayed(this, 5)
-                    } else if (currentProgress > maxProgress!!) {
-                        currentProgress -= 1
-                        binding.progressBar.progress = currentProgress
-                        progressHandler.postDelayed(this, 5)
-                    }
+                if (AppUtils.previousPercent!! < AppUtils.percent!!) {
+                    AppUtils.previousPercent = AppUtils.previousPercent!! + 1
+                    binding.progressBar.progress = AppUtils.previousPercent!!
+                    progressHandler.postDelayed(this, 5)
+                } else if (AppUtils.previousPercent!! > AppUtils.percent!!) {
+                    AppUtils.previousPercent = AppUtils.previousPercent!! - 1
+                    binding.progressBar.progress = AppUtils.previousPercent!!
+                    progressHandler.postDelayed(this, 5)
                 }
             }
         }
-
         progressHandler.postDelayed(progressRunnable, 500)
     }
 
