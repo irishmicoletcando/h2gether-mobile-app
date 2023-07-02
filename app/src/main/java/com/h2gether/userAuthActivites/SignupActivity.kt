@@ -54,7 +54,9 @@ class SignupActivity : AppCompatActivity() {
     // Function to validate email using regex pattern
     private fun isEmailValid(email: String): Boolean {
         val pattern = Patterns.EMAIL_ADDRESS
-        return pattern.matcher(email).matches()
+        val isEmailValid = pattern.matcher(email).matches()
+        val domain = email.substringAfterLast("@").lowercase()
+        return isEmailValid && (domain == "gmail.com" || domain == "yahoo.com" || domain == "outlook.com" || domain == "icloud.com")
     }
 
     // Function to validate password
