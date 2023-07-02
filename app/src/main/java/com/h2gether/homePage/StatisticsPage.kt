@@ -6,21 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityToolBarBinding
 import com.example.h2gether.databinding.FragmentStatisticsPageBinding
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -32,7 +27,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import kotlin.math.max
 
 class StatisticsPage : Fragment() {
 
@@ -153,7 +147,7 @@ class StatisticsPage : Fragment() {
 
         val yAxisLeft = chart.axisLeft
         yAxisLeft.axisMinimum = 0f
-        yAxisLeft.axisMaximum = 0f
+        yAxisLeft.axisMaximum = 5100f // Set the maximum value to 5100 mL
         yAxisLeft.setDrawLimitLinesBehindData(true)
 
         val yAxisRight = chart.axisRight
@@ -162,6 +156,13 @@ class StatisticsPage : Fragment() {
         // Set the LineData object to the chart and refresh the view
         chart.data = lineData
         chart.invalidate()
+
+        // Update the date range text view
+        val dateRangeTextView = binding.dateRangeTextView
+        val startDate = dates.firstOrNull()
+        val endDate = dates.lastOrNull()
+        val dateRangeText = "$startDate - $endDate"
+        dateRangeTextView.text = dateRangeText
     }
 
 
