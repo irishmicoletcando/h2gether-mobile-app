@@ -101,7 +101,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
         AppUtils.selectedOption = 0
         CoroutineScope(Dispatchers.Main).launch {
-            setTimer(10, 55)
+            setTimer(0, 54)
 
             // Update the properties of the existing instance
             binding.waterConsumed = AppUtils.waterConsumed.toString()
