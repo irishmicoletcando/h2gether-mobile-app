@@ -28,6 +28,23 @@
                 android:layout_height="70dp"
                 android:layout_gravity="center"
                 android:src="@drawable/skylark_logo" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:textSize="20sp"
+                android:text="@string/about_us_text"
+                android:justificationMode="inter_word" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                android:text="@string/disclaimer_text"
+                android:justificationMode="inter_word" />
         </LinearLayout>
 
     </ScrollView>
