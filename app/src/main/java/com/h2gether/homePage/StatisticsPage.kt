@@ -12,6 +12,7 @@ import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityToolBarBinding
 import com.example.h2gether.databinding.FragmentStatisticsPageBinding
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -36,7 +37,7 @@ class StatisticsPage : Fragment() {
     private lateinit var toolBarBinding: ActivityToolBarBinding
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
-    private var waterConsumed: Int? = 0
+    private var waterConsumed: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,7 +77,7 @@ class StatisticsPage : Fragment() {
                     val waterConsumption = dataSnapshot.getValue(WaterConsumptionDataModel::class.java)
 
                     if (waterConsumption != null) {
-                        waterConsumed = waterConsumption.waterConsumption
+                        waterConsumed = waterConsumption.waterConsumption ?: 0
 
                         // Process the retrieved data and create the entries and dates
                         val entries = mutableListOf<Entry>()
@@ -152,7 +153,7 @@ class StatisticsPage : Fragment() {
                     val date = dates[index]
                     val dayOfWeek = getDayOfWeek(date)
                     return "$dayOfWeek"
-                    // return "$dayOfWeek $date"
+//                     return "$dayOfWeek $date"
                 }
                 return ""
             }
@@ -198,9 +199,9 @@ class StatisticsPage : Fragment() {
     private fun LineDataSet.setDrawValues(condition: (Entry) -> Boolean) {
         setDrawValues(true)
         valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float, entry: Entry, dataSetIndex: Int, viewPortHandler: ViewPortHandler): String {
-                return if (condition(entry)) {
-                    value.toString()
+            override fun getFormattedValue(value: Float): String {
+                return if (condition(Entry(0f, value))) {
+                    value.toInt().toString()
                 } else {
                     ""
                 }
