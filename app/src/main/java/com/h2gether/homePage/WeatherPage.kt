@@ -10,10 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.lifecycleScope
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWeatherPageBinding
 import com.h2gether.appUtils.AppUtils
+import com.h2gether.appUtils.WaterPlanUtils
 import com.h2gether.appUtils.WeatherUtils
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -24,6 +28,7 @@ class WeatherPage : Fragment() {
     private lateinit var binding: FragmentWeatherPageBinding
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
     val weatherUtils = WeatherUtils()
+    val waterPlanUtils = WaterPlanUtils()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -38,10 +43,27 @@ class WeatherPage : Fragment() {
 
         return binding.root
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         fetchWeatherPeriodically(1)
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            lifecycleScope.launch {
+                val weatherDetailsDeferred = async { weatherUtils.setWeatherDetails() }
+                val targetWaterDetailsDeferred = async { waterPlanUtils.setTargetWater() }
+
+                // Wait for all the operations to complete
+                weatherDetailsDeferred.await()
+                targetWaterDetailsDeferred.await()
+
+                // All operations are completed, hide the loader
+                updateUI()
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
+
+        }
 
     }
 
@@ -84,6 +106,7 @@ class WeatherPage : Fragment() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun run() {
                 weatherUtils.setWeatherDetails()
+                waterPlanUtils.setTargetWater()
                 updateUI()
             }
         }
