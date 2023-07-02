@@ -47,7 +47,7 @@ class WaterPlanUtils {
     }
 
     private fun isModerateWeather(temperatureIndexCelsius: Int): Boolean {
-        return temperatureIndexCelsius in 27..31
+        return temperatureIndexCelsius in 0..31
     }
 
 }
