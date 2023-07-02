@@ -78,6 +78,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         runBlocking { WaterPlanUtils.setTargetWater()
         }
         binding.targetWater = AppUtils.targetWater.toString()
+        binding.waterConsumed = AppUtils.waterConsumed.toString()
         binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
         AppUtils.percent =
             (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
@@ -250,6 +251,29 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                 .replace(R.id.constraint_layout, settingsFragment)
                 .addToBackStack(null)
                 .commit()
+        }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            lifecycleScope.launch {
+                // Execute fetchWaterDetails() in the background
+                val waterDetailsDeferred = async { fetchWaterDetails() }
+
+                // Execute UserConfigUtils.setUserConfigurationDetails(this) in the background
+                val userConfigDeferred = async { UserConfigUtils.setUserConfigurationDetails(this@WaterDashboardPage) }
+
+                // Execute WeatherUtils.setWeatherDetails() in the background
+                val weatherDetailsDeferred = async { WeatherUtils.setWeatherDetails() }
+
+                // Wait for all the operations to complete
+                waterDetailsDeferred.await()
+                userConfigDeferred.await()
+                weatherDetailsDeferred.await()
+
+                // All operations are completed, hide the loader
+
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
+
         }
 
     }
