@@ -101,7 +101,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
         AppUtils.selectedOption = 0
         CoroutineScope(Dispatchers.Main).launch {
-            setTimer(0, 54)
+            setTimer(1, 7)
 
             // Update the properties of the existing instance
             binding.waterConsumed = AppUtils.waterConsumed.toString()
@@ -453,6 +453,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             if (min != null) {
                 set(Calendar.MINUTE, min)
             }      // Set the minute component to 30
+            set(Calendar.AM_PM, Calendar.AM)
         }
 
         // Set the alarm to trigger every day at the specified time
