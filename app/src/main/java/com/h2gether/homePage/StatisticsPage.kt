@@ -16,6 +16,8 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.utils.ViewPortHandler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -84,7 +86,7 @@ class StatisticsPage : Fragment() {
                         if (waterConsumption != null) {
                             val calendar = Calendar.getInstance()
                             calendar.time = Date()
-                            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
 
                             val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())
 
@@ -143,7 +145,18 @@ class StatisticsPage : Fragment() {
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
-        xAxis.valueFormatter = IndexAxisValueFormatter(dates)
+        xAxis.valueFormatter = object : IndexAxisValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                val index = value.toInt()
+                if (index >= 0 && index < dates.size) {
+                    val date = dates[index]
+                    val dayOfWeek = getDayOfWeek(date)
+                    return "$dayOfWeek"
+                    // return "$dayOfWeek $date"
+                }
+                return ""
+            }
+        }
 
         val yAxisLeft = chart.axisLeft
         yAxisLeft.axisMinimum = 0f
@@ -163,11 +176,48 @@ class StatisticsPage : Fragment() {
         val endDate = dates.lastOrNull()
         val dateRangeText = "$startDate - $endDate"
         dateRangeTextView.text = dateRangeText
-    }
 
+        // Set visibility of values on the line chart based on the current date
+        val currentDate = SimpleDateFormat("MMMM dd", Locale.getDefault()).format(Date())
+        val currentDayIndex = dates.indexOf(currentDate)
+        dataSet.setDrawValues { entry ->
+            val entryIndex = entry.x.toInt()
+            entryIndex == currentDayIndex
+        }
+
+        // Refresh the chart view after updating the draw values
+        chart.notifyDataSetChanged()
+        chart.invalidate()
+    }
 
     class WaterConsumptionDataModel {
         @PropertyName("waterConsumption")
         var waterConsumption: Int? = 0
+    }
+
+    private fun LineDataSet.setDrawValues(condition: (Entry) -> Boolean) {
+        setDrawValues(true)
+        valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float, entry: Entry, dataSetIndex: Int, viewPortHandler: ViewPortHandler): String {
+                return if (condition(entry)) {
+                    value.toString()
+                } else {
+                    ""
+                }
+            }
+        }
+    }
+
+    private fun getDayOfWeek(dateString: String): String {
+        val format = SimpleDateFormat("MMMM dd", Locale.US)
+        val date = format.parse(dateString)
+        val calendar = Calendar.getInstance().apply {
+            time = date
+        }
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+
+        val dayOfWeekFormat = SimpleDateFormat("EEE", Locale("en", "PH")) // Use Philippine locale for day of week
+        val daysOfWeek = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+        return daysOfWeek[(dayOfWeek + 2) % 7] // Adjust the day of week index to start from Sunday
     }
 }
