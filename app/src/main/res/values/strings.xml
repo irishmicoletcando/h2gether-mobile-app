@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">H2gether</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="about_us_text">Welcome to H2gether, your reliable companion for staying hydrated throughout the day. Developed by a team of four dedicated computer engineering students at Polytechnic University of the Philippines (PUP) Sta. Mesa Manila, H2gether is designed to help you maintain a healthy water intake and promote overall well-being. \n\nAt H2gether, our mission is to make a positive difference in the lives of our users by promoting healthy hydration habits. We believe that staying hydrated is essential for maintaining optimal physical and mental performance. By delivering timely reminders and personalized water intake recommendations, we aim to empower individuals to prioritize their hydration needs and make informed choices about their well-being. \n\nRemember, with H2gether by your side, you\'ll never miss a sip!</string>
+
+    <string name="disclaimer_text">Disclaimer: H2gether is not a substitute for professional medical advice. Please consult your healthcare provider for personalized hydration recommendations.</string>
 </resources>
