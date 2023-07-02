@@ -4,7 +4,6 @@ import android.app.AlarmManager
 import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
@@ -22,7 +21,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.lifecycleScope
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
@@ -34,8 +32,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
-import com.google.gson.annotations.SerializedName
-import com.h2gether.appUtils.AppUtils
 import com.h2gether.appUtils.UserConfigUtils
 import com.h2gether.appUtils.WaterPlanUtils
 import com.h2gether.appUtils.WeatherUtils
@@ -104,7 +100,23 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         super.onViewCreated(view, savedInstanceState)
 
         AppUtils.selectedOption = 0
-        setTimer()
+        CoroutineScope(Dispatchers.Main).launch {
+            setTimer(10, 55)
+
+            // Update the properties of the existing instance
+            binding.waterConsumed = AppUtils.waterConsumed.toString()
+            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+            AppUtils.percent =
+                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+            if (AppUtils.percent!! < 100) {
+                binding.percent = AppUtils.percent.toString() + "%"
+            } else {
+                binding.percent = "100%"
+                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+            }
+            AppUtils.percent?.let { initializeProgressBar(0, it) }
+        }
+
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
@@ -423,7 +435,8 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     // Store water consumption daily for statistics
 
 
-    private fun setTimer(){
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setTimer(hour: Int?, min: Int?){
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, YourBroadcastReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
@@ -434,8 +447,12 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         )
 
         val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 9) // Set the hour component to 10 (in 24-hour format)
-            set(Calendar.MINUTE, 59)      // Set the minute component to 30
+            if (hour != null) {
+                set(Calendar.HOUR_OF_DAY, hour)
+            } // Set the hour component to 10 (in 24-hour format)
+            if (min != null) {
+                set(Calendar.MINUTE, min)
+            }      // Set the minute component to 30
         }
 
         // Set the alarm to trigger every day at the specified time
@@ -449,16 +466,21 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
     class YourBroadcastReceiver : BroadcastReceiver() {
         private lateinit var databaseReference: DatabaseReference
+        private lateinit var databaseReference2: DatabaseReference
         private lateinit var firebaseAuth: FirebaseAuth
         val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onReceive(context: Context, intent: Intent) {
             val waterConsumedDaily = AppUtils.waterConsumed
+            AppUtils.waterConsumed = 0
+
             val date = AppUtils.getCurrentDate()
             firebaseAuth = FirebaseAuth.getInstance()
             val uid = firebaseAuth.currentUser?.uid
             databaseReference =
                 FirebaseDatabase.getInstance().getReference("users/$uid/statistics")
+            databaseReference2 =
+                FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
 
             if (uid != null) {
                 databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -472,6 +494,29 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                         }
 
                         databaseReference.updateChildren(newData)
+                            .addOnSuccessListener {
+                                Log.d(TAG, "stats: data uploaded")
+                            }
+                            .addOnFailureListener {
+                                Log.d(TAG, "stats: data NOT uploaded")
+                            }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Handle the cancellation
+                    }
+                })
+                databaseReference2.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val existingData: Map<String, Any>? = snapshot.value as? Map<String, Any>
+
+                        // Create a new map that includes the existing data and the new field
+                        val newData = existingData?.toMutableMap() ?: mutableMapOf()
+                        if (waterConsumedDaily != null) {
+                            newData["waterConsumption"] = AppUtils.waterConsumed!!.toInt()
+                        }
+
+                        databaseReference2.updateChildren(newData)
                             .addOnSuccessListener {
                                 Log.d(TAG, "stats: data uploaded")
                             }
