@@ -78,10 +78,15 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         runBlocking { WaterPlanUtils.setTargetWater()
         }
         binding.targetWater = AppUtils.targetWater.toString()
-        binding.temperature = AppUtils.temperatureIndex.toString()
+        binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
         AppUtils.percent =
             (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
-        binding.percent = AppUtils.percent.toString() + "%"
+        if (AppUtils.percent!! < 100) {
+            binding.percent = AppUtils.percent.toString() + "%"
+        } else {
+            binding.percent = "100%"
+            Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+        }
         AppUtils.percent?.let { initializeProgressBar(0, it) }
     }
 
