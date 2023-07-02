@@ -47,7 +47,7 @@ class WeatherPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fetchWeatherPeriodically(1)
+        fetchWeatherPeriodically(5)
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             lifecycleScope.launch {

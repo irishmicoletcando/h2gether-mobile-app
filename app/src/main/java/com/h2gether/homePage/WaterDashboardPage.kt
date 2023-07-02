@@ -1,9 +1,13 @@
 package com.h2gether.homePage
 
+import android.app.AlarmManager
 import android.app.AlertDialog
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +22,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.lifecycleScope
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
@@ -34,6 +39,7 @@ import com.h2gether.appUtils.AppUtils
 import com.h2gether.appUtils.UserConfigUtils
 import com.h2gether.appUtils.WaterPlanUtils
 import com.h2gether.appUtils.WeatherUtils
+import com.h2gether.userConfigActivities.WeightSelection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -46,6 +52,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -97,6 +104,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         super.onViewCreated(view, savedInstanceState)
 
         AppUtils.selectedOption = 0
+        setTimer()
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
@@ -412,4 +420,74 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         var previousPercent: Int? = 0
     }
 
+    // Store water consumption daily for statistics
+
+
+    private fun setTimer(){
+        val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, YourBroadcastReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 9) // Set the hour component to 10 (in 24-hour format)
+            set(Calendar.MINUTE, 59)      // Set the minute component to 30
+        }
+
+        // Set the alarm to trigger every day at the specified time
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
+    }
+
+    class YourBroadcastReceiver : BroadcastReceiver() {
+        private lateinit var databaseReference: DatabaseReference
+        private lateinit var firebaseAuth: FirebaseAuth
+        val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
+        @RequiresApi(Build.VERSION_CODES.O)
+        override fun onReceive(context: Context, intent: Intent) {
+            val waterConsumedDaily = AppUtils.waterConsumed
+            val date = AppUtils.getCurrentDate()
+            firebaseAuth = FirebaseAuth.getInstance()
+            val uid = firebaseAuth.currentUser?.uid
+            databaseReference =
+                FirebaseDatabase.getInstance().getReference("users/$uid/statistics")
+
+            if (uid != null) {
+                databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val existingData: Map<String, Any>? = snapshot.value as? Map<String, Any>
+
+                        // Create a new map that includes the existing data and the new field
+                        val newData = existingData?.toMutableMap() ?: mutableMapOf()
+                        if (waterConsumedDaily != null) {
+                            newData[date] = waterConsumedDaily.toInt()
+                        }
+
+                        databaseReference.updateChildren(newData)
+                            .addOnSuccessListener {
+                                Log.d(TAG, "stats: data uploaded")
+                            }
+                            .addOnFailureListener {
+                                Log.d(TAG, "stats: data NOT uploaded")
+                            }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Handle the cancellation
+                    }
+                })
+            } else {
+                Log.d(TAG, "stats: No uid")
+            }
+
+        }
+    }
 }
