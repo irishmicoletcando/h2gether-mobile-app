@@ -83,26 +83,27 @@ class StatisticsPage : Fragment() {
                         val entries = mutableListOf<Entry>()
                         val dates = mutableListOf<String>()
 
-                        // Assuming waterConsumption is the value obtained from Firebase
-                        if (waterConsumption != null) {
-                            val calendar = Calendar.getInstance()
-                            calendar.time = Date()
-                            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
+                        val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())
 
-                            val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())
+                        val calendar = Calendar.getInstance()
+                        calendar.time = Date()
+                        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
 
-                            for (i in 0 until 7) {
-                                val date = sdf.format(calendar.time)
-                                val waterValue = waterConsumption.waterConsumption ?: 0
-                                entries.add(Entry(i.toFloat(), waterValue.toFloat()))
-                                dates.add(date)
-
-                                calendar.add(Calendar.DAY_OF_WEEK, 1)
+                        for (i in 0 until 7) {
+                            val date = sdf.format(calendar.time)
+                            val waterValue = if (date == sdf.format(Date())) {
+                                waterConsumption.waterConsumption ?: 0
+                            } else {
+                                0
                             }
+                            entries.add(Entry(i.toFloat(), waterValue.toFloat()))
+                            dates.add(date)
 
-                            // Call the updateChart function with the processed data
-                            updateChart(entries, dates)
+                            calendar.add(Calendar.DAY_OF_WEEK, 1)
                         }
+
+                        // Call the updateChart function with the processed data
+                        updateChart(entries, dates)
                     }
                 } else {
                     Toast.makeText(context, "No data available", Toast.LENGTH_SHORT).show()
