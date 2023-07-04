@@ -8,5 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.h2gether.R
 
-class ViewPageAdapter {
+class ViewPageAdapter(
+    private var title: List<String>,
+    private var description: List<String>,
+    private var images: List<Int>
+) : RecyclerView.Adapter<ViewPageAdapter.Pager2ViewHolder>() {
+
+    //TODO: create inner class Pager2ViewHolder
 }
