@@ -87,6 +87,44 @@ class StatisticsPage : Fragment() {
         })
     }
 
+    private fun fetchStatisticsData(database: DatabaseReference, onSuccess: (MutableList<WaterIntakeEntry>) -> Unit) {
+        val statisticsRef: DatabaseReference = database.child("statistics")
+
+        statisticsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val currentDate = getCurrentDate()
+                val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())
+                val calendar = Calendar.getInstance()
+                calendar.time = Date()
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
+
+                val entries = mutableListOf<WaterIntakeEntry>()
+
+                // Iterate over the past week's dates and retrieve the water consumption values
+                for (i in 0 until 7) {
+                    val date = sdf.format(calendar.time)
+                    val statisticsSnapshot = dataSnapshot.child(date)
+
+                    // Get the water consumption value for the current date from the snapshot, or default to 0 if not found
+                    val statisticsData = statisticsSnapshot.getValue(StatisticsDataModel::class.java)
+                    val waterValue = statisticsData?.waterConsumption ?: 0
+
+                    // Create a water intake entry with the date and water intake value
+                    val entry = WaterIntakeEntry(date, waterValue.toFloat())
+
+                    entries.add(entry)
+                    calendar.add(Calendar.DAY_OF_WEEK, 1)
+                }
+
+                onSuccess(entries)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occur during retrieval
+            }
+        })
+    }
+    
     private fun updateChart(entries: List<Entry>, dates: List<String>) {
         // Update the line chart with the retrieved data
         Log.d("Debug", "updateChart called with entries: $entries, dates: $dates")
