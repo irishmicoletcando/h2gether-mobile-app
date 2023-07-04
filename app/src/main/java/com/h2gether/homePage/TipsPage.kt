@@ -16,6 +16,9 @@ class TipsPage : Fragment() {
     private val descsList = mutableListOf<String>()
     private val imagesList = mutableListOf<Int>()
 
+    private val dotViews = mutableListOf<View>()
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
