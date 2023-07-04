@@ -37,6 +37,8 @@ class TipsPage : Fragment() {
         viewPager2.adapter = ViewPageAdapter(titlesList, descsList, imagesList)
         viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
+        postToList()
+
         return rootView
     }
 
@@ -46,4 +48,11 @@ class TipsPage : Fragment() {
         imagesList.add(image)
     }
 
+    private fun postToList() {
+        addToList(
+            "Title",
+            "Description",
+            R.drawable.hydration_tips
+        )
+    }
 }
