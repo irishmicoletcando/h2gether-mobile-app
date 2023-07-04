@@ -62,14 +62,14 @@ class TipsPage : Fragment() {
 
         addToList(
             "Replace other drinks with water",
-            "One way to drink more water and boost your health and reduce your calorie intake  is to replace other drinks, such as soda and sports drinks, with water. These drinks are often full of added sugars, which can be extremely detrimental to your health.\n" +
+            "One way to drink more water and boost your health and reduce your calorie intake  is to replace other drinks, such as soda and sports drinks, with water. These drinks are often full of added sugars, which can be extremely detrimental to your health." +
                     "For optimal health, limit your added sugar intake to less than 5% of your calorie intake.",
             R.drawable.replace_other_drinks
         )
 
         addToList(
             "Drink one glass of water before each meal",
-            "Another simple way to increase your water intake is to make a habit of drinking one glass of water before each meal.\n" +
+            "Another simple way to increase your water intake is to make a habit of drinking one glass of water before each meal." +
                     "If you eat 3 meals per day, this adds an extra 3 cups (720 ml) to your daily water intake.",
             R.drawable.water_before_meal
         )
