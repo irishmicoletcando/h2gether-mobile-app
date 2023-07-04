@@ -38,16 +38,6 @@
                 android:text="@string/about_us_text"
                 android:justificationMode="inter_word" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="30dp"
-                android:paddingBottom="30dp"
-                android:textSize="20sp"
-                android:lineSpacingExtra="10dp"
-                android:textStyle="italic"
-                android:text="@string/disclaimer_text"
-                android:justificationMode="inter_word" />
         </LinearLayout>
 
     </ScrollView>
