@@ -93,4 +93,19 @@ class TipsPage : Fragment() {
             R.drawable.water_before_meal
         )
     }
+
+    private fun createDotView(): View {
+        val dotView = View(context)
+        val dotSize = convertDpToPixels(8)
+        val dotMargin = convertDpToPixels(8)
+        val dotParams = LinearLayout.LayoutParams(dotSize, dotSize).apply {
+            setMargins(dotMargin, 0, dotMargin, 0)
+        }
+        dotView.layoutParams = dotParams
+        dotView.setBackgroundResource(R.drawable.dot_indicator) // Setting background resource
+        return dotView
+    }
+
+    //TODO: fun convertDpToPixels
+    //TODO: fun updateSelectedDot
 }
