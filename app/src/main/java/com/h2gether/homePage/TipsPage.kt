@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.h2gether.R
@@ -17,7 +18,6 @@ class TipsPage : Fragment() {
     private val imagesList = mutableListOf<Int>()
 
     private val dotViews = mutableListOf<View>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +37,8 @@ class TipsPage : Fragment() {
 //            //TODO: Handle back button click
 //        }
         val viewPager2 = rootView.findViewById<ViewPager2>(R.id.viewPager2)
+        val dotContainer = rootView.findViewById<LinearLayout>(R.id.dotContainer)
+
         viewPager2.adapter = ViewPageAdapter(titlesList, descsList, imagesList)
         viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
