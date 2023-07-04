@@ -23,7 +23,7 @@ class ViewPageAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Pager2ViewHolder {
-        TODO("Not yet implemented")
+        return Pager2ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.tips_content_layout, parent, false))
     }
 
     override fun getItemCount(): Int {
