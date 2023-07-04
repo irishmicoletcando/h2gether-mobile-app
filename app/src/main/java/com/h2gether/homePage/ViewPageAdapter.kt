@@ -26,11 +26,14 @@ class ViewPageAdapter(
         return Pager2ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.tips_content_layout, parent, false))
     }
 
+    override fun onBindViewHolder(holder: Pager2ViewHolder, position: Int) {
+        holder.itemImage.setImageResource(images[position])
+        holder.itemTitle.text = title[position]
+        holder.itemDescription.text = description[position]
+    }
+
     override fun getItemCount(): Int {
         TODO("Not yet implemented")
     }
 
-    override fun onBindViewHolder(holder: Pager2ViewHolder, position: Int) {
-        TODO("Not yet implemented")
-    }
 }
