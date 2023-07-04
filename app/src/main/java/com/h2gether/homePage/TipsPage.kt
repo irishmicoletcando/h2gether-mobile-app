@@ -54,5 +54,10 @@ class TipsPage : Fragment() {
             "A common recommendation for daily water intake is 8 cups, but this is not based on science. NAM recommends that men consume 125 ounces (3,700 ml) and women about 90 ounces (2,700 ml) of fluid per day, including the fluid from water, other drinks, and foods",
             R.drawable.fluid_needs
         )
+        addToList(
+            "Set a daily goal",
+            "Setting a daily water intake goal can help you drink more water. Simply the act of setting a goal can be motivating and make you more likely to make positive changes that last. It can also help to record your progress, which can keep you motivated to achieve your goal — and make it a habit.",
+            R.drawable.analysis
+        )
     }
 }
