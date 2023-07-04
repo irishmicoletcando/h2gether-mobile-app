@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.viewpager2.widget.ViewPager2
 import com.example.h2gether.R
 
 class TipsPage : Fragment() {
@@ -32,6 +33,10 @@ class TipsPage : Fragment() {
 //        backButton.setOnClickListener {
 //            //TODO: Handle back button click
 //        }
+        val viewPager2 = rootView.findViewById<ViewPager2>(R.id.viewPager2)
+        viewPager2.adapter = ViewPageAdapter(titlesList, descsList, imagesList)
+        viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
         return rootView
     }
 
