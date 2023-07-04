@@ -51,7 +51,7 @@ class TipsPage : Fragment() {
         })
 
         for (i in 0 until (viewPager2.adapter?.itemCount ?: 0)) {
-            val dotView = createDotView()
+            val dotView = createDotView(selected=false)
             dotViews.add(dotView)
             dotContainer.addView(dotView)
         }
@@ -94,15 +94,15 @@ class TipsPage : Fragment() {
         )
     }
 
-    private fun createDotView(): View {
-        val dotView = View(context)
-        val dotSize = convertDpToPixels(8)
+    private fun createDotView(selected: Boolean): View {
+        val dotView = View(requireContext())
+        val dotSize = if (selected) convertDpToPixels(10) else convertDpToPixels(8)
         val dotMargin = convertDpToPixels(8)
         val dotParams = LinearLayout.LayoutParams(dotSize, dotSize).apply {
             setMargins(dotMargin, 0, dotMargin, 0)
         }
         dotView.layoutParams = dotParams
-        dotView.setBackgroundResource(R.drawable.dot_indicator) // Setting background resource
+        dotView.setBackgroundResource(if(selected) R.drawable.dot_indicator_selected else R.drawable.dot_indicator) // Setting background resource
         return dotView
     }
 
@@ -113,11 +113,16 @@ class TipsPage : Fragment() {
 
     private fun updateSelectedDot(position: Int) {
         for (i in dotViews.indices) {
-            if (i == position) {
-                dotViews[i].setBackgroundResource(R.drawable.dot_indicator_selected)
-            } else {
-                dotViews[i].setBackgroundResource(R.drawable.dot_indicator)
+            val dotView = dotViews[i]
+            val isSelected = i == position
+            val dotSize = if (isSelected) convertDpToPixels(10) else convertDpToPixels(8)
+            val dotMargin = convertDpToPixels(8)
+            val dotParams = LinearLayout.LayoutParams(dotSize, dotSize).apply {
+                setMargins(dotMargin, 0, dotMargin, 0)
             }
+            dotView.layoutParams = dotParams
+            dotView.setBackgroundResource(if (isSelected) R.drawable.dot_indicator_selected else R.drawable.dot_indicator)
+            dotView.requestLayout()
         }
     }
 }
