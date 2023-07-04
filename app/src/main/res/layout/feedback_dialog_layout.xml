@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="20dp"
+        android:background="@drawable/feedback_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -17,39 +17,57 @@
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/feedback_textfield_layout"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            app:boxBackgroundMode="none" >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:fontFamily="@font/poppins"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
                 android:hint="Enter Name"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etFeedback"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="230dp"
+            android:background="@drawable/feedback_textfield_layout"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            app:boxBackgroundMode="none" >
 
-            <com.google.android.material.textfield.TextInputEditText
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:hint="Enter Feedback"
-                android:inputType="textMultiLine" />
+                android:layout_height="230dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppins"
+                    android:background="@android:color/transparent"
+                    android:padding="10dp"
+                    android:hint="Enter Feedback"
+                    android:gravity="start"
+                    android:inputType="textMultiLine" />
+            </ScrollView>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/feedback_submit_layout"
             android:layout_margin="20dp"
+            android:textSize="18sp"
+            android:textColor="@color/white"
             android:textAllCaps="false"
             android:text="Submit Feedback" />
     </LinearLayout>
