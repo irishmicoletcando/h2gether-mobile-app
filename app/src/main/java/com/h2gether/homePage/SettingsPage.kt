@@ -1,5 +1,6 @@
 package com.h2gether.homePage
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import com.example.h2gether.R
 import com.example.h2gether.databinding.ActivityToolBarBinding
 import com.example.h2gether.databinding.FragmentSettingsPageBinding
+import com.google.android.material.textfield.TextInputLayout
 import com.h2gether.settingsPage.AboutUsActivity
 import com.h2gether.settingsPage.PrivacyPolicyActivity
 
@@ -34,6 +36,18 @@ class SettingsPage : Fragment() {
         // back button in toolbar
         toolBarBinding.backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
+        }
+
+        binding.llFeedback.setOnClickListener {
+            val promptsView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.feedback_dialog_layout, null)
+            val userInput = promptsView.findViewById(R.id.etFeedback) as TextInputLayout
+
+            val alertDialogBuilder = AlertDialog.Builder(requireContext())
+            alertDialogBuilder.setView(promptsView)
+
+            val alertDialog = alertDialogBuilder.create()
+            alertDialog.show()
         }
 
         binding.llPrivacyPolicy.setOnClickListener {
