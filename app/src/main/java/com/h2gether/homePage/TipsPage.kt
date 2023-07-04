@@ -111,5 +111,13 @@ class TipsPage : Fragment() {
         return (dp * scale + 0.5f).toInt()
     }
 
-    //TODO: fun updateSelectedDot
+    private fun updateSelectedDot(position: Int) {
+        for (i in dotViews.indices) {
+            if (i == position) {
+                dotViews[i].setBackgroundResource(R.drawable.dot_indicator_selected)
+            } else {
+                dotViews[i].setBackgroundResource(R.drawable.dot_indicator)
+            }
+        }
+    }
 }
