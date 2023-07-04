@@ -67,6 +67,26 @@ class StatisticsPage : Fragment() {
         fetchWaterDetails()
     }
 
+    private fun fetchWaterConsumption(database: DatabaseReference, onSuccess: (Int) -> Unit) {
+        val databaseRef: DatabaseReference = database.child("water-consumption")
+
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Get the water consumption value from the snapshot, or default to 0 if not found
+                val waterConsumption =
+                    dataSnapshot.getValue(WaterConsumptionDataModel::class.java)?.waterConsumption ?: 0
+                Log.d("Debug", "Water consumption: $waterConsumption")
+                waterConsumed = waterConsumption
+
+                onSuccess(waterConsumption)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occur during retrieval
+            }
+        })
+    }
+
     private fun updateChart(entries: List<Entry>, dates: List<String>) {
         // Update the line chart with the retrieved data
         Log.d("Debug", "updateChart called with entries: $entries, dates: $dates")
