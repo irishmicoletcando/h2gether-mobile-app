@@ -2,6 +2,7 @@ package com.h2gether.homePage
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +37,7 @@ class StatisticsPage : Fragment() {
     private lateinit var binding: FragmentStatisticsPageBinding
     private lateinit var toolBarBinding: ActivityToolBarBinding
     private lateinit var databaseReference: DatabaseReference
+    private lateinit var statisticsReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
     private var waterConsumed: Int = 0
 
@@ -65,59 +67,10 @@ class StatisticsPage : Fragment() {
         fetchWaterDetails()
     }
 
-    private fun fetchWaterDetails() {
-        firebaseAuth = FirebaseAuth.getInstance()
-        val uid = firebaseAuth.currentUser?.uid
-        val database: DatabaseReference = FirebaseDatabase.getInstance().reference
-        val dataRef: DatabaseReference = database.child("users/$uid/water-consumption")
-
-        dataRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    val waterConsumption = dataSnapshot.getValue(WaterConsumptionDataModel::class.java)
-
-                    if (waterConsumption != null) {
-                        waterConsumed = waterConsumption.waterConsumption ?: 0
-
-                        // Process the retrieved data and create the entries and dates
-                        val entries = mutableListOf<Entry>()
-                        val dates = mutableListOf<String>()
-
-                        val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())
-
-                        val calendar = Calendar.getInstance()
-                        calendar.time = Date()
-                        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
-
-                        for (i in 0 until 7) {
-                            val date = sdf.format(calendar.time)
-                            val waterValue = if (date == sdf.format(Date())) {
-                                waterConsumption.waterConsumption ?: 0
-                            } else {
-                                0
-                            }
-                            entries.add(Entry(i.toFloat(), waterValue.toFloat()))
-                            dates.add(date)
-
-                            calendar.add(Calendar.DAY_OF_WEEK, 1)
-                        }
-
-                        // Call the updateChart function with the processed data
-                        updateChart(entries, dates)
-                    }
-                } else {
-                    Toast.makeText(context, "No data available", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle any errors that occur during retrieval
-            }
-        })
-    }
-
-
     private fun updateChart(entries: List<Entry>, dates: List<String>) {
+        // Update the line chart with the retrieved data
+        Log.d("Debug", "updateChart called with entries: $entries, dates: $dates")
+        // Obtain a reference to the line chart
         val chart = binding.lineChart
 
         // Create a data set from the entries
@@ -143,6 +96,7 @@ class StatisticsPage : Fragment() {
         chart.setScaleEnabled(false)
         chart.setPinchZoom(false)
 
+        // Customize the x-axis of the line chart
         val xAxis = chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
@@ -154,17 +108,18 @@ class StatisticsPage : Fragment() {
                     val date = dates[index]
                     val dayOfWeek = getDayOfWeek(date)
                     return "$dayOfWeek"
-//                     return "$dayOfWeek $date"
                 }
                 return ""
             }
         }
 
+        // Customize the y-axis of the line chart
         val yAxisLeft = chart.axisLeft
         yAxisLeft.axisMinimum = 0f
         yAxisLeft.axisMaximum = 5100f // Set the maximum value to 5100 mL
         yAxisLeft.setDrawLimitLinesBehindData(true)
 
+        // Disable the right y-axis of the line chart
         val yAxisRight = chart.axisRight
         yAxisRight.isEnabled = false
 
@@ -192,12 +147,8 @@ class StatisticsPage : Fragment() {
         chart.invalidate()
     }
 
-    class WaterConsumptionDataModel {
-        @PropertyName("waterConsumption")
-        var waterConsumption: Int? = 0
-    }
-
     private fun LineDataSet.setDrawValues(condition: (Entry) -> Boolean) {
+        // Set whether to draw values on the line chart based on the given condition
         setDrawValues(true)
         valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
@@ -211,6 +162,7 @@ class StatisticsPage : Fragment() {
     }
 
     private fun getDayOfWeek(dateString: String): String {
+        // Get the day of the week (e.g., "Sun") for a given date string
         val format = SimpleDateFormat("MMMM dd", Locale.US)
         val date = format.parse(dateString)
         val calendar = Calendar.getInstance().apply {
@@ -218,8 +170,15 @@ class StatisticsPage : Fragment() {
         }
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 
-        val dayOfWeekFormat = SimpleDateFormat("EEE", Locale("en", "PH")) // Use Philippine locale for day of week
+        val dayOfWeekFormat = SimpleDateFormat("EEE", Locale("en", "PH")) // Use Philippine locale for day of the week
         val daysOfWeek = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-        return daysOfWeek[(dayOfWeek + 2) % 7] // Adjust the day of week index to start from Sunday
+        return daysOfWeek[(dayOfWeek + 2) % 7] // Adjust the day of the week index to start from Sunday
     }
+
+    class WaterConsumptionDataModel {
+        @PropertyName("waterConsumption")
+        var waterConsumption: Int? = 0
+    }
+
 }
+
