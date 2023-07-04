@@ -180,5 +180,10 @@ class StatisticsPage : Fragment() {
         var waterConsumption: Int? = 0
     }
 
+    class StatisticsDataModel {
+        @PropertyName("statistics")
+        var date: String = ""
+        var waterConsumption: Int = 0
+    }
 }
 
