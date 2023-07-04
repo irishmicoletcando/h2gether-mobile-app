@@ -14,5 +14,11 @@ class ViewPageAdapter(
     private var images: List<Int>
 ) : RecyclerView.Adapter<ViewPageAdapter.Pager2ViewHolder>() {
 
-    //TODO: create inner class Pager2ViewHolder
+    inner class Pager2ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+        val itemTitle: TextView = itemView.findViewById(R.id.tv_title)
+        val itemDescription: TextView = itemView.findViewById(R.id.tv_description)
+        val itemImage: ImageView = itemView.findViewById(R.id.iv_image)
+
+    }
 }
