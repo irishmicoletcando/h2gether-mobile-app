@@ -1,6 +1,5 @@
 package com.h2gether.settingsPage
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -29,7 +28,6 @@ class PrivacyPolicyActivity : AppCompatActivity() {
             onBackPressed()
         }
     }
-
 
     override fun onBackPressed() {
         super.onBackPressed()
