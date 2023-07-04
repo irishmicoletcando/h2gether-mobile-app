@@ -21,4 +21,16 @@ class ViewPageAdapter(
         val itemImage: ImageView = itemView.findViewById(R.id.iv_image)
 
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Pager2ViewHolder {
+        TODO("Not yet implemented")
+    }
+
+    override fun getItemCount(): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBindViewHolder(holder: Pager2ViewHolder, position: Int) {
+        TODO("Not yet implemented")
+    }
 }
