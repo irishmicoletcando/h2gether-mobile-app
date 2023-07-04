@@ -33,7 +33,7 @@ class ViewPageAdapter(
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return title.size
     }
 
 }
