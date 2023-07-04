@@ -67,6 +67,47 @@ class StatisticsPage : Fragment() {
         fetchWaterDetails()
     }
 
+    data class WaterIntakeEntry(val date: String, var waterIntake: Float)
+
+    private fun fetchWaterDetails() {
+        firebaseAuth = FirebaseAuth.getInstance()
+        val uid = firebaseAuth.currentUser?.uid
+        val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
+
+        // Retrieve the water consumption value from the "water-consumption" node
+        fetchWaterConsumption(database) { waterConsumption ->
+            // Create a water intake entry with the retrieved water consumption value
+            val currentEntry = WaterIntakeEntry(getCurrentDate(), waterConsumption.toFloat())
+
+            // Retrieve the statistics data for the past week from the "statistics" node
+            fetchStatisticsData(database) { entries ->
+                // Add the current entry to the list if the date doesn't already exist
+                val currentDate = getCurrentDate()
+                val existingEntry = entries.find { it.date == currentDate }
+                if (existingEntry != null) {
+                    // Update the water intake value for the existing entry
+                    existingEntry.waterIntake = waterConsumption.toFloat()
+                } else {
+                    // Add the current entry to the list
+                    entries.add(0, currentEntry)
+                }
+
+                // Sort the entries chronologically based on the date
+                val sortedEntries = entries.sortedBy { it.date }
+
+                // Extract the sorted dates and water intake values from the entries
+                val dates = sortedEntries.map { it.date }
+                val waterIntakeValues = sortedEntries.map { it.waterIntake }
+
+                // Update the chart with the sorted dates and water intake values
+                val entries = waterIntakeValues.mapIndexed { index, value ->
+                    Entry(index.toFloat(), value)
+                }
+                updateChart(entries, dates)
+            }
+        }
+    }
+
     private fun fetchWaterConsumption(database: DatabaseReference, onSuccess: (Int) -> Unit) {
         val databaseRef: DatabaseReference = database.child("water-consumption")
 
