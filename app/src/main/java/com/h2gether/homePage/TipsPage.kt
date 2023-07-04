@@ -44,6 +44,20 @@ class TipsPage : Fragment() {
 
         postToList()
 
+        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                updateSelectedDot(position)
+            }
+        })
+
+        for (i in 0 until (viewPager2.adapter?.itemCount ?: 0)) {
+            val dotView = createDotView()
+            dotViews.add(dotView)
+            dotContainer.addView(dotView)
+        }
+
+        updateSelectedDot(viewPager2.currentItem)
+
         return rootView
     }
 
