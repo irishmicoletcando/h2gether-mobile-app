@@ -106,6 +106,10 @@ class TipsPage : Fragment() {
         return dotView
     }
 
-    //TODO: fun convertDpToPixels
+    private fun convertDpToPixels(dp: Int): Int {
+        val scale = resources.displayMetrics.density
+        return (dp * scale + 0.5f).toInt()
+    }
+
     //TODO: fun updateSelectedDot
 }
