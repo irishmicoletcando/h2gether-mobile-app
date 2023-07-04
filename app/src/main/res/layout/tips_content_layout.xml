@@ -41,6 +41,7 @@
         android:text="Description"
         android:textColor="@color/darkGray"
         android:textSize="13sp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
