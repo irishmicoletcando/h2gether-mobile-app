@@ -124,7 +124,13 @@ class StatisticsPage : Fragment() {
             }
         })
     }
-    
+
+    private fun getCurrentDate(): String {
+        // Get the current date in the "MMMM dd" format (e.g., "July 01")
+        val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())
+        return sdf.format(Date())
+    }
+
     private fun updateChart(entries: List<Entry>, dates: List<String>) {
         // Update the line chart with the retrieved data
         Log.d("Debug", "updateChart called with entries: $entries, dates: $dates")
