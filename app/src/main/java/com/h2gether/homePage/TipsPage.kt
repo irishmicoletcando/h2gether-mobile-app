@@ -40,4 +40,10 @@ class TipsPage : Fragment() {
         return rootView
     }
 
+    private fun addToList(title: String, description: String, image: Int) {
+        titlesList.add(title)
+        descsList.add(description)
+        imagesList.add(image)
+    }
+
 }
