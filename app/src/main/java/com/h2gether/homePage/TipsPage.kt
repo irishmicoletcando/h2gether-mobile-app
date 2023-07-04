@@ -39,7 +39,8 @@ class TipsPage : Fragment() {
 //        }
 
         val viewPager2 = rootView.findViewById<ViewPager2>(R.id.viewPager2)
-        dotContainer = rootView.findViewById<LinearLayout>(R.id.dotContainer)
+
+        dotContainer = rootView.findViewById(R.id.dotContainer)
 
         viewPager2.adapter = ViewPageAdapter(titlesList, descsList, imagesList)
         viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
