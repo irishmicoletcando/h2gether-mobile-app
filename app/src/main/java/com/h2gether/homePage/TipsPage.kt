@@ -18,6 +18,7 @@ class TipsPage : Fragment() {
     private val imagesList = mutableListOf<Int>()
 
     private val dotViews = mutableListOf<View>()
+    private lateinit var dotContainer: LinearLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,8 +37,9 @@ class TipsPage : Fragment() {
 //        backButton.setOnClickListener {
 //            //TODO: Handle back button click
 //        }
+
         val viewPager2 = rootView.findViewById<ViewPager2>(R.id.viewPager2)
-        val dotContainer = rootView.findViewById<LinearLayout>(R.id.dotContainer)
+        dotContainer = rootView.findViewById<LinearLayout>(R.id.dotContainer)
 
         viewPager2.adapter = ViewPageAdapter(titlesList, descsList, imagesList)
         viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
@@ -50,11 +52,7 @@ class TipsPage : Fragment() {
             }
         })
 
-        for (i in 0 until (viewPager2.adapter?.itemCount ?: 0)) {
-            val dotView = createDotView(selected=false)
-            dotViews.add(dotView)
-            dotContainer.addView(dotView)
-        }
+        addDotsToContainer(viewPager2)
 
         updateSelectedDot(viewPager2.currentItem)
 
@@ -67,6 +65,13 @@ class TipsPage : Fragment() {
         imagesList.add(image)
     }
 
+    private fun addDotsToContainer(viewPager2: ViewPager2){
+        for (i in 0 until (viewPager2.adapter?.itemCount ?: 0)) {
+            val dotView = createDotView(selected = false)
+            dotViews.add(dotView)
+            dotContainer.addView(dotView)
+        }
+    }
     private fun postToList() {
         addToList(
             "Understand your fluid needs",
