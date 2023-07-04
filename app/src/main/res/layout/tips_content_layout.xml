@@ -19,10 +19,9 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="Title"
         android:textColor="@color/darkBlue"
-        android:textSize="22sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_image" />
@@ -36,6 +35,8 @@
         android:text="Description"
         android:textColor="@color/darkBlue"
         android:textSize="15sp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
