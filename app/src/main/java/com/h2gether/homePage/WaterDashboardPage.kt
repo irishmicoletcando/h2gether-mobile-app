@@ -385,7 +385,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
         handler.postDelayed({
             // This code will be executed every 2 minutes
-            showNotification()
+            showNotification(AppUtils.targetWater!!)
             enableReminder(intervalMillis) // Call this method again to repeat the notification after 2 minutes
         }, intervalMillis.toLong())
     }
@@ -404,10 +404,11 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         Toast.makeText(requireContext(), "Notifications disabled", Toast.LENGTH_SHORT).show()
     }
 
-    private fun showNotification(){
+    private fun showNotification(targetWater: Int){
         val channelId = "my_channel_id"
         val channelName = "My Channel"
 
+        val remainingWater = targetWater - AppUtils.waterConsumed!!
         val notificationManager =
             requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -421,7 +422,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         val builder = NotificationCompat.Builder(requireContext(), channelId)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle("Reminder")
-            .setContentText("Drink your water!")
+            .setContentText("Hydrate yourself! You still have $remainingWater ml of water left to drink.")
             .setAutoCancel(true)
 
         // Generate a unique notification ID
