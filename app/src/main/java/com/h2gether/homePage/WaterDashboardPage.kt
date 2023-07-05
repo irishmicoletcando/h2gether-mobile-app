@@ -379,9 +379,10 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         }, intervalMillis.toLong())
     }
 
-    //TODO: function for disable reminder
     private fun disableReminder(){
-
+        Log.d("H2gether", "Stopping notifications")
+        handler.removeCallbacksAndMessages(null)
+        notificationsEnabled = false
     }
     //TODO: function for displaying notification
     private fun showNotification(){
