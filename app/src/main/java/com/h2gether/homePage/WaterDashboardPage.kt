@@ -364,8 +364,8 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                     alertDialog.dismiss()
                 }
             }
-            alertDialog.show()
         }
+        alertDialog.show()
     }
 
     //TODO: function for enable reminder
