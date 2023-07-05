@@ -56,6 +56,10 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     private lateinit var binding: FragmentWaterDashboardPageBinding
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var handler: Handler
+
+    private var notificationsEnabled: Boolean = false
+
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
     val WeatherUtils = WeatherUtils()
     val UserConfigUtils = UserConfigUtils()
