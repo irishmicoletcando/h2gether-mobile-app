@@ -380,6 +380,9 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         val reminderData = mapOf("reminderSettings" to notificationsEnabled)
         databaseReference.updateChildren(reminderData)
 
+        // Display a toast message
+        Toast.makeText(requireContext(), "Notifications enabled", Toast.LENGTH_SHORT).show()
+
         handler.postDelayed({
             // This code will be executed every 2 minutes
             showNotification()
@@ -396,6 +399,9 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
         val reminderData = mapOf("reminderSettings" to notificationsEnabled)
         databaseReference.updateChildren(reminderData)
+
+        // Display a toast message
+        Toast.makeText(requireContext(), "Notifications disabled", Toast.LENGTH_SHORT).show()
     }
 
     private fun showNotification(){
