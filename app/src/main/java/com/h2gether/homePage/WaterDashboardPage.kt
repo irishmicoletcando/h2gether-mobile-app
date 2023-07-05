@@ -202,8 +202,9 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             }
         }
 
+        handler = Handler()
         binding.btnReminder.setOnClickListener{
-            //TODO: Add code to show dialog
+            showConfirmationDialog()
         }
 
         binding.op50ml.setOnClickListener {
