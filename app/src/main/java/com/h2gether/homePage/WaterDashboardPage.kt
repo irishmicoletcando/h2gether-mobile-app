@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -306,6 +307,22 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
     }
 
+    private fun showConfirmationDialog(){
+        val inflater = LayoutInflater.from(requireContext())
+        val dialogView = inflater.inflate(R.layout.dialog_layout, null)
+        val builder = AlertDialog.Builder(requireContext(), R.style.CustomDialogStyle)
+            .setView(dialogView)
+        val alertDialog = builder.create()
+        alertDialog.setOnShowListener {
+            val positiveButton = dialogView.findViewById<Button>(R.id.dialog_positive_button)
+            val negativeButton = dialogView.findViewById<Button>(R.id.dialog_negative_button)
+
+            //TODO: Add conditions for notificationEnabled and when not
+    }
+
+    //TODO: function for enable reminder
+    //TODO: function for disable reminder
+    //TODO: function for displaying notification
     private fun fetchWaterDetails() {
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
