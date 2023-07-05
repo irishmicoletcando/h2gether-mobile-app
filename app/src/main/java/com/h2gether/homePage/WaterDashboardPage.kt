@@ -2,6 +2,8 @@ package com.h2gether.homePage
 
 import android.app.AlarmManager
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
@@ -22,6 +24,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.h2gether.R
@@ -386,6 +389,17 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     }
     //TODO: function for displaying notification
     private fun showNotification(){
+        val channelId = "my_channel_id"
+        val channelName = "My Channel"
+
+        val notificationManager =
+            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel =
+                NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
+            notificationManager.createNotificationChannel(channel)
+        }
 
     }
     private fun fetchWaterDetails() {
