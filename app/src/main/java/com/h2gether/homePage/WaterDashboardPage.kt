@@ -308,11 +308,12 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
     }
 
-    private fun showConfirmationDialog(){
+    private fun showConfirmationDialog() {
         val inflater = LayoutInflater.from(requireContext())
         val dialogView = inflater.inflate(R.layout.dialog_layout, null)
         val builder = AlertDialog.Builder(requireContext(), R.style.CustomDialogStyle)
             .setView(dialogView)
+
         val alertDialog = builder.create()
         alertDialog.setOnShowListener {
             val positiveButton = dialogView.findViewById<Button>(R.id.dialog_positive_button)
@@ -345,13 +346,39 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                     alertDialog.dismiss()
                 }
             } else {
-                //If notification are disabled, show the dialog to enable them
+                // If notifications are disabled, show the dialog to enable them
+                val message = "Do you want to enable receiving notifications every 2 hours?"
+                dialogView.findViewById<TextView>(R.id.dialog_message).text = message
+
+                positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkBlue))
+                negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkBlue))
+
+                val intervalMillis = 120000 //2 minutes temporary
+                positiveButton.setOnClickListener {
+                    enableReminder()
+                    alertDialog.dismiss()
+                }
+
+                negativeButton.setOnClickListener {
+                    alertDialog.dismiss()
+                }
             }
+            alertDialog.show()
+        }
     }
 
     //TODO: function for enable reminder
+    private fun enableReminder(){
+
+    }
     //TODO: function for disable reminder
+    private fun disableReminder(){
+
+    }
     //TODO: function for displaying notification
+    private fun showNotification(){
+
+    }
     private fun fetchWaterDetails() {
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
