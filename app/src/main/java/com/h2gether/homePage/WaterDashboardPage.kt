@@ -401,7 +401,20 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             notificationManager.createNotificationChannel(channel)
         }
 
+        // Create a notification builder
+        val builder = NotificationCompat.Builder(requireContext(), channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle("Reminder")
+            .setContentText("Drink your water!")
+            .setAutoCancel(true)
+
+        // Generate a unique notification ID
+        val notificationId = System.currentTimeMillis().toInt()
+
+        // Show the notification
+        notificationManager.notify(notificationId, builder.build())
     }
+
     private fun fetchWaterDetails() {
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
