@@ -200,6 +200,10 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             }
         }
 
+        binding.btnReminder.setOnClickListener{
+            //TODO: Add code to show dialog
+        }
+
         binding.op50ml.setOnClickListener {
             AppUtils.selectedOption = 50
             decolorUnpressedIcons()
