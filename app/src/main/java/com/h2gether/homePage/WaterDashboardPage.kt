@@ -19,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -317,7 +318,35 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             val positiveButton = dialogView.findViewById<Button>(R.id.dialog_positive_button)
             val negativeButton = dialogView.findViewById<Button>(R.id.dialog_negative_button)
 
-            //TODO: Add conditions for notificationEnabled and when not
+            if (notificationsEnabled) {
+                // If notifications are enabled, show the dialog to disable them
+                val message = "Do you want to disable receiving notifications?"
+                dialogView.findViewById<TextView>(R.id.dialog_message).text = message
+
+                positiveButton.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.darkBlue
+                    )
+                )
+                negativeButton.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.darkBlue
+                    )
+                )
+
+                positiveButton.setOnClickListener {
+                    disableReminder()
+                    alertDialog.dismiss()
+                }
+
+                negativeButton.setOnClickListener {
+                    alertDialog.dismiss()
+                }
+            } else {
+                //If notification are disabled, show the dialog to enable them
+            }
     }
 
     //TODO: function for enable reminder
