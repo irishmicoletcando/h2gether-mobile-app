@@ -1,32 +1,65 @@
 package com.h2gether.homePage
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import com.example.h2gether.R
+import com.example.h2gether.databinding.ActivityToolBarBinding
+import com.example.h2gether.databinding.FragmentSettingsPageBinding
+import com.google.android.material.textfield.TextInputLayout
+import com.h2gether.settingsPage.AboutUsActivity
+import com.h2gether.settingsPage.PrivacyPolicyActivity
 
 class SettingsPage : Fragment() {
+    private lateinit var binding: FragmentSettingsPageBinding
+    private lateinit var toolBarBinding: ActivityToolBarBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_settings_page, container, false)
+        binding = FragmentSettingsPageBinding.inflate(inflater, container, false)
+        toolBarBinding = ActivityToolBarBinding.bind(binding.root.findViewById(R.id.toolbarSettingsLayout))
 
-        val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
-        val pageTitle = rootView.findViewById<TextView>(R.id.toolbar_title)
-        val logoutButton: ImageButton = rootView.findViewById(R.id.logout_button)
+        val pageTitle = toolBarBinding.toolbarTitle
+        val logoutButton = toolBarBinding.logoutButton
         logoutButton.visibility = View.GONE
 
         // Customize the toolbar as needed
         pageTitle.text = "Settings"
-        backButton.setOnClickListener {
+
+        // back button in toolbar
+        toolBarBinding.backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-        return rootView
+
+        binding.llFeedback.setOnClickListener {
+            val promptsView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.feedback_dialog_layout, null)
+            val userInput = promptsView.findViewById(R.id.etFeedback) as TextInputLayout
+
+            val alertDialogBuilder = AlertDialog.Builder(requireContext())
+            alertDialogBuilder.setView(promptsView)
+
+            val alertDialog = alertDialogBuilder.create()
+            alertDialog.show()
+        }
+
+        binding.llPrivacyPolicy.setOnClickListener {
+            val intent = Intent(requireActivity(), PrivacyPolicyActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.llAboutUs.setOnClickListener {
+            val intent = Intent(requireActivity(), AboutUsActivity::class.java)
+            startActivity(intent)
+        }
+
+        return binding.root
     }
 }
