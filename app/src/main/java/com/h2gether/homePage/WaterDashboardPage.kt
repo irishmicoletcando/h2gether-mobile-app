@@ -109,22 +109,22 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         super.onViewCreated(view, savedInstanceState)
 
         AppUtils.selectedOption = 0
-        CoroutineScope(Dispatchers.Main).launch {
-            setTimer(1, 7)
-
-            // Update the properties of the existing instance
-            binding.waterConsumed = AppUtils.waterConsumed.toString()
-            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
-            AppUtils.percent =
-                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
-            if (AppUtils.percent!! < 100) {
-                binding.percent = AppUtils.percent.toString() + "%"
-            } else {
-                binding.percent = "100%"
-                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
-            }
-            AppUtils.percent?.let { initializeProgressBar(0, it) }
-        }
+//        CoroutineScope(Dispatchers.Main).launch {
+//            setTimer(1, 7)
+//
+//            // Update the properties of the existing instance
+//            binding.waterConsumed = AppUtils.waterConsumed.toString()
+//            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+//            AppUtils.percent =
+//                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+//            if (AppUtils.percent!! < 100) {
+//                binding.percent = AppUtils.percent.toString() + "%"
+//            } else {
+//                binding.percent = "100%"
+//                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+//            }
+//            AppUtils.percent?.let { initializeProgressBar(0, it) }
+//        }
 
 
         // firebase initialize dependencies
