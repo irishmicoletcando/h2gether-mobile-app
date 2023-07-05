@@ -375,6 +375,11 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         Log.d("H2gether", "Starting notifications")
         notificationsEnabled = true
 
+        val uid = firebaseAuth.currentUser?.uid
+        val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
+        val reminderData = mapOf("reminderSettings" to notificationsEnabled)
+        databaseReference.updateChildren(reminderData)
+
         handler.postDelayed({
             // This code will be executed every 2 minutes
             showNotification()
@@ -386,8 +391,13 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         Log.d("H2gether", "Stopping notifications")
         handler.removeCallbacksAndMessages(null)
         notificationsEnabled = false
+
+        val uid = firebaseAuth.currentUser?.uid
+        val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
+        val reminderData = mapOf("reminderSettings" to notificationsEnabled)
+        databaseReference.updateChildren(reminderData)
     }
-    //TODO: function for displaying notification
+
     private fun showNotification(){
         val channelId = "my_channel_id"
         val channelName = "My Channel"
