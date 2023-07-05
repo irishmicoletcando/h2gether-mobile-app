@@ -356,7 +356,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
                 val intervalMillis = 120000 //2 minutes temporary
                 positiveButton.setOnClickListener {
-                    enableReminder()
+                    enableReminder(intervalMillis)
                     alertDialog.dismiss()
                 }
 
@@ -368,10 +368,17 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         alertDialog.show()
     }
 
-    //TODO: function for enable reminder
-    private fun enableReminder(){
+    private fun enableReminder(intervalMillis:Int){
+        Log.d("H2gether", "Starting notifications")
+        notificationsEnabled = true
 
+        handler.postDelayed({
+            // This code will be executed every 2 minutes
+            showNotification()
+            enableReminder(intervalMillis) // Call this method again to repeat the notification after 2 minutes
+        }, intervalMillis.toLong())
     }
+
     //TODO: function for disable reminder
     private fun disableReminder(){
 
