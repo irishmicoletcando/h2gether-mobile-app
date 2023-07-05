@@ -2,6 +2,8 @@ package com.h2gether.homePage
 
 import android.app.AlarmManager
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
@@ -18,8 +20,11 @@ import androidx.fragment.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.h2gether.R
@@ -56,6 +61,10 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     private lateinit var binding: FragmentWaterDashboardPageBinding
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var handler: Handler
+
+    private var notificationsEnabled: Boolean = false
+
     val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
     val WeatherUtils = WeatherUtils()
     val UserConfigUtils = UserConfigUtils()
@@ -196,6 +205,11 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             }
         }
 
+        handler = Handler()
+        binding.btnReminder.setOnClickListener{
+            showConfirmationDialog()
+        }
+
         binding.op50ml.setOnClickListener {
             AppUtils.selectedOption = 50
             decolorUnpressedIcons()
@@ -296,6 +310,126 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
         }
 
+    }
+
+    private fun showConfirmationDialog() {
+        val inflater = LayoutInflater.from(requireContext())
+        val dialogView = inflater.inflate(R.layout.dialog_layout, null)
+        val builder = AlertDialog.Builder(requireContext(), R.style.CustomDialogStyle)
+            .setView(dialogView)
+
+        val alertDialog = builder.create()
+        alertDialog.setOnShowListener {
+            val positiveButton = dialogView.findViewById<Button>(R.id.dialog_positive_button)
+            val negativeButton = dialogView.findViewById<Button>(R.id.dialog_negative_button)
+
+            if (notificationsEnabled) {
+                // If notifications are enabled, show the dialog to disable them
+                val message = "Do you want to disable receiving notifications?"
+                dialogView.findViewById<TextView>(R.id.dialog_message).text = message
+
+                positiveButton.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.darkBlue
+                    )
+                )
+                negativeButton.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.darkBlue
+                    )
+                )
+
+                positiveButton.setOnClickListener {
+                    disableReminder()
+                    alertDialog.dismiss()
+                }
+
+                negativeButton.setOnClickListener {
+                    alertDialog.dismiss()
+                }
+            } else {
+                // If notifications are disabled, show the dialog to enable them
+                val message = "Do you want to enable receiving notifications every 2 hours?"
+                dialogView.findViewById<TextView>(R.id.dialog_message).text = message
+
+                positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkBlue))
+                negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkBlue))
+
+                val intervalMillis = 5000 //5 seconds temporary
+                positiveButton.setOnClickListener {
+                    enableReminder(intervalMillis)
+                    alertDialog.dismiss()
+                }
+
+                negativeButton.setOnClickListener {
+                    alertDialog.dismiss()
+                }
+            }
+        }
+        alertDialog.show()
+    }
+
+    private fun enableReminder(intervalMillis:Int){
+        Log.d("H2gether", "Starting notifications")
+        notificationsEnabled = true
+
+        val uid = firebaseAuth.currentUser?.uid
+        val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
+        val reminderData = mapOf("reminderSettings" to notificationsEnabled)
+        databaseReference.updateChildren(reminderData)
+
+        // Display a toast message
+        Toast.makeText(requireContext(), "Notifications enabled", Toast.LENGTH_SHORT).show()
+
+        handler.postDelayed({
+            // This code will be executed every 2 minutes
+            showNotification(AppUtils.targetWater!!)
+            enableReminder(intervalMillis) // Call this method again to repeat the notification after 2 minutes
+        }, intervalMillis.toLong())
+    }
+
+    private fun disableReminder(){
+        Log.d("H2gether", "Stopping notifications")
+        handler.removeCallbacksAndMessages(null)
+        notificationsEnabled = false
+
+        val uid = firebaseAuth.currentUser?.uid
+        val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
+        val reminderData = mapOf("reminderSettings" to notificationsEnabled)
+        databaseReference.updateChildren(reminderData)
+
+        // Display a toast message
+        Toast.makeText(requireContext(), "Notifications disabled", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showNotification(targetWater: Int){
+        val channelId = "my_channel_id"
+        val channelName = "My Channel"
+
+        val remainingWater = targetWater - AppUtils.waterConsumed!!
+        val notificationManager =
+            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel =
+                NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        // Create a notification builder
+        val builder = NotificationCompat.Builder(requireContext(), channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle("Reminder")
+            .setContentText("Hydrate yourself! You still have $remainingWater ml of water left to drink.")
+            .setAutoCancel(true)
+
+        // Generate a unique notification ID
+        val notificationId = System.currentTimeMillis().toInt()
+
+        // Show the notification
+        notificationManager.notify(notificationId, builder.build())
     }
 
     private fun fetchWaterDetails() {
