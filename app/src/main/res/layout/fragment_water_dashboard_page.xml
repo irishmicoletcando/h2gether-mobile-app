@@ -34,7 +34,7 @@
             style="@style/MarginStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,24 +49,25 @@
                 android:text="Hello, user!"
                 android:textColor="@color/navbarTextColor"
                 android:textSize="30sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
+            <!-- Settings Button -->
             <LinearLayout
                 android:id="@+id/ll_settings"
-                android:layout_width="35dp"
-                android:layout_height="match_parent"
-                android:padding="5dp"
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:clickable="true"
-                android:background="@drawable/settings_btn_bg">
+                android:background="@drawable/settings_home_btn_bg">
 
-                <!-- Settings Button -->
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_settings"
+                <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center"
