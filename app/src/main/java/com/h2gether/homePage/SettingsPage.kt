@@ -61,6 +61,19 @@ class SettingsPage : Fragment() {
             val feedback = feedbackDialogBinding.etFeedbackInput
 
             feedbackDialogBinding.btnSubmit.setOnClickListener {
+                val usernameInput = username.text?.toString()?.trim()
+                val feedbackInput = feedback.text?.toString()?.trim()
+
+                if (usernameInput.isNullOrEmpty()) {
+                    username.error = "Please enter your name"
+                    return@setOnClickListener
+                }
+
+                if (feedbackInput.isNullOrEmpty()) {
+                    feedback.error = "Please enter your feedback"
+                    return@setOnClickListener
+                }
+
                 val i = Intent(Intent.ACTION_SEND)
                 i.type = "message/html"
                 i.putExtra(Intent.EXTRA_EMAIL, arrayOf("skylarkh2@gmail.com"))
