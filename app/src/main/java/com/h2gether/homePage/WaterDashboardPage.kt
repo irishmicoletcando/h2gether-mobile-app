@@ -278,7 +278,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             }
         }
 
-        binding.btnSettings.setOnClickListener {
+        binding.llSettings.setOnClickListener {
             val settingsFragment = SettingsPage()
             val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
             fragmentManager.beginTransaction()
