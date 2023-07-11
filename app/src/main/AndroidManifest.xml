@@ -69,7 +69,7 @@
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.h2gether.prefacePagesOnboarding.FamilyMonitoringOnboarding"
+            android:name="com.h2gether.prefacePagesOnboarding.WeatherMonitoringOnboarding"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
