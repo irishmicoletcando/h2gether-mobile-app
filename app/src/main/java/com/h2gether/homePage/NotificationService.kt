@@ -94,6 +94,13 @@ class NotificationService : Service() {
                         notificationsEnabled = reminderSettings ?: false
 
                         if (notificationsEnabled) {
+                            // Fetch the latest water consumption value
+                            val waterConsumption = snapshot.child("water-consumption/waterConsumption").getValue(Int::class.java)
+                            if (waterConsumption != null) {
+                                // Update the waterConsumed variable with the latest value
+                                waterConsumed = waterConsumption
+                            }
+
                             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
                             val remainingWater = targetWater - waterConsumed
@@ -119,6 +126,7 @@ class NotificationService : Service() {
         // Repeat the notification after the specified interval
         handler.postDelayed(runnable, intervalMillis.toLong())
     }
+
 
     companion object {
         const val ACTION_START = "ACTION_START"
