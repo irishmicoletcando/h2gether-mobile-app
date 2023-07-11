@@ -454,6 +454,21 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         })
     }
 
+    override fun onStart() {
+        super.onStart()
+        fetchReminderSettings()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (!notificationsEnabled && isNotificationServiceRunning) {
+            requireContext().stopService(notificationServiceIntent.apply {
+                action = NotificationService.ACTION_STOP
+            })
+            isNotificationServiceRunning = false
+        }
+    }
+
     private fun showNotification(targetWater: Int){
         val channelId = "my_channel_id"
         val channelName = "My Channel"
