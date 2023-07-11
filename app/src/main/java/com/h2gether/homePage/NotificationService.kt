@@ -50,12 +50,17 @@ class NotificationService : Service() {
         return START_NOT_STICKY
     }
 
-    private fun createNotification(): Notification? {
-
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        TODO("Not yet implemented")
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(runnable)
+    }
+
+    private fun createNotification(): Notification? {
+        //TODO: Not yet implemented
     }
 
     private fun showNotification() {
