@@ -405,17 +405,19 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         ContextCompat.startForegroundService(requireContext(), notificationServiceIntent)
     }
 
-    private fun disableReminder(){
+    private fun disableReminder() {
         Log.d("H2gether", "Stopping notifications")
-        handler.removeCallbacksAndMessages(null)
         notificationsEnabled = false
-
-        val uid = firebaseAuth.currentUser?.uid
-        val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
-        val reminderData = mapOf("reminderSettings" to notificationsEnabled)
-        databaseReference.updateChildren(reminderData)
-
+        saveReminderSettings(false)
+        if (isNotificationServiceRunning) {
+            requireContext().stopService(notificationServiceIntent.apply {
+                action = NotificationService.ACTION_STOP
+            })
+            isNotificationServiceRunning = false
+        }
     }
+
+    //TODO: saveReminderSettings function
 
     private fun showNotification(targetWater: Int){
         val channelId = "my_channel_id"
