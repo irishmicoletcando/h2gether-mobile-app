@@ -1,5 +1,6 @@
 package com.h2gether.homePage
 
+import android.app.ActivityManager
 import android.app.AlarmManager
 import android.app.AlertDialog
 import android.app.NotificationChannel
@@ -61,7 +62,9 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     private lateinit var binding: FragmentWaterDashboardPageBinding
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var handler: Handler
+
+    private lateinit var notificationServiceIntent: Intent
+    private var isNotificationServiceRunning = false
 
     private var notificationsEnabled: Boolean = false
 
@@ -205,7 +208,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             }
         }
 
-        handler = Handler()
         binding.btnReminder.setOnClickListener{
             showConfirmationDialog()
         }
@@ -310,6 +312,9 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
         }
 
+        notificationServiceIntent = Intent(requireContext(), NotificationService::class.java)
+        isNotificationServiceRunning = isNotificationServiceRunning()
+
     }
 
     private fun showConfirmationDialog() {
@@ -373,7 +378,17 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         alertDialog.show()
     }
 
-    private fun enableReminder(intervalMillis:Int){
+    private fun isNotificationServiceRunning(): Boolean {
+        val manager = requireContext().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (NotificationService::class.java.name == service.service.className) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun enableReminder(intervalMillis: Int) {
         Log.d("H2gether", "Starting notifications")
         notificationsEnabled = true
 
@@ -382,11 +397,12 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         val reminderData = mapOf("reminderSettings" to notificationsEnabled)
         databaseReference.updateChildren(reminderData)
 
-        handler.postDelayed({
-            // This code will be executed every 2 minutes
-            showNotification(AppUtils.targetWater!!)
-            enableReminder(intervalMillis) // Call this method again to repeat the notification after 2 minutes
-        }, intervalMillis.toLong())
+        val notificationServiceIntent = Intent(requireContext(), NotificationService::class.java).apply {
+            action = NotificationService.ACTION_START
+            putExtra(NotificationService.EXTRA_TARGET_WATER, AppUtils.targetWater) // Pass the value of targetWater
+            putExtra(NotificationService.EXTRA_WATER_CONSUMED, AppUtils.waterConsumed) // Pass the value of waterConsumed
+        }
+        ContextCompat.startForegroundService(requireContext(), notificationServiceIntent)
     }
 
     private fun disableReminder(){
