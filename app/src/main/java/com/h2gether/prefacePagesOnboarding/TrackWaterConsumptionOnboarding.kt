@@ -14,7 +14,7 @@ class TrackWaterConsumptionOnboarding : AppCompatActivity() {
 
         val btnNext = findViewById<Button>(R.id.btn_next)
         btnNext.setOnClickListener {
-            val intent = Intent(this@TrackWaterConsumptionOnboarding, FamilyMonitoringOnboarding::class.java)
+            val intent = Intent(this@TrackWaterConsumptionOnboarding, WeatherMonitoringOnboarding::class.java)
             startActivityWithSlideAnimation(intent)
         }
 

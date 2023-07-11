@@ -14,7 +14,7 @@ class HydrationTipsOnboarding : AppCompatActivity() {
 
         val btnBack = findViewById<Button>(R.id.btn_back)
         btnBack.setOnClickListener {
-            val intent = Intent(this, FamilyMonitoringOnboarding::class.java)
+            val intent = Intent(this, WeatherMonitoringOnboarding::class.java)
             backActivityWithSlideAnimation(intent)
         }
 

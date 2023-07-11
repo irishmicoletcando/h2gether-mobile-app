@@ -7,10 +7,10 @@ import android.widget.Button
 import com.example.h2gether.R
 import com.h2gether.userConfigActivities.SexSelectionActivity
 
-class FamilyMonitoringOnboarding : AppCompatActivity() {
+class WeatherMonitoringOnboarding : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_family_monitoring_onboarding)
+        setContentView(R.layout.activity_weather_monitoring_onboarding)
 
         val btnBack = findViewById<Button>(R.id.btn_back)
         btnBack.setOnClickListener {

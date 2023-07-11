@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F7FB"
-    tools:context="com.h2gether.prefacePagesOnboarding.FamilyMonitoringOnboarding">
+    tools:context="com.h2gether.prefacePagesOnboarding.WeatherMonitoringOnboarding">
 
     <!-- Back Button-->
     <androidx.appcompat.widget.AppCompatButton
@@ -45,44 +45,45 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/iv_family_monitoring"
+            android:id="@+id/iv_weather_monitoring"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/family_monitoring"
+            android:layout_height="250dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/cloudy_weather"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.397" />
+            app:layout_constraintVertical_bias="0.314" />
 
         <TextView
-            android:id="@+id/tv_family_monitoring_heading"
+            android:id="@+id/tv_weather_monitoring_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Family Monitoring"
+            android:text="Weather Monitoring"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_family_monitoring" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_weather_monitoring" />
 
         <TextView
-            android:id="@+id/tv_family_monitoring_description"
+            android:id="@+id/tv_weather_monitoring_description"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Send reminders to your loved ones to drink water for them to stay hydrated"
+            android:text="View real-time weather forecasts that are synced with your target water intake per day to keep you updated and hydrated"
             android:textAlignment="center"
             android:textColor="@color/slightDarkGray"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_family_monitoring_heading" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_weather_monitoring_heading" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <!-- Next Button-->
     <androidx.appcompat.widget.AppCompatButton
