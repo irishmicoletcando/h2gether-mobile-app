@@ -469,34 +469,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         }
     }
 
-    private fun showNotification(targetWater: Int){
-        val channelId = "my_channel_id"
-        val channelName = "My Channel"
-
-        val remainingWater = targetWater - AppUtils.waterConsumed!!
-        val notificationManager =
-            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel =
-                NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        // Create a notification builder
-        val builder = NotificationCompat.Builder(requireContext(), channelId)
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Reminder")
-            .setContentText("Hydrate yourself! You still have $remainingWater ml of water left to drink.")
-            .setAutoCancel(true)
-
-        // Generate a unique notification ID
-        val notificationId = System.currentTimeMillis().toInt()
-
-        // Show the notification
-        notificationManager.notify(notificationId, builder.build())
-    }
-
     private fun fetchWaterDetails() {
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
