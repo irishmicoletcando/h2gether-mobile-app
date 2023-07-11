@@ -76,7 +76,7 @@ class TipsPage : Fragment() {
     private fun postToList() {
         addToList(
             "Understand your fluid needs",
-            "A common recommendation for daily water intake is 8 cups, but this is not based on science. NAM recommends that men consume 125 ounces (3,700 ml) and women about 90 ounces (2,700 ml) of fluid per day, including the fluid from water, other drinks, and foods",
+            "A common recommendation for daily water intake is 8 cups, but this is not based on science. National Academy of Sciences recommends that men consume 3,700 ml and women about 3,000 ml of fluid per day, including the fluid from water, other drinks, and foods",
             R.drawable.fluid_needs
         )
         addToList(
