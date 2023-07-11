@@ -104,15 +104,18 @@ class NotificationService : Service() {
                             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
                             val remainingWater = targetWater - waterConsumed
-                            val notificationId = System.currentTimeMillis().toInt()
-                            val notificationBuilder = NotificationCompat.Builder(this@NotificationService, channelId)
-                                .setSmallIcon(R.drawable.ic_notification)
-                                .setContentTitle("Reminder")
-                                .setContentText("Hydrate yourself! You still have $remainingWater ml of water left to drink.")
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                .setAutoCancel(false)
 
-                            notificationManager.notify(notificationId, notificationBuilder.build())
+                            if (remainingWater > 0) {
+                                val notificationId = System.currentTimeMillis().toInt()
+                                val notificationBuilder = NotificationCompat.Builder(this@NotificationService, channelId)
+                                    .setSmallIcon(R.drawable.ic_notification)
+                                    .setContentTitle("Reminder")
+                                    .setContentText("Hydrate yourself! You still have $remainingWater ml of water left to drink.")
+                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                    .setAutoCancel(false)
+
+                                notificationManager.notify(notificationId, notificationBuilder.build())
+                            }
                         }
                     }
                 }
@@ -126,6 +129,7 @@ class NotificationService : Service() {
         // Repeat the notification after the specified interval
         handler.postDelayed(runnable, intervalMillis.toLong())
     }
+
 
 
     companion object {
