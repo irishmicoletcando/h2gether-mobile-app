@@ -7,13 +7,16 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.ACTION_MAIN
-import android.content.Intent.CATEGORY_LAUNCHER
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.example.h2gether.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class NotificationService : Service() {
 
@@ -39,8 +42,8 @@ class NotificationService : Service() {
         if (intent?.action == ACTION_START) {
             targetWater = intent.getIntExtra(EXTRA_TARGET_WATER, 0)
             waterConsumed = intent.getIntExtra(EXTRA_WATER_CONSUMED, 0)
-            startForeground(notificationId, createNotification())
             notificationsEnabled = true
+            startForeground(notificationId, createNotification())
             handler.postDelayed(runnable, intervalMillis.toLong())
         } else if (intent?.action == ACTION_STOP) {
             stopForeground(true)
@@ -82,17 +85,35 @@ class NotificationService : Service() {
 
     private fun showNotification() {
         if (notificationsEnabled) {
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+            val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
+            databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val reminderSettings = snapshot.child("reminderSettings").getValue(Boolean::class.java)
+                        notificationsEnabled = reminderSettings ?: false
 
-            val remainingWater = targetWater - waterConsumed
-            val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle("Reminder")
-                .setContentText("Hydrate yourself! You still have $remainingWater ml of water left to drink.")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(false)
+                        if (notificationsEnabled) {
+                            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            notificationManager.notify(notificationId, notificationBuilder.build())
+                            val remainingWater = targetWater - waterConsumed
+                            val notificationId = System.currentTimeMillis().toInt()
+                            val notificationBuilder = NotificationCompat.Builder(this@NotificationService, channelId)
+                                .setSmallIcon(R.drawable.ic_notification)
+                                .setContentTitle("Reminder")
+                                .setContentText("Hydrate yourself! You still have $remainingWater ml of water left to drink.")
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                .setAutoCancel(false)
+
+                            notificationManager.notify(notificationId, notificationBuilder.build())
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle the cancellation
+                }
+            })
         }
 
         // Repeat the notification after the specified interval
