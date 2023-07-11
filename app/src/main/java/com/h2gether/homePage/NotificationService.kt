@@ -59,8 +59,25 @@ class NotificationService : Service() {
         handler.removeCallbacks(runnable)
     }
 
-    private fun createNotification(): Notification? {
-        //TODO: Not yet implemented
+    private fun createNotification(): Notification {
+        val intent = Intent(this, WaterDashboardPage::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle("Reminder")
+            .setContentText("Hydrate yourself!")
+            .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(false)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        return notificationBuilder.build()
     }
 
     private fun showNotification() {
