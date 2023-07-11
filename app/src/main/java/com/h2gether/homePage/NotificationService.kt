@@ -81,7 +81,22 @@ class NotificationService : Service() {
     }
 
     private fun showNotification() {
-        TODO("Not yet implemented")
+        if (notificationsEnabled) {
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            val remainingWater = targetWater - waterConsumed
+            val notificationBuilder = NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle("Reminder")
+                .setContentText("Hydrate yourself! You still have $remainingWater ml of water left to drink.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(false)
+
+            notificationManager.notify(notificationId, notificationBuilder.build())
+        }
+
+        // Repeat the notification after the specified interval
+        handler.postDelayed(runnable, intervalMillis.toLong())
     }
 
     companion object {
