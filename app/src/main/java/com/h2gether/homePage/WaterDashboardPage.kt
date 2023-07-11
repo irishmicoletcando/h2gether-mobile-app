@@ -417,7 +417,42 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         }
     }
 
-    //TODO: saveReminderSettings function
+    private fun saveReminderSettings(enabled: Boolean) {
+        val uid = firebaseAuth.currentUser?.uid
+        val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
+        val reminderData = mapOf("reminderSettings" to enabled)
+        databaseReference.updateChildren(reminderData)
+    }
+
+    private fun fetchReminderSettings() {
+        val uid = firebaseAuth.currentUser?.uid
+        val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val reminderSettings = snapshot.child("reminderSettings").getValue(Boolean::class.java)
+                    notificationsEnabled = reminderSettings ?: false
+                    if (!notificationsEnabled && isNotificationServiceRunning) {
+                        requireContext().stopService(notificationServiceIntent.apply {
+                            action = NotificationService.ACTION_STOP
+                        })
+                        isNotificationServiceRunning = false
+                    } else if (notificationsEnabled && !isNotificationServiceRunning) {
+                        ContextCompat.startForegroundService(requireContext(), notificationServiceIntent.apply {
+                            action = NotificationService.ACTION_START
+                            putExtra(NotificationService.EXTRA_TARGET_WATER, AppUtils.targetWater) // Pass the value of targetWater
+                            putExtra(NotificationService.EXTRA_WATER_CONSUMED, AppUtils.waterConsumed) // Pass the value of waterConsumed
+                        })
+                        isNotificationServiceRunning = true
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle the cancellation
+            }
+        })
+    }
 
     private fun showNotification(targetWater: Int){
         val channelId = "my_channel_id"
