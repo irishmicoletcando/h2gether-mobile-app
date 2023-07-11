@@ -1,5 +1,6 @@
 package com.h2gether.homePage
 
+import android.app.ActivityManager
 import android.app.AlarmManager
 import android.app.AlertDialog
 import android.app.NotificationChannel
@@ -61,7 +62,9 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     private lateinit var binding: FragmentWaterDashboardPageBinding
     private lateinit var databaseReference: DatabaseReference
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var handler: Handler
+
+    private lateinit var notificationServiceIntent: Intent
+    private var isNotificationServiceRunning = false
 
     private var notificationsEnabled: Boolean = false
 
@@ -205,7 +208,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             }
         }
 
-        handler = Handler()
         binding.btnReminder.setOnClickListener{
             showConfirmationDialog()
         }
@@ -310,6 +312,9 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
         }
 
+        notificationServiceIntent = Intent(requireContext(), NotificationService::class.java)
+        isNotificationServiceRunning = isNotificationServiceRunning()
+
     }
 
     private fun showConfirmationDialog() {
@@ -373,7 +378,17 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         alertDialog.show()
     }
 
-    private fun enableReminder(intervalMillis:Int){
+    private fun isNotificationServiceRunning(): Boolean {
+        val manager = requireContext().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (NotificationService::class.java.name == service.service.className) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun enableReminder(intervalMillis: Int) {
         Log.d("H2gether", "Starting notifications")
         notificationsEnabled = true
 
@@ -382,51 +397,76 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         val reminderData = mapOf("reminderSettings" to notificationsEnabled)
         databaseReference.updateChildren(reminderData)
 
-        handler.postDelayed({
-            // This code will be executed every 2 minutes
-            showNotification(AppUtils.targetWater!!)
-            enableReminder(intervalMillis) // Call this method again to repeat the notification after 2 minutes
-        }, intervalMillis.toLong())
+        val notificationServiceIntent = Intent(requireContext(), NotificationService::class.java).apply {
+            action = NotificationService.ACTION_START
+            putExtra(NotificationService.EXTRA_TARGET_WATER, AppUtils.targetWater) // Pass the value of targetWater
+            putExtra(NotificationService.EXTRA_WATER_CONSUMED, AppUtils.waterConsumed) // Pass the value of waterConsumed
+        }
+        ContextCompat.startForegroundService(requireContext(), notificationServiceIntent)
     }
 
-    private fun disableReminder(){
+    private fun disableReminder() {
         Log.d("H2gether", "Stopping notifications")
-        handler.removeCallbacksAndMessages(null)
         notificationsEnabled = false
+        saveReminderSettings(false)
+        if (isNotificationServiceRunning) {
+            requireContext().stopService(notificationServiceIntent.apply {
+                action = NotificationService.ACTION_STOP
+            })
+            isNotificationServiceRunning = false
+        }
+    }
 
+    private fun saveReminderSettings(enabled: Boolean) {
         val uid = firebaseAuth.currentUser?.uid
         val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
-        val reminderData = mapOf("reminderSettings" to notificationsEnabled)
+        val reminderData = mapOf("reminderSettings" to enabled)
         databaseReference.updateChildren(reminderData)
-
     }
 
-    private fun showNotification(targetWater: Int){
-        val channelId = "my_channel_id"
-        val channelName = "My Channel"
+    private fun fetchReminderSettings() {
+        val uid = firebaseAuth.currentUser?.uid
+        val databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid")
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val reminderSettings = snapshot.child("reminderSettings").getValue(Boolean::class.java)
+                    notificationsEnabled = reminderSettings ?: false
+                    if (!notificationsEnabled && isNotificationServiceRunning) {
+                        requireContext().stopService(notificationServiceIntent.apply {
+                            action = NotificationService.ACTION_STOP
+                        })
+                        isNotificationServiceRunning = false
+                    } else if (notificationsEnabled && !isNotificationServiceRunning) {
+                        ContextCompat.startForegroundService(requireContext(), notificationServiceIntent.apply {
+                            action = NotificationService.ACTION_START
+                            putExtra(NotificationService.EXTRA_TARGET_WATER, AppUtils.targetWater) // Pass the value of targetWater
+                            putExtra(NotificationService.EXTRA_WATER_CONSUMED, AppUtils.waterConsumed) // Pass the value of waterConsumed
+                        })
+                        isNotificationServiceRunning = true
+                    }
+                }
+            }
 
-        val remainingWater = targetWater - AppUtils.waterConsumed!!
-        val notificationManager =
-            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            override fun onCancelled(error: DatabaseError) {
+                // Handle the cancellation
+            }
+        })
+    }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel =
-                NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
-            notificationManager.createNotificationChannel(channel)
+    override fun onStart() {
+        super.onStart()
+        fetchReminderSettings()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (!notificationsEnabled && isNotificationServiceRunning) {
+            requireContext().stopService(notificationServiceIntent.apply {
+                action = NotificationService.ACTION_STOP
+            })
+            isNotificationServiceRunning = false
         }
-
-        // Create a notification builder
-        val builder = NotificationCompat.Builder(requireContext(), channelId)
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Reminder")
-            .setContentText("Hydrate yourself! You still have $remainingWater ml of water left to drink.")
-            .setAutoCancel(true)
-
-        // Generate a unique notification ID
-        val notificationId = System.currentTimeMillis().toInt()
-
-        // Show the notification
-        notificationManager.notify(notificationId, builder.build())
     }
 
     private fun fetchWaterDetails() {
