@@ -17,7 +17,6 @@ import com.example.h2gether.R
 
 class NotificationService : Service() {
 
-    // Step 1: Declare necessary variables and constants
     private val channelId = "my_channel_id"
     private val channelName = "My Channel"
     private val notificationId = 1
@@ -36,11 +35,37 @@ class NotificationService : Service() {
         runnable = Runnable { showNotification() }
     }
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action == ACTION_START) {
+            targetWater = intent.getIntExtra(EXTRA_TARGET_WATER, 0)
+            waterConsumed = intent.getIntExtra(EXTRA_WATER_CONSUMED, 0)
+            startForeground(notificationId, createNotification())
+            notificationsEnabled = true
+            handler.postDelayed(runnable, intervalMillis.toLong())
+        } else if (intent?.action == ACTION_STOP) {
+            stopForeground(true)
+            stopSelf()
+            notificationsEnabled = false
+        }
+        return START_NOT_STICKY
+    }
+
+    private fun createNotification(): Notification? {
+
+    }
+
     override fun onBind(intent: Intent?): IBinder? {
         TODO("Not yet implemented")
     }
 
     private fun showNotification() {
         TODO("Not yet implemented")
+    }
+
+    companion object {
+        const val ACTION_START = "ACTION_START"
+        const val ACTION_STOP = "ACTION_STOP"
+        const val EXTRA_TARGET_WATER = "EXTRA_TARGET_WATER"
+        const val EXTRA_WATER_CONSUMED = "EXTRA_WATER_CONSUMED"
     }
 }
