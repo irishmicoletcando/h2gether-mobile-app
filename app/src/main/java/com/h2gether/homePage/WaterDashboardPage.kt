@@ -72,6 +72,22 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentWaterDashboardPageBinding.inflate(inflater, container, false)
+
+        lifecycleScope.launch {
+            // Execute fetchWaterDetails() in the background
+            val waterDetailsDeferred = async { fetchWaterDetails() }
+
+            // Execute WeatherUtils.setWeatherDetails() in the background
+            val weatherDetailsDeferred = async { WeatherUtils.setWeatherDetails() }
+
+            // Wait for all the operations to complete
+            waterDetailsDeferred.await()
+            weatherDetailsDeferred.await()
+
+            UserConfigUtils.setUserConfigurationDetails(this@WaterDashboardPage)
+
+        }
+
         return binding.root
     }
 
@@ -80,8 +96,10 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         runBlocking { WaterPlanUtils.setTargetWater()
         }
         binding.targetWater = AppUtils.targetWater.toString()
+        Log.d(TAG, AppUtils.waterConsumed.toString())
         binding.waterConsumed = AppUtils.waterConsumed.toString()
         binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+        Log.d(TAG, AppUtils.waterConsumed.toString())
         AppUtils.percent =
             (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
         if (AppUtils.percent!! < 100) {
@@ -90,7 +108,9 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             binding.percent = "100%"
             Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
         }
+        Log.d(TAG, AppUtils.percent.toString())
         AppUtils.percent?.let { initializeProgressBar(0, it) }
+        Log.d(TAG, "percent changes")
     }
 
 
@@ -100,38 +120,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
         sharedPreferences = requireContext().getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE)
         val isTimerStarted = sharedPreferences.getBoolean("isTimerStarted", false)
-
-        lifecycleScope.launch {
-            // Execute fetchWaterDetails() in the background
-            val waterDetailsDeferred = async { fetchWaterDetails() }
-
-            // Execute UserConfigUtils.setUserConfigurationDetails(this) in the background
-            val userConfigDeferred = async { UserConfigUtils.setUserConfigurationDetails(this@WaterDashboardPage) }
-
-            // Execute WeatherUtils.setWeatherDetails() in the background
-            val weatherDetailsDeferred = async { WeatherUtils.setWeatherDetails() }
-
-            // Wait for all the operations to complete
-            waterDetailsDeferred.await()
-            userConfigDeferred.await()
-            weatherDetailsDeferred.await()
-
-            // All operations are completed, hide the loader
-
-            binding.targetWater = AppUtils.targetWater.toString()
-            binding.waterConsumed = AppUtils.waterConsumed.toString()
-            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
-            AppUtils.percent =
-                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
-            if (AppUtils.percent!! < 100) {
-                binding.percent = AppUtils.percent.toString() + "%"
-            } else {
-                binding.percent = "100%"
-                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
-            }
-            AppUtils.percent?.let { initializeProgressBar(0, it) }
-
-        }
 
         if (!isTimerStarted) {
         CoroutineScope(Dispatchers.Main).launch {
@@ -523,6 +511,17 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                 }
 
                 AppUtils.waterConsumed?.let { setWaterDetails() }
+                AppUtils.percent =
+                    (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+                if (AppUtils.percent!! < 100) {
+                    binding.percent = AppUtils.percent.toString() + "%"
+                } else {
+                    binding.percent = "100%"
+                    Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+                }
+                Log.d(TAG, AppUtils.percent.toString())
+                AppUtils.percent?.let { initializeProgressBar(0, it) }
+                Log.d(TAG, "percent changes")
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -563,6 +562,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         binding.targetWater = AppUtils.targetWater.toString()
         binding.waterConsumed = AppUtils.waterConsumed.toString()
         binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+
     }
 
     private fun setProgressBar() {

@@ -41,7 +41,7 @@ class AppUtils private constructor(){
 
     // Timer
     val hour = 3
-    val min = 33
+    val min = 43
 
 
     companion object {
