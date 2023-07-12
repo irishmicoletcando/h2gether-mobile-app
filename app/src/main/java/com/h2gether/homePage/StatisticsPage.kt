@@ -136,32 +136,30 @@ class StatisticsPage : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val currentDate = getCurrentDate()
                 val sdf = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
+                val calendar = Calendar.getInstance()
+                calendar.time = Date()
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
                 val entries = mutableListOf<WaterIntakeEntry>()
 
                 // Retrieve the water consumption value for the current date
                 fetchWaterConsumption(database) { waterConsumption ->
                     // Create a water intake entry for the current date with the retrieved water consumption value
-                    val currentEntry = WaterIntakeEntry(currentDate, waterConsumption.toFloat())
-                    entries.add(currentEntry)
+                    val currentEntry = WaterIntakeEntry(formatDate(currentDate), waterConsumption.toFloat())
 
-                    // Iterate over the children of the "statistics" node
-                    for (snapshot in dataSnapshot.children) {
-                        val dateString = snapshot.key ?: continue
+                    // Iterate over the days of the week (Sunday to Saturday)
+                    for (i in 0 until 7) {
+                        val date = sdf.format(calendar.time)
+                        val snapshot = dataSnapshot.child(date)
 
-                        try {
-                            val date = sdf.parse(dateString)
-                            val formattedDate = SimpleDateFormat("MMMM dd", Locale.getDefault()).format(date)
+                        // Get the water consumption value for the current date from the snapshot, or default to 0 if not found
+                        val waterValue = (snapshot.getValue(Long::class.java) ?: 0).toInt()
+                        val entry = WaterIntakeEntry(formatDate(date), waterValue.toFloat())
+                        entries.add(entry)
 
-                            // Skip the current date if it already exists in the entries list
-                            if (formattedDate == currentDate) continue
-
-                            val waterValue = (snapshot.getValue(Long::class.java) ?: 0).toInt()
-                            val entry = WaterIntakeEntry(formattedDate, waterValue.toFloat())
-                            entries.add(entry)
-                        } catch (e: ParseException) {
-                            Log.e("StatisticsData", "Error parsing date: $dateString")
-                        }
+                        calendar.add(Calendar.DAY_OF_WEEK, 1) // Move to the next day
                     }
+
+                    entries.add(0, currentEntry) // Add the current entry to the beginning of the list
 
                     onSuccess(entries)
 
@@ -179,13 +177,32 @@ class StatisticsPage : Fragment() {
         })
     }
 
-
-
+    private fun formatDate(date: String): String {
+        val monthNumber = date.substring(0, 2)
+        val day = date.substring(3, 5)
+        val month = when (monthNumber) {
+            "01" -> "January"
+            "02" -> "February"
+            "03" -> "March"
+            "04" -> "April"
+            "05" -> "May"
+            "06" -> "June"
+            "07" -> "July"
+            "08" -> "August"
+            "09" -> "September"
+            "10" -> "October"
+            "11" -> "November"
+            "12" -> "December"
+            // Add more cases for other months if needed
+            else -> ""
+        }
+        return "$month $day"
+    }
 
     private fun getCurrentDate(): String {
-        // Get the current date in the "MMMM dd" format (e.g., "July 01")
         val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())
-        return sdf.format(Date())
+        val currentDate = Date()
+        return sdf.format(currentDate)
     }
 
     private fun updateChart(entries: List<Entry>, dates: List<String>) {
