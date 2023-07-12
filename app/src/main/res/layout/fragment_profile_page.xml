@@ -22,15 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="90dp"
-        android:background="@drawable/division_background_profile"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout"/>
-
     <!--username-->
     <TextView
         android:id="@+id/username"
@@ -142,6 +133,15 @@
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="10dp"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="90dp"
+                android:background="@drawable/division_background_profile"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
         </FrameLayout>
 
         <FrameLayout
@@ -211,80 +211,7 @@
             android:textColor="@color/gray"
             android:fontFamily="@font/poppins_bold"
             android:layout_gravity="center"/>
-
     </LinearLayout>
-
-    <!-- TODO: User Badges -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/badges_heading"
-        android:orientation="vertical"
-        android:background="@drawable/rectangle_top_bottom_border"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/user_config_act_level">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Earned Badges"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/darkBlue"
-            android:textSize="18sp"
-            android:fontFamily="@font/poppins_semibold"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/badges"
-            android:gravity="center"
-            android:padding="10dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/badge_1"
-                android:src="@drawable/medal"
-                android:layout_marginEnd="10dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/badge_2"
-                android:src="@drawable/medal"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/badge_3"
-                android:src="@drawable/medal"
-                android:layout_marginStart="10dp" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- TODO: Sign out -->
-<!--    <androidx.appcompat.widget.AppCompatButton-->
-<!--        android:id="@+id/signout_btn"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="15dp"-->
-<!--        android:layout_marginStart="15dp"-->
-<!--        android:layout_marginEnd="15dp"-->
-<!--        android:background="@drawable/user_config_button"-->
-<!--        android:fontFamily="@font/poppins_bold"-->
-<!--        android:padding="8dp"-->
-<!--        android:text="Log out"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="15sp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/badges_heading"-->
-<!--        tools:layout_editor_absoluteX="20dp" />-->
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
@@ -299,5 +226,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/signout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/user_config_button"
+        android:fontFamily="@font/poppins_bold"
+        android:padding="8dp"
+        android:text="Log out"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_config_act_level"
+        app:layout_constraintVertical_bias="0.265"
+        tools:layout_editor_absoluteX="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
