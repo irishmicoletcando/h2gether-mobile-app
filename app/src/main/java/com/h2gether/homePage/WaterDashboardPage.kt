@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
@@ -62,6 +63,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     val WaterPlanUtils = WaterPlanUtils()
 
     val timerDeferred = CompletableDeferred<Unit>()
+    private lateinit var sharedPreferences: SharedPreferences
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -70,32 +72,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentWaterDashboardPageBinding.inflate(inflater, container, false)
-
-        fetchWaterDetails()
-        UserConfigUtils.setUserConfigurationDetails(this)
-        WeatherUtils.setWeatherDetails()
-
-        CoroutineScope(Dispatchers.Main).launch {
-            // Start the timer process
-            setTimer(AppUtils.hour, AppUtils.min)
-
-            // Await the completion of the timer process
-            timerDeferred.await()
-
-            // Rest of the code that should execute after the timer process is done
-            binding.waterConsumed = AppUtils.waterConsumed.toString()
-            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
-            AppUtils.percent =
-                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
-            if (AppUtils.percent!! < 100) {
-                binding.percent = AppUtils.percent.toString() + "%"
-            } else {
-                binding.percent = "100%"
-                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
-            }
-            AppUtils.percent?.let { initializeProgressBar(0, it) }
-        }
-
         return binding.root
     }
 
@@ -121,6 +97,65 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sharedPreferences = requireContext().getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE)
+        val isTimerStarted = sharedPreferences.getBoolean("isTimerStarted", false)
+
+        lifecycleScope.launch {
+            // Execute fetchWaterDetails() in the background
+            val waterDetailsDeferred = async { fetchWaterDetails() }
+
+            // Execute UserConfigUtils.setUserConfigurationDetails(this) in the background
+            val userConfigDeferred = async { UserConfigUtils.setUserConfigurationDetails(this@WaterDashboardPage) }
+
+            // Execute WeatherUtils.setWeatherDetails() in the background
+            val weatherDetailsDeferred = async { WeatherUtils.setWeatherDetails() }
+
+            // Wait for all the operations to complete
+            waterDetailsDeferred.await()
+            userConfigDeferred.await()
+            weatherDetailsDeferred.await()
+
+            // All operations are completed, hide the loader
+
+            binding.targetWater = AppUtils.targetWater.toString()
+            binding.waterConsumed = AppUtils.waterConsumed.toString()
+            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+            AppUtils.percent =
+                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+            if (AppUtils.percent!! < 100) {
+                binding.percent = AppUtils.percent.toString() + "%"
+            } else {
+                binding.percent = "100%"
+                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+            }
+            AppUtils.percent?.let { initializeProgressBar(0, it) }
+
+        }
+
+        if (!isTimerStarted) {
+        CoroutineScope(Dispatchers.Main).launch {
+            // Start the timer process
+            setTimer(AppUtils.hour, AppUtils.min)
+
+            // Await the completion of the timer process
+            timerDeferred.await()
+
+            // Rest of the code that should execute after the timer process is done
+            binding.waterConsumed = AppUtils.waterConsumed.toString()
+            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+            AppUtils.percent =
+                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+            if (AppUtils.percent!! < 100) {
+                binding.percent = AppUtils.percent.toString() + "%"
+            } else {
+                binding.percent = "100%"
+                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+            }
+            AppUtils.percent?.let { initializeProgressBar(0, it) }
+        }
+            sharedPreferences.edit().putBoolean("isTimerStarted", true).apply()
+        }
 
         AppUtils.selectedOption = 0
 
