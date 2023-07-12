@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -100,10 +101,10 @@ class StatisticsPage : Fragment() {
                 val waterIntakeValues = sortedEntries.map { it.waterIntake }
 
                 // Update the chart with the sorted dates and water intake values
-                val entries = waterIntakeValues.mapIndexed { index, value ->
+                val chartEntries = waterIntakeValues.mapIndexed { index, value ->
                     Entry(index.toFloat(), value)
                 }
-                updateChart(entries, dates)
+                updateChart(chartEntries, dates)
             }
         }
     }
@@ -134,37 +135,52 @@ class StatisticsPage : Fragment() {
         statisticsRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val currentDate = getCurrentDate()
-                val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())
-                val calendar = Calendar.getInstance()
-                calendar.time = Date()
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
-
+                val sdf = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
                 val entries = mutableListOf<WaterIntakeEntry>()
 
-                // Iterate over the past week's dates and retrieve the water consumption values
-                for (i in 0 until 7) {
-                    val date = sdf.format(calendar.time)
-                    val statisticsSnapshot = dataSnapshot.child(date)
+                // Retrieve the water consumption value for the current date
+                fetchWaterConsumption(database) { waterConsumption ->
+                    // Create a water intake entry for the current date with the retrieved water consumption value
+                    val currentEntry = WaterIntakeEntry(currentDate, waterConsumption.toFloat())
+                    entries.add(currentEntry)
 
-                    // Get the water consumption value for the current date from the snapshot, or default to 0 if not found
-                    val statisticsData = statisticsSnapshot.getValue(StatisticsDataModel::class.java)
-                    val waterValue = statisticsData?.waterConsumption ?: 0
+                    // Iterate over the children of the "statistics" node
+                    for (snapshot in dataSnapshot.children) {
+                        val dateString = snapshot.key ?: continue
 
-                    // Create a water intake entry with the date and water intake value
-                    val entry = WaterIntakeEntry(date, waterValue.toFloat())
+                        try {
+                            val date = sdf.parse(dateString)
+                            val formattedDate = SimpleDateFormat("MMMM dd", Locale.getDefault()).format(date)
 
-                    entries.add(entry)
-                    calendar.add(Calendar.DAY_OF_WEEK, 1)
+                            // Skip the current date if it already exists in the entries list
+                            if (formattedDate == currentDate) continue
+
+                            val waterValue = (snapshot.getValue(Long::class.java) ?: 0).toInt()
+                            val entry = WaterIntakeEntry(formattedDate, waterValue.toFloat())
+                            entries.add(entry)
+                        } catch (e: ParseException) {
+                            Log.e("StatisticsData", "Error parsing date: $dateString")
+                        }
+                    }
+
+                    onSuccess(entries)
+
+                    // Log the retrieved data
+                    for (entry in entries) {
+                        Log.d("StatisticsData", "Date: ${entry.date}, Water Intake: ${entry.waterIntake}")
+                    }
                 }
-
-                onSuccess(entries)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Handle any errors that occur during retrieval
+                Log.e("StatisticsData", "Error retrieving statistics data: ${databaseError.message}")
             }
         })
     }
+
+
+
 
     private fun getCurrentDate(): String {
         // Get the current date in the "MMMM dd" format (e.g., "July 01")
@@ -230,7 +246,7 @@ class StatisticsPage : Fragment() {
 
         // Set the LineData object to the chart and refresh the view
         chart.data = lineData
-        chart.invalidate()
+//        chart.invalidate()
 
         // Update the date range text view
         val dateRangeTextView = binding.dateRangeTextView
@@ -267,18 +283,22 @@ class StatisticsPage : Fragment() {
     }
 
     private fun getDayOfWeek(dateString: String): String {
-        // Get the day of the week (e.g., "Sun") for a given date string
         val format = SimpleDateFormat("MMMM dd", Locale.US)
-        val date = format.parse(dateString)
-        val calendar = Calendar.getInstance().apply {
-            time = date
+        return try {
+            val date = format.parse(dateString)
+            val calendar = Calendar.getInstance().apply {
+                time = date
+            }
+            val dayOfWeekFormat = SimpleDateFormat("EEE", Locale("en", "PH")) // Use Philippine locale for day of the week
+            val daysOfWeek = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+            val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+            daysOfWeek[(dayOfWeek + 2) % 7] // Adjust the day of the week index to start from Sunday
+        } catch (e: ParseException) {
+            Log.e("Error", "Error parsing date: $dateString")
+            ""
         }
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-
-        val dayOfWeekFormat = SimpleDateFormat("EEE", Locale("en", "PH")) // Use Philippine locale for day of the week
-        val daysOfWeek = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-        return daysOfWeek[(dayOfWeek + 2) % 7] // Adjust the day of the week index to start from Sunday
     }
+
 
     class WaterConsumptionDataModel {
         @PropertyName("waterConsumption")
