@@ -151,20 +151,27 @@ class StatisticsPage : Fragment() {
                         val date = sdf.format(calendar.time)
                         val snapshot = dataSnapshot.child(date)
 
-                        // Get the water consumption value for the current date from the snapshot, or default to 0 if not found
-                        val waterValue = (snapshot.getValue(Long::class.java) ?: 0).toInt()
-                        val entry = WaterIntakeEntry(formatDate(date), waterValue.toFloat())
-                        entries.add(entry)
+                        // Check if the snapshot exists and contains the water consumption value
+                        if (snapshot.exists()) {
+                            val waterValue = (snapshot.getValue(Long::class.java) ?: 0).toInt()
+                            val entry = WaterIntakeEntry(formatDate(date), waterValue.toFloat())
+                            entries.add(entry)
+                        } else {
+                            // If the snapshot doesn't exist, add a default entry with 0 water intake
+                            val entry = WaterIntakeEntry(formatDate(date), 0f)
+                            entries.add(entry)
+                        }
 
                         calendar.add(Calendar.DAY_OF_WEEK, 1) // Move to the next day
                     }
 
-                    entries.add(0, currentEntry) // Add the current entry to the beginning of the list
+                    // Sort the entries chronologically based on the date
+                    val sortedEntries = entries.sortedBy { it.date }
 
-                    onSuccess(entries)
+                    onSuccess(sortedEntries.toMutableList())
 
                     // Log the retrieved data
-                    for (entry in entries) {
+                    for (entry in sortedEntries) {
                         Log.d("StatisticsData", "Date: ${entry.date}, Water Intake: ${entry.waterIntake}")
                     }
                 }
