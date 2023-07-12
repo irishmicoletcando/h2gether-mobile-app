@@ -49,7 +49,7 @@ class ProfilePage : Fragment() {
     private lateinit var userLevelImage: ImageView
     private lateinit var username: TextView
     private lateinit var userProfilePicture: ImageView
-    private lateinit var signOutButton: ImageButton
+    private lateinit var signOutButton: Button
 
     @IgnoreExtraProperties
     class UserProfile(
@@ -84,7 +84,7 @@ class ProfilePage : Fragment() {
         userLevel = rootView.findViewById(R.id.user_level)
         userLevelImage = rootView.findViewById<ImageView>(R.id.user_level_img)
         userProfilePicture = rootView.findViewById(R.id.profile_image_view)
-        signOutButton = rootView.findViewById<ImageButton>(R.id.logout_button)
+        signOutButton = rootView.findViewById(R.id.signout_btn)
 
         //Sign Out
         signOutButton.setOnClickListener {
@@ -149,7 +149,9 @@ class ProfilePage : Fragment() {
         val toolbar = rootView.findViewById<Toolbar>(R.id.tool_bar)
         val backButton = rootView.findViewById<ImageButton>(R.id.back_button)
         val pageTitle = rootView.findViewById<TextView>(R.id.toolbar_title)
+        val logoutButton = rootView.findViewById<ImageButton>(R.id.logout_button)
         backButton.visibility = View.GONE
+        logoutButton.visibility = View.GONE
 
         // Customize the toolbar as needed
         pageTitle.text = "Profile"
