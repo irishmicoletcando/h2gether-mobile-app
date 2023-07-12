@@ -27,6 +27,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
@@ -85,6 +86,23 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         UserConfigUtils.setUserConfigurationDetails(this)
         WeatherUtils.setWeatherDetails()
 
+        CoroutineScope(Dispatchers.Main).launch {
+            setTimer(12, 31)
+
+            // Update the properties of the existing instance
+            binding.waterConsumed = AppUtils.waterConsumed.toString()
+            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+            AppUtils.percent =
+                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+            if (AppUtils.percent!! < 100) {
+                binding.percent = AppUtils.percent.toString() + "%"
+            } else {
+                binding.percent = "100%"
+                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+            }
+            AppUtils.percent?.let { initializeProgressBar(0, it) }
+        }
+
         return binding.root
     }
 
@@ -112,22 +130,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         super.onViewCreated(view, savedInstanceState)
 
         AppUtils.selectedOption = 0
-//        CoroutineScope(Dispatchers.Main).launch {
-//            setTimer(1, 7)
-//
-//            // Update the properties of the existing instance
-//            binding.waterConsumed = AppUtils.waterConsumed.toString()
-//            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
-//            AppUtils.percent =
-//                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
-//            if (AppUtils.percent!! < 100) {
-//                binding.percent = AppUtils.percent.toString() + "%"
-//            } else {
-//                binding.percent = "100%"
-//                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
-//            }
-//            AppUtils.percent?.let { initializeProgressBar(0, it) }
-//        }
 
 
         // firebase initialize dependencies
@@ -608,6 +610,15 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setTimer(hour: Int?, min: Int?){
+        val sharedPreferences = context?.getSharedPreferences("AlarmState", Context.MODE_PRIVATE)
+        val alarmSet = sharedPreferences?.getBoolean("AlarmSet", false) ?: false
+
+        // Check if the alarm is already set
+        if (alarmSet) {
+            // Alarm is already set, no need to set it again
+            return
+        }
+
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, YourBroadcastReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
@@ -624,7 +635,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             if (min != null) {
                 set(Calendar.MINUTE, min)
             }      // Set the minute component to 30
-            set(Calendar.AM_PM, Calendar.AM)
+            set(Calendar.AM_PM, Calendar.PM)
         }
 
         // Set the alarm to trigger every day at the specified time
@@ -634,6 +645,11 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
+
+        sharedPreferences?.edit {
+            putBoolean("AlarmSet", true)
+            apply()
+        }
     }
 
     class YourBroadcastReceiver : BroadcastReceiver() {
