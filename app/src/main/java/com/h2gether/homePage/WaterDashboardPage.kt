@@ -3,8 +3,6 @@ package com.h2gether.homePage
 import android.app.ActivityManager
 import android.app.AlarmManager
 import android.app.AlertDialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
@@ -25,9 +23,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
@@ -42,22 +38,13 @@ import com.google.firebase.database.ValueEventListener
 import com.h2gether.appUtils.UserConfigUtils
 import com.h2gether.appUtils.WaterPlanUtils
 import com.h2gether.appUtils.WeatherUtils
-import com.h2gether.userConfigActivities.WeightSelection
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     private lateinit var binding: FragmentWaterDashboardPageBinding
@@ -74,6 +61,8 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     val UserConfigUtils = UserConfigUtils()
     val WaterPlanUtils = WaterPlanUtils()
 
+    val timerDeferred = CompletableDeferred<Unit>()
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -87,9 +76,13 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         WeatherUtils.setWeatherDetails()
 
         CoroutineScope(Dispatchers.Main).launch {
-            setTimer(12, 31)
+            // Start the timer process
+            setTimer(AppUtils.hour, AppUtils.min)
 
-            // Update the properties of the existing instance
+            // Await the completion of the timer process
+            timerDeferred.await()
+
+            // Rest of the code that should execute after the timer process is done
             binding.waterConsumed = AppUtils.waterConsumed.toString()
             binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
             AppUtils.percent =
@@ -130,7 +123,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         super.onViewCreated(view, savedInstanceState)
 
         AppUtils.selectedOption = 0
-
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
@@ -610,15 +602,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setTimer(hour: Int?, min: Int?){
-        val sharedPreferences = context?.getSharedPreferences("AlarmState", Context.MODE_PRIVATE)
-        val alarmSet = sharedPreferences?.getBoolean("AlarmSet", false) ?: false
-
-        // Check if the alarm is already set
-        if (alarmSet) {
-            // Alarm is already set, no need to set it again
-            return
-        }
-
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, YourBroadcastReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
@@ -645,11 +628,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
-
-        sharedPreferences?.edit {
-            putBoolean("AlarmSet", true)
-            apply()
-        }
     }
 
     class YourBroadcastReceiver : BroadcastReceiver() {
@@ -657,6 +635,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         private lateinit var databaseReference2: DatabaseReference
         private lateinit var firebaseAuth: FirebaseAuth
         val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
+
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onReceive(context: Context, intent: Intent) {
             val waterConsumedDaily = AppUtils.waterConsumed
@@ -717,6 +696,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                         // Handle the cancellation
                     }
                 })
+                WaterDashboardPage().timerDeferred.complete(Unit)
             } else {
                 Log.d(TAG, "stats: No uid")
             }

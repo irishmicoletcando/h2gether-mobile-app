@@ -39,6 +39,10 @@ class AppUtils private constructor(){
     var sex: String? = ""
     var activityLevel: String? = ""
 
+    // Timer
+    val hour = 2
+    val min = 56
+
 
     companion object {
         @Volatile
