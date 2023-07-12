@@ -3,13 +3,12 @@ package com.h2gether.homePage
 import android.app.ActivityManager
 import android.app.AlarmManager
 import android.app.AlertDialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
@@ -25,9 +24,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
@@ -42,22 +39,13 @@ import com.google.firebase.database.ValueEventListener
 import com.h2gether.appUtils.UserConfigUtils
 import com.h2gether.appUtils.WaterPlanUtils
 import com.h2gether.appUtils.WeatherUtils
-import com.h2gether.userConfigActivities.WeightSelection
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     private lateinit var binding: FragmentWaterDashboardPageBinding
@@ -74,6 +62,9 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     val UserConfigUtils = UserConfigUtils()
     val WaterPlanUtils = WaterPlanUtils()
 
+    val timerDeferred = CompletableDeferred<Unit>()
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -82,25 +73,19 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     ): View {
         binding = FragmentWaterDashboardPageBinding.inflate(inflater, container, false)
 
-        fetchWaterDetails()
-        UserConfigUtils.setUserConfigurationDetails(this)
-        WeatherUtils.setWeatherDetails()
+        lifecycleScope.launch {
+            // Execute fetchWaterDetails() in the background
+            val waterDetailsDeferred = async { fetchWaterDetails() }
 
-        CoroutineScope(Dispatchers.Main).launch {
-            setTimer(12, 31)
+            // Execute WeatherUtils.setWeatherDetails() in the background
+            val weatherDetailsDeferred = async { WeatherUtils.setWeatherDetails() }
 
-            // Update the properties of the existing instance
-            binding.waterConsumed = AppUtils.waterConsumed.toString()
-            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
-            AppUtils.percent =
-                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
-            if (AppUtils.percent!! < 100) {
-                binding.percent = AppUtils.percent.toString() + "%"
-            } else {
-                binding.percent = "100%"
-                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
-            }
-            AppUtils.percent?.let { initializeProgressBar(0, it) }
+            // Wait for all the operations to complete
+            waterDetailsDeferred.await()
+            weatherDetailsDeferred.await()
+
+            UserConfigUtils.setUserConfigurationDetails(this@WaterDashboardPage)
+
         }
 
         return binding.root
@@ -129,8 +114,34 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        AppUtils.selectedOption = 0
+        sharedPreferences = requireContext().getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE)
+        val isTimerStarted = sharedPreferences.getBoolean("isTimerStarted", false)
 
+        if (!isTimerStarted) {
+        CoroutineScope(Dispatchers.Main).launch {
+            // Start the timer process
+            setTimer(AppUtils.hour, AppUtils.min)
+
+            // Await the completion of the timer process
+            timerDeferred.await()
+
+            // Rest of the code that should execute after the timer process is done
+            binding.waterConsumed = AppUtils.waterConsumed.toString()
+            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+            AppUtils.percent =
+                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+            if (AppUtils.percent!! < 100) {
+                binding.percent = AppUtils.percent.toString() + "%"
+            } else {
+                binding.percent = "100%"
+                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+            }
+            AppUtils.percent?.let { initializeProgressBar(0, it) }
+        }
+            sharedPreferences.edit().putBoolean("isTimerStarted", true).apply()
+        }
+
+        AppUtils.selectedOption = 0
 
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
@@ -488,6 +499,18 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                     if (waterConsumption != null) {
                         AppUtils.waterConsumed = waterConsumption.waterConsumption
                         AppUtils.previousPercent = waterConsumption.previousPercent
+                        AppUtils.waterConsumed?.let { setWaterDetails() }
+                        AppUtils.percent =
+                            (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+                        if (AppUtils.percent!! < 100) {
+                            binding.percent = AppUtils.percent.toString() + "%"
+                        } else {
+                            binding.percent = "100%"
+                            Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+                        }
+                        Log.d(TAG, AppUtils.percent.toString())
+                        AppUtils.percent?.let { initializeProgressBar(0, it) }
+                        Log.d(TAG, "percent changes")
                     }
                 } else {
                     // Data does not exist at the specified location
@@ -495,7 +518,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                     AppUtils.previousPercent = 0
                 }
 
-                AppUtils.waterConsumed?.let { setWaterDetails() }
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -536,6 +559,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         binding.targetWater = AppUtils.targetWater.toString()
         binding.waterConsumed = AppUtils.waterConsumed.toString()
         binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+
     }
 
     private fun setProgressBar() {
@@ -610,15 +634,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setTimer(hour: Int?, min: Int?){
-        val sharedPreferences = context?.getSharedPreferences("AlarmState", Context.MODE_PRIVATE)
-        val alarmSet = sharedPreferences?.getBoolean("AlarmSet", false) ?: false
-
-        // Check if the alarm is already set
-        if (alarmSet) {
-            // Alarm is already set, no need to set it again
-            return
-        }
-
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, YourBroadcastReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
@@ -645,11 +660,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
-
-        sharedPreferences?.edit {
-            putBoolean("AlarmSet", true)
-            apply()
-        }
     }
 
     class YourBroadcastReceiver : BroadcastReceiver() {
@@ -657,6 +667,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         private lateinit var databaseReference2: DatabaseReference
         private lateinit var firebaseAuth: FirebaseAuth
         val AppUtils = com.h2gether.appUtils.AppUtils.getInstance()
+
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onReceive(context: Context, intent: Intent) {
             val waterConsumedDaily = AppUtils.waterConsumed
@@ -717,6 +728,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                         // Handle the cancellation
                     }
                 })
+                WaterDashboardPage().timerDeferred.complete(Unit)
             } else {
                 Log.d(TAG, "stats: No uid")
             }

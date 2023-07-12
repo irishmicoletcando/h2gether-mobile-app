@@ -16,7 +16,7 @@ class AppUtils private constructor(){
 
     // Water Variables
     var selectedOption: Int? = 0
-    var targetWater: Int? = 0
+    var targetWater: Int? = 5000
     var waterConsumed: Int? = 0
     var percent: Int? = 0
     var previousPercent: Int? = 0
@@ -38,6 +38,10 @@ class AppUtils private constructor(){
     var weight: Int? = 0
     var sex: String? = ""
     var activityLevel: String? = ""
+
+    // Timer
+    val hour = 11
+    val min = 59
 
 
     companion object {
