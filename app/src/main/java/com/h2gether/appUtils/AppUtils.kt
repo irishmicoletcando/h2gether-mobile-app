@@ -40,8 +40,8 @@ class AppUtils private constructor(){
     var activityLevel: String? = ""
 
     // Timer
-    val hour = 3
-    val min = 43
+    val hour = 5
+    val min = 1
 
 
     companion object {

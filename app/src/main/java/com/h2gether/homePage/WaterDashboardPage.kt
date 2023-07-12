@@ -96,10 +96,8 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         runBlocking { WaterPlanUtils.setTargetWater()
         }
         binding.targetWater = AppUtils.targetWater.toString()
-        Log.d(TAG, AppUtils.waterConsumed.toString())
         binding.waterConsumed = AppUtils.waterConsumed.toString()
         binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
-        Log.d(TAG, AppUtils.waterConsumed.toString())
         AppUtils.percent =
             (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
         if (AppUtils.percent!! < 100) {
@@ -108,9 +106,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             binding.percent = "100%"
             Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
         }
-        Log.d(TAG, AppUtils.percent.toString())
         AppUtils.percent?.let { initializeProgressBar(0, it) }
-        Log.d(TAG, "percent changes")
     }
 
 
@@ -503,6 +499,18 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                     if (waterConsumption != null) {
                         AppUtils.waterConsumed = waterConsumption.waterConsumption
                         AppUtils.previousPercent = waterConsumption.previousPercent
+                        AppUtils.waterConsumed?.let { setWaterDetails() }
+                        AppUtils.percent =
+                            (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+                        if (AppUtils.percent!! < 100) {
+                            binding.percent = AppUtils.percent.toString() + "%"
+                        } else {
+                            binding.percent = "100%"
+                            Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+                        }
+                        Log.d(TAG, AppUtils.percent.toString())
+                        AppUtils.percent?.let { initializeProgressBar(0, it) }
+                        Log.d(TAG, "percent changes")
                     }
                 } else {
                     // Data does not exist at the specified location
@@ -510,18 +518,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                     AppUtils.previousPercent = 0
                 }
 
-                AppUtils.waterConsumed?.let { setWaterDetails() }
-                AppUtils.percent =
-                    (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
-                if (AppUtils.percent!! < 100) {
-                    binding.percent = AppUtils.percent.toString() + "%"
-                } else {
-                    binding.percent = "100%"
-                    Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
-                }
-                Log.d(TAG, AppUtils.percent.toString())
-                AppUtils.percent?.let { initializeProgressBar(0, it) }
-                Log.d(TAG, "percent changes")
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
