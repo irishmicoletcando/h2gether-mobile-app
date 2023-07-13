@@ -36,6 +36,34 @@
         app:layout_constraintTop_toBottomOf="@+id/profile_image_view" />
 
     <!-- TODO: User Config info -->
+
+    <LinearLayout
+        android:id="@+id/ll_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.86"
+        app:layout_constraintStart_toEndOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@+id/username">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:src="@drawable/edit_btn"
+            app:tint="@color/lightGray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:textSize="15sp"
+            android:textColor="@color/lightGray"
+            android:fontFamily="@font/poppins_bold"
+            android:paddingStart="5dp" />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -43,7 +71,7 @@
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:layout_margin="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/username">
+        app:layout_constraintTop_toBottomOf="@+id/btn_edit">
 
         <FrameLayout
             android:layout_width="0dp"
@@ -213,20 +241,6 @@
             android:layout_gravity="center"/>
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.35" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.65" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signout_btn"
         android:layout_width="match_parent"
@@ -243,5 +257,19 @@
         app:layout_constraintTop_toBottomOf="@+id/user_config_act_level"
         app:layout_constraintVertical_bias="0.265"
         tools:layout_editor_absoluteX="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.65" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
