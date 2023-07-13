@@ -115,8 +115,7 @@ class StatisticsPage : Fragment() {
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get the water consumption value from the snapshot, or default to 0 if not found
-                val waterConsumption =
-                    dataSnapshot.getValue(WaterConsumptionDataModel::class.java)?.waterConsumption ?: 0
+                val waterConsumption = dataSnapshot.getValue(WaterConsumptionDataModel::class.java)?.waterConsumption ?: 0
                 Log.d("Debug", "Water consumption: $waterConsumption")
                 waterConsumed = waterConsumption
 
@@ -130,37 +129,46 @@ class StatisticsPage : Fragment() {
     }
 
     private fun fetchStatisticsData(database: DatabaseReference, onSuccess: (MutableList<WaterIntakeEntry>) -> Unit) {
-        val statisticsRef: DatabaseReference = database.child("statistics")
+        // Retrieve the water consumption value for the current date
+        fetchWaterConsumption(database) { currentWaterConsumption ->
+            val statisticsRef: DatabaseReference = database.child("statistics")
 
-        statisticsRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val currentDate = getCurrentDate()
-                val sdf = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
-                val calendar = Calendar.getInstance()
-                calendar.time = Date()
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
-                val entries = mutableListOf<WaterIntakeEntry>()
-
-                // Retrieve the water consumption value for the current date
-                fetchWaterConsumption(database) { waterConsumption ->
-                    // Create a water intake entry for the current date with the retrieved water consumption value
-                    val currentEntry = WaterIntakeEntry(formatDate(currentDate), waterConsumption.toFloat())
+            statisticsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val currentDate = getCurrentDate()
+                    val sdf = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
+                    val calendar = Calendar.getInstance()
+                    calendar.time = Date()
+                    calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
+                    val entries = mutableListOf<WaterIntakeEntry>()
 
                     // Iterate over the days of the week (Sunday to Saturday)
                     for (i in 0 until 7) {
                         val date = sdf.format(calendar.time)
                         val snapshot = dataSnapshot.child(date)
 
+                        // Print the complete snapshot for debugging
+                        Log.d("FirebaseDebug", "Snapshot for $date: $snapshot")
+                        Log.d("FirebaseDebug", "Value for $date: ${snapshot.value}")
+
                         // Check if the snapshot exists and contains the water consumption value
-                        if (snapshot.exists()) {
-                            val waterValue = (snapshot.getValue(Long::class.java) ?: 0).toInt()
-                            val entry = WaterIntakeEntry(formatDate(date), waterValue.toFloat())
-                            entries.add(entry)
+                        val waterValue = if (date == formatDate(currentDate)) {
+                            // Use the current date's water consumption value
+                            currentWaterConsumption
                         } else {
-                            // If the snapshot doesn't exist, add a default entry with 0 water intake
-                            val entry = WaterIntakeEntry(formatDate(date), 0f)
-                            entries.add(entry)
+                            // Retrieve the water consumption value from the snapshot, or default to 0 if the value is null
+                            val value = snapshot.getValue(Long::class.java)
+                            val waterValue = value?.toInt() ?: 0
+                            Log.d("FirebaseDebug", "Retrieved value for $date: $value")
+                            waterValue
                         }
+
+                        // Log the retrieved value for debugging
+                        Log.d("FirebaseDebug", "Water value for $date: $waterValue")
+
+                        // Create a water intake entry with the retrieved water consumption value
+                        val entry = WaterIntakeEntry(formatDate(date), waterValue.toFloat())
+                        entries.add(entry)
 
                         calendar.add(Calendar.DAY_OF_WEEK, 1) // Move to the next day
                     }
@@ -175,13 +183,13 @@ class StatisticsPage : Fragment() {
                         Log.d("StatisticsData", "Date: ${entry.date}, Water Intake: ${entry.waterIntake}")
                     }
                 }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle any errors that occur during retrieval
-                Log.e("StatisticsData", "Error retrieving statistics data: ${databaseError.message}")
-            }
-        })
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle any errors that occur during retrieval
+                    Log.e("StatisticsData", "Error retrieving statistics data: ${databaseError.message}")
+                }
+            })
+        }
     }
 
     private fun formatDate(date: String): String {
@@ -200,7 +208,6 @@ class StatisticsPage : Fragment() {
             "10" -> "October"
             "11" -> "November"
             "12" -> "December"
-            // Add more cases for other months if needed
             else -> ""
         }
         return "$month $day"
