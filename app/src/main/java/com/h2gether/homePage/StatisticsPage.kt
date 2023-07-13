@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.PropertyName
 import com.google.firebase.database.ValueEventListener
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -100,10 +101,10 @@ class StatisticsPage : Fragment() {
                 val waterIntakeValues = sortedEntries.map { it.waterIntake }
 
                 // Update the chart with the sorted dates and water intake values
-                val entries = waterIntakeValues.mapIndexed { index, value ->
+                val chartEntries = waterIntakeValues.mapIndexed { index, value ->
                     Entry(index.toFloat(), value)
                 }
-                updateChart(entries, dates)
+                updateChart(chartEntries, dates)
             }
         }
     }
@@ -114,8 +115,7 @@ class StatisticsPage : Fragment() {
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get the water consumption value from the snapshot, or default to 0 if not found
-                val waterConsumption =
-                    dataSnapshot.getValue(WaterConsumptionDataModel::class.java)?.waterConsumption ?: 0
+                val waterConsumption = dataSnapshot.getValue(WaterConsumptionDataModel::class.java)?.waterConsumption ?: 0
                 Log.d("Debug", "Water consumption: $waterConsumption")
                 waterConsumed = waterConsumption
 
@@ -129,47 +129,94 @@ class StatisticsPage : Fragment() {
     }
 
     private fun fetchStatisticsData(database: DatabaseReference, onSuccess: (MutableList<WaterIntakeEntry>) -> Unit) {
-        val statisticsRef: DatabaseReference = database.child("statistics")
+        // Retrieve the water consumption value for the current date
+        fetchWaterConsumption(database) { currentWaterConsumption ->
+            val statisticsRef: DatabaseReference = database.child("statistics")
 
-        statisticsRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val currentDate = getCurrentDate()
-                val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())
-                val calendar = Calendar.getInstance()
-                calendar.time = Date()
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
+            statisticsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val currentDate = getCurrentDate()
+                    val sdf = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
+                    val calendar = Calendar.getInstance()
+                    calendar.time = Date()
+                    calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
+                    val entries = mutableListOf<WaterIntakeEntry>()
 
-                val entries = mutableListOf<WaterIntakeEntry>()
+                    // Iterate over the days of the week (Sunday to Saturday)
+                    for (i in 0 until 7) {
+                        val date = sdf.format(calendar.time)
+                        val snapshot = dataSnapshot.child(date)
 
-                // Iterate over the past week's dates and retrieve the water consumption values
-                for (i in 0 until 7) {
-                    val date = sdf.format(calendar.time)
-                    val statisticsSnapshot = dataSnapshot.child(date)
+                        // Print the complete snapshot for debugging
+                        Log.d("FirebaseDebug", "Snapshot for $date: $snapshot")
+                        Log.d("FirebaseDebug", "Value for $date: ${snapshot.value}")
 
-                    // Get the water consumption value for the current date from the snapshot, or default to 0 if not found
-                    val statisticsData = statisticsSnapshot.getValue(StatisticsDataModel::class.java)
-                    val waterValue = statisticsData?.waterConsumption ?: 0
+                        // Check if the snapshot exists and contains the water consumption value
+                        val waterValue = if (date == formatDate(currentDate)) {
+                            // Use the current date's water consumption value
+                            currentWaterConsumption
+                        } else {
+                            // Retrieve the water consumption value from the snapshot, or default to 0 if the value is null
+                            val value = snapshot.getValue(Long::class.java)
+                            val waterValue = value?.toInt() ?: 0
+                            Log.d("FirebaseDebug", "Retrieved value for $date: $value")
+                            waterValue
+                        }
 
-                    // Create a water intake entry with the date and water intake value
-                    val entry = WaterIntakeEntry(date, waterValue.toFloat())
+                        // Log the retrieved value for debugging
+                        Log.d("FirebaseDebug", "Water value for $date: $waterValue")
 
-                    entries.add(entry)
-                    calendar.add(Calendar.DAY_OF_WEEK, 1)
+                        // Create a water intake entry with the retrieved water consumption value
+                        val entry = WaterIntakeEntry(formatDate(date), waterValue.toFloat())
+                        entries.add(entry)
+
+                        calendar.add(Calendar.DAY_OF_WEEK, 1) // Move to the next day
+                    }
+
+                    // Sort the entries chronologically based on the date
+                    val sortedEntries = entries.sortedBy { it.date }
+
+                    onSuccess(sortedEntries.toMutableList())
+
+                    // Log the retrieved data
+                    for (entry in sortedEntries) {
+                        Log.d("StatisticsData", "Date: ${entry.date}, Water Intake: ${entry.waterIntake}")
+                    }
                 }
 
-                onSuccess(entries)
-            }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle any errors that occur during retrieval
+                    Log.e("StatisticsData", "Error retrieving statistics data: ${databaseError.message}")
+                }
+            })
+        }
+    }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle any errors that occur during retrieval
-            }
-        })
+    private fun formatDate(date: String): String {
+        val monthNumber = date.substring(0, 2)
+        val day = date.substring(3, 5)
+        val month = when (monthNumber) {
+            "01" -> "January"
+            "02" -> "February"
+            "03" -> "March"
+            "04" -> "April"
+            "05" -> "May"
+            "06" -> "June"
+            "07" -> "July"
+            "08" -> "August"
+            "09" -> "September"
+            "10" -> "October"
+            "11" -> "November"
+            "12" -> "December"
+            else -> ""
+        }
+        return "$month $day"
     }
 
     private fun getCurrentDate(): String {
-        // Get the current date in the "MMMM dd" format (e.g., "July 01")
         val sdf = SimpleDateFormat("MMMM dd", Locale.getDefault())
-        return sdf.format(Date())
+        val currentDate = Date()
+        return sdf.format(currentDate)
     }
 
     private fun updateChart(entries: List<Entry>, dates: List<String>) {
@@ -230,7 +277,7 @@ class StatisticsPage : Fragment() {
 
         // Set the LineData object to the chart and refresh the view
         chart.data = lineData
-        chart.invalidate()
+//        chart.invalidate()
 
         // Update the date range text view
         val dateRangeTextView = binding.dateRangeTextView
@@ -267,18 +314,22 @@ class StatisticsPage : Fragment() {
     }
 
     private fun getDayOfWeek(dateString: String): String {
-        // Get the day of the week (e.g., "Sun") for a given date string
         val format = SimpleDateFormat("MMMM dd", Locale.US)
-        val date = format.parse(dateString)
-        val calendar = Calendar.getInstance().apply {
-            time = date
+        return try {
+            val date = format.parse(dateString)
+            val calendar = Calendar.getInstance().apply {
+                time = date
+            }
+            val dayOfWeekFormat = SimpleDateFormat("EEE", Locale("en", "PH")) // Use Philippine locale for day of the week
+            val daysOfWeek = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+            val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+            daysOfWeek[(dayOfWeek + 2) % 7] // Adjust the day of the week index to start from Sunday
+        } catch (e: ParseException) {
+            Log.e("Error", "Error parsing date: $dateString")
+            ""
         }
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-
-        val dayOfWeekFormat = SimpleDateFormat("EEE", Locale("en", "PH")) // Use Philippine locale for day of the week
-        val daysOfWeek = arrayOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
-        return daysOfWeek[(dayOfWeek + 2) % 7] // Adjust the day of the week index to start from Sunday
     }
+
 
     class WaterConsumptionDataModel {
         @PropertyName("waterConsumption")

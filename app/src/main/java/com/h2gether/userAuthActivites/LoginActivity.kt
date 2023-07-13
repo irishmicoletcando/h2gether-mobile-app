@@ -56,13 +56,13 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, NavigationBarActivity::class.java)
             startActivity(intent)
             finish() // Optional: Prevents the user from going back to the login screen using the back button
-        } else {
-            // User is not signed in, continue with the regular login flow
-            binding = ActivityLoginBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-
-            loadRememberMe()
+            return
         }
+
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        loadRememberMe()
 
         binding.tvRegisterAccount.setOnClickListener{
             val intent = Intent(this, SignupActivity::class.java)
