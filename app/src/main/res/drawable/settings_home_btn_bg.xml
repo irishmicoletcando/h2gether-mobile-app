@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true" android:drawable="@color/white" /> <!-- Background color when pressed -->
-    <item android:drawable="@android:color/transparent" /> <!-- Default background color -->
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/white" /> <!-- Background color when pressed -->
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@android:color/transparent" /> <!-- Default background color -->
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
 </selector>
