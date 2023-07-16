@@ -11,6 +11,7 @@ import com.example.h2gether.R
 import androidx.appcompat.widget.Toolbar
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +24,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.IgnoreExtraProperties
 import com.google.firebase.database.PropertyName
 import com.h2gether.userAuthActivites.LoginActivity
+import com.h2gether.userConfigActivities.SexSelectionActivity
 
 //@IgnoreExtraProperties
 //data class UserProfile(
@@ -158,6 +160,13 @@ class ProfilePage : Fragment() {
         backButton.setOnClickListener {
             //TODO: Handle back button click
         }
+
+        val editButton =  rootView.findViewById<LinearLayout>(R.id.ll_edit)
+        editButton.setOnClickListener {
+            val intent = Intent(requireContext(), SexSelectionActivity::class.java)
+            startActivity(intent)
+        }
+
         return rootView
     }
     private fun signOutUser() {
