@@ -3,6 +3,7 @@ package com.h2gether.homePage
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -74,13 +75,17 @@ class SettingsPage : Fragment() {
                     return@setOnClickListener
                 }
 
-                val i = Intent(Intent.ACTION_SEND)
-                i.type = "message/html"
-                i.putExtra(Intent.EXTRA_EMAIL, arrayOf("skylarkh2@gmail.com"))
-                i.putExtra(Intent.EXTRA_SUBJECT, "Feedback From App")
-                i.putExtra(Intent.EXTRA_TEXT, "Name: ${username.text}\n\nFeedback: ${feedback.text}")
+                val emailIntent = Intent(Intent.ACTION_SEND)
+                emailIntent.type = "text/plain"
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("skylarkh2@gmail.com"))
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Feedback From App")
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Name: $usernameInput\n\nFeedback: $feedbackInput")
+
+                val gmailPackageName = "com.google.android.gm"
+                emailIntent.setPackage(gmailPackageName)
+
                 try {
-                    startActivity(Intent.createChooser(i, "Please select email"))
+                    startActivity(emailIntent)
                 } catch (e: ActivityNotFoundException) {
                     Toast.makeText(requireContext(), "There are no email clients", Toast.LENGTH_SHORT).show()
                 }
