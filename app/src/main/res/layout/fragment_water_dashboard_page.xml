@@ -60,10 +60,10 @@
             <!-- Settings Button -->
             <LinearLayout
                 android:id="@+id/ll_settings"
-                android:layout_width="55dp"
-                android:layout_height="50dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:paddingLeft="7dp"
+                android:paddingRight="8dp"
                 android:clickable="true"
                 android:background="@drawable/settings_home_btn_bg">
 
