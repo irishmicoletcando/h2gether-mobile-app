@@ -9,6 +9,7 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
@@ -30,6 +31,7 @@ import com.example.h2gether.R
 import com.example.h2gether.databinding.FragmentWaterDashboardPageBinding
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -146,6 +148,53 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
         // firebase initialize dependencies
         firebaseAuth = FirebaseAuth.getInstance()
         val uid = firebaseAuth.currentUser?.uid
+
+        // hello, (username) text
+        fun calculateFontSizeToFitContainer(text: String, maxWidth: Float, maxChars: Int): Float {
+            // Choose an initial font size
+            var fontSize = 26f // Adjust the initial font size as desired
+
+            val paint = Paint()
+            paint.textSize = fontSize
+
+            val charWidth = paint.measureText(text) / text.length
+            val availableWidth = maxWidth - charWidth * 3 // Reserve space for the "..."
+            val maxTextWidth = availableWidth.coerceAtMost(charWidth * maxChars)
+
+            while (paint.measureText(text) > maxTextWidth && fontSize > 0) {
+                fontSize -= 1f
+                paint.textSize = fontSize
+            }
+
+            return fontSize
+        }
+
+        fun convertDpToPixels(dp: Float): Float {
+            val scale = resources.displayMetrics.density
+            return dp * scale + 0.5f
+        }
+
+        val username = binding.tvUsername
+        val currentUser: FirebaseUser? = firebaseAuth.currentUser
+        currentUser?.let {
+            val emailRef = FirebaseDatabase.getInstance().getReference("users/$uid/email")
+            emailRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val usernameText = "Hello, ${currentUser.email?.substringBefore("@gmail.com")}!"
+                    username.text = usernameText
+                    // Adjust the font size to fit the container and limit the number of characters
+                    val maxWidthDp = 300f // specify the maximum width in dp
+                    val maxWidthPx = convertDpToPixels(maxWidthDp)
+                    val maxChars = 15 // specify the maximum number of characters
+                    val fontSize = calculateFontSizeToFitContainer(usernameText, maxWidthPx, maxChars)
+                    username.textSize = fontSize
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle any errors that occur during email retrieval
+                }
+            })
+        }
 
         databaseReference = FirebaseDatabase.getInstance().getReference("users/$uid/water-consumption")
 
