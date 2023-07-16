@@ -16,29 +16,29 @@
         android:orientation="vertical"
         android:layout_marginTop="60dp">
 
-        <LinearLayout
-            android:id="@+id/ll_rate_us"
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="35dp"
-            android:clickable="true"
-            android:background="@drawable/settings_btn_bg" >
+<!--        <LinearLayout-->
+<!--            android:id="@+id/ll_rate_us"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="75dp"-->
+<!--            android:gravity="left|center_vertical"-->
+<!--            android:paddingLeft="35dp"-->
+<!--            android:clickable="true"-->
+<!--            android:background="@drawable/settings_btn_bg" >-->
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/rate_us_btn"
-                app:tint="@color/settingsTextColor"/>
+<!--            <ImageView-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:src="@drawable/rate_us_btn"-->
+<!--                app:tint="@color/settingsTextColor"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rate us"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:paddingStart="30dp" />
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Rate us"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:paddingStart="30dp" />-->
+<!--        </LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/ll_feedback"
@@ -112,29 +112,29 @@
                 android:paddingStart="30dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_premium"
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:gravity="left|center_vertical"
-            android:paddingLeft="35dp"
-            android:clickable="true"
-            android:background="@drawable/settings_btn_bg" >
+<!--        <LinearLayout-->
+<!--            android:id="@+id/ll_premium"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="75dp"-->
+<!--            android:gravity="left|center_vertical"-->
+<!--            android:paddingLeft="35dp"-->
+<!--            android:clickable="true"-->
+<!--            android:background="@drawable/settings_btn_bg" >-->
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/premium_btn"
-                app:tint="@color/settingsTextColor"/>
+<!--            <ImageView-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:src="@drawable/premium_btn"-->
+<!--                app:tint="@color/settingsTextColor"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Premium"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:paddingStart="30dp" />
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Premium"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:paddingStart="30dp" />-->
+<!--        </LinearLayout>-->
 
     </LinearLayout>
 
