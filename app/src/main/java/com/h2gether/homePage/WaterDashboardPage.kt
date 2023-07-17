@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.graphics.Paint
 import android.graphics.PorterDuff
@@ -64,9 +65,26 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     val UserConfigUtils = UserConfigUtils()
     val WaterPlanUtils = WaterPlanUtils()
 
-    val timerDeferred = CompletableDeferred<Unit>()
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var broadcastReceiver: YourBroadcastReceiver
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Initialize the broadcast receiver
+        broadcastReceiver = YourBroadcastReceiver()
+
+        // Register the broadcast receiver
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("com.example.ACTION_TIMER")
+        requireActivity().registerReceiver(broadcastReceiver, intentFilter)
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // Unregister the broadcast receiver
+        requireActivity().unregisterReceiver(broadcastReceiver)
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -116,31 +134,29 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPreferences = requireContext().getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE)
-        val isTimerStarted = sharedPreferences.getBoolean("isTimerStarted", false)
+        val sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val isTimerReset = sharedPreferences.getBoolean("isTimerReset", false)
+        Log.d("Content Values", isTimerReset.toString())
+        if (!isTimerReset) {
+            CoroutineScope(Dispatchers.Main).launch {
+                // Start the timer process
+                setTimer(AppUtils.hour, AppUtils.min)
 
-        if (!isTimerStarted) {
-        CoroutineScope(Dispatchers.Main).launch {
-            // Start the timer process
-            setTimer(AppUtils.hour, AppUtils.min)
+                // Rest of the code that should execute after the timer process is done
+                binding.waterConsumed = AppUtils.waterConsumed.toString()
+                binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+                AppUtils.percent = (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+                if (AppUtils.percent!! < 100) {
+                    binding.percent = AppUtils.percent.toString() + "%"
+                } else {
+                    binding.percent = "100%"
+                    Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+                }
+                AppUtils.percent?.let { initializeProgressBar(0, it) }
 
-            // Await the completion of the timer process
-            timerDeferred.await()
-
-            // Rest of the code that should execute after the timer process is done
-            binding.waterConsumed = AppUtils.waterConsumed.toString()
-            binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
-            AppUtils.percent =
-                (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
-            if (AppUtils.percent!! < 100) {
-                binding.percent = AppUtils.percent.toString() + "%"
-            } else {
-                binding.percent = "100%"
-                Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+                // Set the flag to indicate that the timer has been reset
+                sharedPreferences.edit().putBoolean("isTimerReset", true).apply()
             }
-            AppUtils.percent?.let { initializeProgressBar(0, it) }
-        }
-            sharedPreferences.edit().putBoolean("isTimerStarted", true).apply()
         }
 
         AppUtils.selectedOption = 0
@@ -557,9 +573,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                             binding.percent = "100%"
                             Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
                         }
-                        Log.d(TAG, AppUtils.percent.toString())
                         AppUtils.percent?.let { initializeProgressBar(0, it) }
-                        Log.d(TAG, "percent changes")
                     }
                 } else {
                     // Data does not exist at the specified location
@@ -680,26 +694,28 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
     // Store water consumption daily for statistics
 
-
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun setTimer(hour: Int?, min: Int?){
+    private fun setTimer(hour: Int?, min: Int?) {
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, YourBroadcastReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             0,
             intent,
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
+
+        alarmManager.cancel(pendingIntent) // Cancel any existing alarms with the same PendingIntent
 
         val calendar = Calendar.getInstance().apply {
             if (hour != null) {
                 set(Calendar.HOUR_OF_DAY, hour)
-            } // Set the hour component to 10 (in 24-hour format)
+            } // Set the hour component
             if (min != null) {
                 set(Calendar.MINUTE, min)
-            }      // Set the minute component to 30
-            set(Calendar.AM_PM, Calendar.PM)
+            } // Set the minute component
+            set(Calendar.SECOND, 0)
+            set(Calendar.AM_PM, Calendar.AM)
         }
 
         // Set the alarm to trigger every day at the specified time
@@ -719,6 +735,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onReceive(context: Context, intent: Intent) {
+            Log.d("contentValues", "Received broadcast")
             val waterConsumedDaily = AppUtils.waterConsumed
             AppUtils.waterConsumed = 0
 
@@ -777,7 +794,6 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                         // Handle the cancellation
                     }
                 })
-                WaterDashboardPage().timerDeferred.complete(Unit)
             } else {
                 Log.d(TAG, "stats: No uid")
             }
