@@ -696,6 +696,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setTimer(hour: Int?, min: Int?) {
+        Log.d("contentValues", "Timer Set")
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, YourBroadcastReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
@@ -715,7 +716,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                 set(Calendar.MINUTE, min)
             } // Set the minute component
             set(Calendar.SECOND, 0)
-            set(Calendar.AM_PM, Calendar.AM)
+            set(Calendar.AM_PM, Calendar.PM)
         }
 
         // Set the alarm to trigger every day at the specified time
