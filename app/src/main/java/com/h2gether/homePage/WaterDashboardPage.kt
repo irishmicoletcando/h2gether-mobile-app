@@ -197,7 +197,7 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
             emailRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val usernameText = "Hello, ${currentUser.email?.substringBefore("@gmail.com")}!"
-                    username.text = usernameText
+                    binding.username = usernameText
                     // Adjust the font size to fit the container and limit the number of characters
                     val maxWidthDp = 300f // specify the maximum width in dp
                     val maxWidthPx = convertDpToPixels(maxWidthDp)
