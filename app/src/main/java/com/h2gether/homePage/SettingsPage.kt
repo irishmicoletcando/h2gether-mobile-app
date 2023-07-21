@@ -86,6 +86,7 @@ class SettingsPage : Fragment() {
 
                 try {
                     startActivity(emailIntent)
+                    alertDialog.dismiss()
                 } catch (e: ActivityNotFoundException) {
                     Toast.makeText(requireContext(), "There are no email clients", Toast.LENGTH_SHORT).show()
                 }
