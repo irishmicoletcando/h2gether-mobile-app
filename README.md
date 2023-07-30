@@ -54,6 +54,7 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 - [@JohnRicMerque](https://github.com/JohnRicMerque)
 - [@jelisharbb](https://github.com/jelisharbb)
 - [@jendlrs](https://github.com/jendlrs)
+- [@itsmefranz](https://github.com/itsmefranz)
 
 
 ## Support
