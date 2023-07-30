@@ -68,8 +68,8 @@ class NotificationService : Service() {
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Reminder")
-            .setContentText("Hydrate yourself!")
+            .setContentTitle("Reminder Enabled")
+            .setContentText("You will receive a notification every 2 hours.")
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setAutoCancel(false)
