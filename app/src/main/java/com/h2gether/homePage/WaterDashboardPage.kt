@@ -134,30 +134,30 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        val isTimerReset = sharedPreferences.getBoolean("isTimerReset", false)
-        Log.d("Content Values", isTimerReset.toString())
-        if (!isTimerReset) {
-            CoroutineScope(Dispatchers.Main).launch {
-                // Start the timer process
-                setTimer(AppUtils.hour, AppUtils.min)
-
-                // Rest of the code that should execute after the timer process is done
-                binding.waterConsumed = AppUtils.waterConsumed.toString()
-                binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
-                AppUtils.percent = (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
-                if (AppUtils.percent!! < 100) {
-                    binding.percent = AppUtils.percent.toString() + "%"
-                } else {
-                    binding.percent = "100%"
-                    Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
-                }
-                AppUtils.percent?.let { initializeProgressBar(0, it) }
-
-                // Set the flag to indicate that the timer has been reset
-                sharedPreferences.edit().putBoolean("isTimerReset", true).apply()
-            }
-        }
+//        val sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+//        val isTimerReset = sharedPreferences.getBoolean("isTimerReset", false)
+//        Log.d("Content Values", isTimerReset.toString())
+//        if (!isTimerReset) {
+//            CoroutineScope(Dispatchers.Main).launch {
+//                // Start the timer process
+//                setTimer(AppUtils.hour, AppUtils.min)
+//
+//                // Rest of the code that should execute after the timer process is done
+//                binding.waterConsumed = AppUtils.waterConsumed.toString()
+//                binding.temperature = AppUtils.temperatureIndex.toString() + "°C"
+//                AppUtils.percent = (((AppUtils.waterConsumed?.toFloat()!!) / AppUtils.targetWater?.toFloat()!!) * 100).toInt()
+//                if (AppUtils.percent!! < 100) {
+//                    binding.percent = AppUtils.percent.toString() + "%"
+//                } else {
+//                    binding.percent = "100%"
+//                    Toast.makeText(context, "Target water already achieved", Toast.LENGTH_SHORT).show()
+//                }
+//                AppUtils.percent?.let { initializeProgressBar(0, it) }
+//
+//                // Set the flag to indicate that the timer has been reset
+//                sharedPreferences.edit().putBoolean("isTimerReset", true).apply()
+//            }
+//        }
 
         AppUtils.selectedOption = 0
 
