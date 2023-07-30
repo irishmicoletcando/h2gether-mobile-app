@@ -24,7 +24,7 @@ class NotificationService : Service() {
     private val channelName = "My Channel"
     private val notificationId = 1
     private var notificationsEnabled = false
-    private val intervalMillis = 5000 // 5 seconds (temporary value)
+    private val intervalMillis = 7200000 //2hours
     private var targetWater: Int = 0
     private var waterConsumed: Int = 0
 
@@ -71,7 +71,7 @@ class NotificationService : Service() {
             .setContentTitle("Reminder")
             .setContentText("Hydrate yourself!")
             .setContentIntent(pendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_MIN)
             .setAutoCancel(false)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
