@@ -441,7 +441,8 @@ class WaterDashboardPage : Fragment(), UserConfigUtils.UserConfigCallback {
                 positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkBlue))
                 negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.darkBlue))
 
-                val intervalMillis = 5000 //5 seconds temporary
+                val intervalHours = 2 // 2 hours
+                val intervalMillis = intervalHours * 60 * 60 * 1000
                 positiveButton.setOnClickListener {
                     enableReminder(intervalMillis)
                     alertDialog.dismiss()
