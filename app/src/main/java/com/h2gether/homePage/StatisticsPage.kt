@@ -116,7 +116,7 @@ class StatisticsPage : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get the water consumption value from the snapshot, or default to 0 if not found
                 val waterConsumption = dataSnapshot.getValue(WaterConsumptionDataModel::class.java)?.waterConsumption ?: 0
-                Log.d("Debug", "Water consumption: $waterConsumption")
+                // Log.d("Debug", "Water consumption: $waterConsumption")
                 waterConsumed = waterConsumption
 
                 onSuccess(waterConsumption)
@@ -140,6 +140,10 @@ class StatisticsPage : Fragment() {
                     val calendar = Calendar.getInstance()
                     calendar.time = Date()
                     calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY) // Start from Sunday
+
+                    // Move the calendar back by 7 days to get the first day of the week
+                    calendar.add(Calendar.DAY_OF_WEEK, -6)
+
                     val entries = mutableListOf<WaterIntakeEntry>()
 
                     // Iterate over the days of the week (Sunday to Saturday)
@@ -148,8 +152,8 @@ class StatisticsPage : Fragment() {
                         val snapshot = dataSnapshot.child(date)
 
                         // Print the complete snapshot for debugging
-                        Log.d("FirebaseDebug", "Snapshot for $date: $snapshot")
-                        Log.d("FirebaseDebug", "Value for $date: ${snapshot.value}")
+                        // Log.d("FirebaseDebug", "Snapshot for $date: $snapshot")
+                        // Log.d("FirebaseDebug", "Value for $date: ${snapshot.value}")
 
                         // Check if the snapshot exists and contains the water consumption value
                         val waterValue = if (date == formatDate(currentDate)) {
@@ -159,12 +163,12 @@ class StatisticsPage : Fragment() {
                             // Retrieve the water consumption value from the snapshot, or default to 0 if the value is null
                             val value = snapshot.getValue(Long::class.java)
                             val waterValue = value?.toInt() ?: 0
-                            Log.d("FirebaseDebug", "Retrieved value for $date: $value")
+                            // Log.d("FirebaseDebug", "Retrieved value for $date: $value")
                             waterValue
                         }
 
                         // Log the retrieved value for debugging
-                        Log.d("FirebaseDebug", "Water value for $date: $waterValue")
+                        // Log.d("FirebaseDebug", "Water value for $date: $waterValue")
 
                         // Create a water intake entry with the retrieved water consumption value
                         val entry = WaterIntakeEntry(formatDate(date), waterValue.toFloat())
@@ -220,9 +224,13 @@ class StatisticsPage : Fragment() {
     }
 
     private fun updateChart(entries: List<Entry>, dates: List<String>) {
+        if (!isAdded || !isResumed) {
+            // Fragment is not attached to the activity or not in the resumed state.
+            // Do not update the chart in this case.
+            return
+        }
+
         // Update the line chart with the retrieved data
-        Log.d("Debug", "updateChart called with entries: $entries, dates: $dates")
-        // Obtain a reference to the line chart
         val chart = binding.lineChart
 
         // Create a data set from the entries
